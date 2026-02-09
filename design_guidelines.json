@@ -1,0 +1,202 @@
+{
+  "project_name": "Vertiv Enterprise Initiative Control Tower",
+  "design_philosophy": {
+    "identity": "Industrial Executive Control",
+    "core_principles": [
+      "Speed to Insight: 60-second rule for executive answers.",
+      "Density with Clarity: Maximum data per pixel without clutter.",
+      "Industrial Precision: Sharp edges, high contrast, no fluff.",
+      "Hierarchy First: Critical alerts (Code Red) scream, background info whispers."
+    ],
+    "mood": "Professional, Authoritative, Urgent, Clean."
+  },
+  "theme": {
+    "mode": "light",
+    "strategy": "High Contrast Industrial",
+    "background": {
+      "app": "#F4F5F7",
+      "card": "#FFFFFF",
+      "sidebar": "#1A1A1A",
+      "header": "#FFFFFF"
+    }
+  },
+  "typography": {
+    "font_family": {
+      "headings": "\"Barlow Condensed\", sans-serif",
+      "body": "\"IBM Plex Sans\", sans-serif",
+      "mono": "\"JetBrains Mono\", monospace"
+    },
+    "scale": {
+      "h1": "text-4xl font-bold tracking-tight uppercase",
+      "h2": "text-3xl font-bold tracking-tight uppercase",
+      "h3": "text-2xl font-semibold tracking-normal",
+      "body_lg": "text-lg font-medium",
+      "body": "text-base font-normal",
+      "small": "text-sm font-medium text-muted-foreground",
+      "tiny": "text-xs font-semibold tracking-wider uppercase"
+    },
+    "imports": [
+      "@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');"
+    ]
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#FE5B1B",
+      "foreground": "#FFFFFF",
+      "hover": "#E0480E",
+      "active": "#C43C08"
+    },
+    "secondary": {
+      "DEFAULT": "#000000",
+      "foreground": "#FFFFFF"
+    },
+    "accent": {
+      "DEFAULT": "#F4F5F7",
+      "foreground": "#1A1A1A"
+    },
+    "status": {
+      "code_red": "#DC2626",
+      "risk_high": "#F59E0B",
+      "risk_medium": "#FCD34D",
+      "risk_low": "#10B981",
+      "on_track": "#10B981",
+      "completed": "#3B82F6"
+    },
+    "neutral": {
+      "50": "#FAFAFA",
+      "100": "#F4F5F7",
+      "200": "#E5E7EB",
+      "300": "#D1D5DB",
+      "400": "#9CA3AF",
+      "500": "#6B7280",
+      "600": "#4B5563",
+      "700": "#374151",
+      "800": "#1F2937",
+      "900": "#111827"
+    }
+  },
+  "layout": {
+    "grid_system": {
+      "type": "Bento Grid - High Density Mode",
+      "base_columns": 12,
+      "gap": "gap-4"
+    },
+    "containers": {
+      "main": "max-w-[1920px] mx-auto p-6",
+      "card": "bg-white border border-neutral-200 shadow-sm p-5",
+      "section": "space-y-4 mb-8"
+    },
+    "sidebar": {
+      "width": "w-64",
+      "bg": "bg-neutral-900",
+      "text": "text-neutral-300",
+      "active_item": "bg-primary text-white"
+    }
+  },
+  "components": {
+    "cards": {
+      "style": "sharp",
+      "border_radius": "rounded-sm",
+      "border": "border border-neutral-200",
+      "shadow": "shadow-[0_1px_2px_rgba(0,0,0,0.05)]",
+      "hover": "hover:border-neutral-300 hover:shadow-md transition-all duration-200"
+    },
+    "buttons": {
+      "primary": "bg-primary text-white rounded-sm font-semibold tracking-wide uppercase text-sm px-6 py-2 hover:bg-primary-hover transition-colors",
+      "secondary": "bg-white border border-neutral-300 text-neutral-900 rounded-sm font-medium text-sm px-4 py-2 hover:bg-neutral-50",
+      "destructive": "bg-red-600 text-white rounded-sm font-semibold text-sm px-4 py-2 hover:bg-red-700"
+    },
+    "badges": {
+      "base": "inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-bold uppercase tracking-wide",
+      "code_red": "bg-red-100 text-red-800 border border-red-200",
+      "warning": "bg-yellow-100 text-yellow-800 border border-yellow-200",
+      "success": "bg-green-100 text-green-800 border border-green-200",
+      "neutral": "bg-neutral-100 text-neutral-800 border border-neutral-200"
+    },
+    "tables": {
+      "header": "bg-neutral-100 text-neutral-600 text-xs font-bold uppercase tracking-wider h-10",
+      "row": "border-b border-neutral-100 hover:bg-neutral-50 transition-colors h-12",
+      "cell": "text-sm text-neutral-700 px-4"
+    }
+  },
+  "visual_enhancers": {
+    "shadows": {
+      "soft": "0 2px 4px rgba(0,0,0,0.05)",
+      "medium": "0 4px 6px -1px rgba(0,0,0,0.1)",
+      "hard": "2px 2px 0px rgba(0,0,0,0.1)"
+    },
+    "borders": {
+      "default": "1px solid #E5E7EB",
+      "focus": "2px solid #FE5B1B"
+    }
+  },
+  "motion": {
+    "enabled": true,
+    "speed": "fast",
+    "duration": "200ms",
+    "ease": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "transitions": {
+      "hover": "transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease",
+      "page_load": "opacity 0.3s ease-out"
+    }
+  },
+  "images": {
+    "hero_backgrounds": [
+      {
+        "url": "https://images.unsplash.com/photo-1680992046617-e2e35451bcdb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MTJ8MHwxfHNlYXJjaHwzfHxpbmR1c3RyaWFsJTIwY29vbGluZyUyMHN5c3RlbSUyMHNlcnZlciUyMHJvb218ZW58MHx8fHwxNzcwNjgwOTQ4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Abstract server lights green, good for data flow backgrounds",
+        "category": "texture"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1624213011686-bc14dfc81650?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwyfHxjb3Jwb3JhdGUlMjBvZmZpY2UlMjBidWlsZGluZyUyMGV4dGVyaW9yJTIwbW9kZXJuJTIwZ2xhc3MlMjBhcmNoaXRlY3R1cmV8ZW58MHx8fHwxNzcwNjgwOTQwfDA&ixlib=rb-4.1.0&q=85",
+        "description": "White concrete building, clean industrial exterior",
+        "category": "hero"
+      }
+    ],
+    "people": [
+      {
+        "url": "https://images.unsplash.com/photo-1758518727707-b023e285b709?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2OTV8MHwxfHNlYXJjaHw0fHxjb3Jwb3JhdGUlMjBleGVjdXRpdmUlMjB0ZWFtJTIwbWVldGluZyUyMGJvYXJkcm9vbXxlbnwwfHx8fDE3NzA2ODA5NDd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Executive team meeting, professional context",
+        "category": "team"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1758691736424-4b4273948341?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2OTV8MHwxfHNlYXJjaHwzfHxjb3Jwb3JhdGUlMjBleGVjdXRpdmUlMjB0ZWFtJTIwbWVldGluZyUyMGJvYXJkcm9vbXxlbnwwfHx8fDE3NzA2ODA5NDd8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Man presenting data, good for reports section",
+        "category": "team"
+      }
+    ],
+    "industrial": [
+      {
+        "url": "https://images.unsplash.com/photo-1680992046626-418f7e910589?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MTJ8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwY29vbGluZyUyMHN5c3RlbSUyMHNlcnZlciUyMHJvb218ZW58MHx8fHwxNzcwNjgwOTQ4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Rack of electronic equipment, dark room",
+        "category": "data_center"
+      }
+    ]
+  },
+  "specific_components": {
+    "four_blocker": {
+      "structure": "grid grid-cols-2 grid-rows-2 gap-px bg-neutral-200 border border-neutral-200",
+      "cell": "bg-white p-6 min-h-[300px] relative hover:bg-neutral-50 transition-colors",
+      "title": "absolute top-4 left-4 text-sm font-bold uppercase text-neutral-500",
+      "content": "mt-8"
+    },
+    "risk_heatmap": {
+      "container": "grid grid-cols-5 gap-1",
+      "cell": "aspect-square flex items-center justify-center text-xs font-bold border border-white/50 cursor-pointer hover:scale-105 transition-transform",
+      "high": "bg-red-500 text-white",
+      "medium": "bg-yellow-400 text-black",
+      "low": "bg-green-500 text-white"
+    }
+  },
+  "instructions_to_main_agent": [
+    "INSTALL FONTS FIRST: Add the Google Fonts import to index.css immediately.",
+    "THEME SETUP: Ensure tailwind.config.js uses the specific colors defined in 'colors' section, especially Primary #FE5B1B.",
+    "LAYOUT: Implement a fixed Sidebar (Dark) + Scrollable Main Content (Light) layout. Do not use a top navbar for primary navigation.",
+    "FOUR-BLOCKER: This is the core view. It must be a 2x2 grid. Top-Left: Strategic Initiatives. Top-Right: Operational Transformation. Bottom-Left: Code Red / Risk. Bottom-Right: Financials.",
+    "DENSITY: Reduce default padding in Shadcn components. Use 'compact' variants for tables.",
+    "CHARTS: Use Recharts. Style them with minimal grid lines (strokeDasharray='3 3') and use the brand colors.",
+    "CODE RED: This status must PULSE or have a distinct visual indicator (border-l-4 border-red-600).",
+    "NO ROUNDED CORNERS: Force 'rounded-sm' or 'rounded-none' on all cards and buttons. This is an industrial tool, not a social app.",
+    "DATA-TESTID: Every button, link, and input MUST have a data-testid attribute."
+  ]
+}
