@@ -54,6 +54,12 @@ const PROJECT_STATUS_COLORS = {
   'On Hold': 'bg-orange-100 text-orange-600',
 };
 
+const RAG_CONFIG = {
+  'Red': { color: 'bg-red-500', text: 'text-red-700', light: 'bg-red-100', border: 'border-red-300' },
+  'Amber': { color: 'bg-amber-500', text: 'text-amber-700', light: 'bg-amber-100', border: 'border-amber-300' },
+  'Green': { color: 'bg-emerald-500', text: 'text-emerald-700', light: 'bg-emerald-100', border: 'border-emerald-300' },
+};
+
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
