@@ -128,7 +128,8 @@ const Layout = ({ children }) => {
             <Button
               onClick={() => navigate('/initiatives/new')}
               data-testid="nav-add-initiative"
-              className="w-full bg-[#FE5B1B] hover:bg-[#E0480E] text-white rounded-sm font-semibold text-sm uppercase tracking-wide"
+              className="w-full text-white rounded-lg font-semibold text-sm uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Initiative
@@ -142,7 +143,7 @@ const Layout = ({ children }) => {
             <DropdownMenuTrigger asChild>
               <button 
                 data-testid="user-menu-trigger"
-                className="w-full flex items-center gap-3 p-2 rounded-sm hover:bg-gray-800 transition-colors"
+                className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/10 transition-all duration-200"
               >
                 <div className="w-8 h-8 bg-gray-700 rounded-sm flex items-center justify-center">
                   <User className="w-4 h-4 text-gray-400" />
