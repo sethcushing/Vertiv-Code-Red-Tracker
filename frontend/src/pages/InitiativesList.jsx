@@ -175,7 +175,7 @@ const InitiativesList = () => {
             </Select>
 
             <Select value={filters.status || "all"} onValueChange={(v) => setFilters({ ...filters, status: v === "all" ? "" : v })}>
-              <SelectTrigger className="w-[140px] rounded-sm" data-testid="filter-status">
+              <SelectTrigger className="w-[130px] rounded-lg" data-testid="filter-status">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -186,20 +186,20 @@ const InitiativesList = () => {
               </SelectContent>
             </Select>
 
-            <Select value={filters.domain || "all"} onValueChange={(v) => setFilters({ ...filters, domain: v === "all" ? "" : v })}>
-              <SelectTrigger className="w-[150px] rounded-sm" data-testid="filter-domain">
-                <SelectValue placeholder="Domain" />
+            <Select value={filters.stage || "all"} onValueChange={(v) => setFilters({ ...filters, stage: v === "all" ? "" : v })}>
+              <SelectTrigger className="w-[160px] rounded-lg" data-testid="filter-stage">
+                <SelectValue placeholder="Stage" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Domains</SelectItem>
-                {config.domains.map(d => (
-                  <SelectItem key={d} value={d}>{d}</SelectItem>
+                <SelectItem value="all">All Stages</SelectItem>
+                {config.stages.map(s => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
             <Select value={filters.code_red || "all"} onValueChange={(v) => setFilters({ ...filters, code_red: v === "all" ? "" : v })}>
-              <SelectTrigger className="w-[140px] rounded-sm" data-testid="filter-code-red">
+              <SelectTrigger className="w-[130px] rounded-lg" data-testid="filter-code-red">
                 <SelectValue placeholder="Code Red" />
               </SelectTrigger>
               <SelectContent>
