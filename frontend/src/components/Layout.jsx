@@ -16,7 +16,7 @@ import {
 } from './ui/dropdown-menu';
 
 const navigation = [
-  { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
 ];
 
