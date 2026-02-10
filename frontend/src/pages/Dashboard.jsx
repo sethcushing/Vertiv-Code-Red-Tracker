@@ -148,70 +148,70 @@ const Dashboard = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-total-initiatives">
-          <CardContent className="p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <Card className="border-0 shadow-lg rounded-2xl bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1" data-testid="stat-total-initiatives">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Initiatives</p>
-                <p className="text-3xl font-heading font-bold text-gray-900 mt-1">{stats.total_initiatives}</p>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Initiatives</p>
+                <p className="text-4xl font-heading font-bold text-gray-900 mt-2">{stats.total_initiatives}</p>
               </div>
-              <div className="w-12 h-12 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shadow-inner">
-                <Target className="w-6 h-6 text-gray-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
+                <Target className="w-7 h-7 text-gray-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-red-200/80 shadow-sm rounded-lg bg-gradient-to-br from-red-50 to-red-100/50 hover:shadow-md transition-all duration-200" data-testid="stat-code-red">
-          <CardContent className="p-5">
+        <Card className="border-0 shadow-lg rounded-2xl bg-gradient-to-br from-red-50 to-red-100/60 hover:shadow-xl transition-all duration-300 hover:-translate-y-1" data-testid="stat-code-red">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-red-600 uppercase tracking-wider">Code Red</p>
-                <p className="text-3xl font-heading font-bold text-red-700 mt-1">{stats.code_red_count}</p>
+                <p className="text-xs font-medium text-red-500 uppercase tracking-wider">Code Red</p>
+                <p className="text-4xl font-heading font-bold text-red-600 mt-2">{stats.code_red_count}</p>
               </div>
-              <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center animate-pulse-code-red shadow-inner">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center animate-pulse-code-red">
+                <AlertTriangle className="w-7 h-7 text-red-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-at-risk">
-          <CardContent className="p-5">
+        <Card className="border-0 shadow-lg rounded-2xl bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1" data-testid="stat-at-risk">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">At Risk</p>
-                <p className="text-3xl font-heading font-bold text-yellow-600 mt-1">{stats.at_risk_count}</p>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">At Risk</p>
+                <p className="text-4xl font-heading font-bold text-amber-500 mt-2">{stats.at_risk_count}</p>
               </div>
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center shadow-inner">
-                <Clock className="w-6 h-6 text-yellow-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl flex items-center justify-center">
+                <Clock className="w-7 h-7 text-amber-500" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-status">
-          <CardContent className="p-5">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Status Breakdown</p>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
+        <Card className="border-0 shadow-lg rounded-2xl bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1" data-testid="stat-status">
+          <CardContent className="p-6">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-5">Status Breakdown</p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-3 text-sm text-gray-600">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                   On Track
                 </span>
                 <span className="font-bold text-gray-900">{stats.on_track_count}</span>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-3 text-sm text-gray-600">
+                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                   At Risk
                 </span>
                 <span className="font-bold text-gray-900">{stats.at_risk_count}</span>
               </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-3 text-sm text-gray-600">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   Off Track
                 </span>
                 <span className="font-bold text-gray-900">{stats.off_track_count}</span>
