@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from './components/ui/sonner';
 import { toast } from 'sonner';
@@ -8,8 +8,9 @@ import { toast } from 'sonner';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import BusinessOutcomes from './pages/BusinessOutcomes';
-import ProcessPipeline from './pages/ProcessPipeline';
-import RiskHeatmap from './pages/RiskHeatmap';
+import ProjectDetail from './pages/ProjectDetail';
+import StrategicInitiativeDetail from './pages/StrategicInitiativeDetail';
+import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Layout from './components/Layout';
 
 import './App.css';
@@ -151,8 +152,9 @@ function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/business-outcomes" element={<BusinessOutcomes />} />
-                    <Route path="/pipeline" element={<ProcessPipeline />} />
-                    <Route path="/risk-heatmap" element={<RiskHeatmap />} />
+                    <Route path="/projects/:id" element={<ProjectDetail />} />
+                    <Route path="/strategic-initiatives/new" element={<StrategicInitiativeForm />} />
+                    <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>
