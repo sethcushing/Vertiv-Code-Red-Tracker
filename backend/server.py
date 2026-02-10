@@ -952,6 +952,136 @@ async def add_kpi_history_entry(kpi_id: str, value: float, current_user: dict = 
     
     return {"message": "History entry added", "entry": {k: v for k, v in history_entry.items() if k != '_id'}}
 
+# ==================== REPORTING ENDPOINTS ====================
+
+@api_router.get("/reports/pipeline")
+async def get_pipeline_report(current_user: dict = Depends(get_current_user)):
+    """Get pipeline analytics for reporting dashboard"""
+    initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
+    projects = await db.projects.find({}, {"_id": 0}).to_list(500)
+    
+    # Initiative status distribution
+    status_distribution = {
+        "Not Started": 0,
+        "Discovery": 0,
+        "Frame": 0,
+        "Work In Progress": 0
+    }
+    for init in initiatives:
+        status = init.get("status", "Not Started")
+        if status in status_distribution:
+            status_distribution[status] += 1
+    
+    # Project status distribution
+    project_status = {
+        "Not Started": 0,
+        "In Progress": 0,
+        "Completed": 0,
+        "On Hold": 0
+    }
+    total_milestones = 0
+    completed_milestones = 0
+    
+    for proj in projects:
+        status = proj.get("status", "Not Started")
+        if status in project_status:
+            project_status[status] += 1
+        milestones = proj.get("milestones", [])
+        total_milestones += len(milestones)
+        completed_milestones += sum(1 for m in milestones if m.get("status") == "Completed")
+    
+    # Calculate completion rate
+    milestone_completion_rate = (completed_milestones / total_milestones * 100) if total_milestones > 0 else 0
+    
+    return {
+        "initiative_status_distribution": [
+            {"status": k, "count": v} for k, v in status_distribution.items()
+        ],
+        "project_status_distribution": [
+            {"status": k, "count": v} for k, v in project_status.items()
+        ],
+        "total_initiatives": len(initiatives),
+        "total_projects": len(projects),
+        "total_milestones": total_milestones,
+        "completed_milestones": completed_milestones,
+        "milestone_completion_rate": round(milestone_completion_rate, 1)
+    }
+
+@api_router.get("/reports/business-outcomes")
+async def get_business_outcomes_report(current_user: dict = Depends(get_current_user)):
+    """Get business outcomes analytics for reporting dashboard"""
+    categories = await db.business_outcome_categories.find({}, {"_id": 0}).to_list(50)
+    sub_outcomes = await db.sub_outcomes.find({}, {"_id": 0}).to_list(200)
+    kpis = await db.kpis.find({}, {"_id": 0}).to_list(500)
+    
+    # Build KPI lookup by sub_outcome
+    kpis_by_sub = {}
+    for kpi in kpis:
+        sub_id = kpi.get("sub_outcome_id")
+        if sub_id not in kpis_by_sub:
+            kpis_by_sub[sub_id] = []
+        kpis_by_sub[sub_id].append(kpi)
+    
+    # Build sub_outcome lookup by category
+    subs_by_cat = {}
+    for sub in sub_outcomes:
+        cat_id = sub.get("category_id")
+        if cat_id not in subs_by_cat:
+            subs_by_cat[cat_id] = []
+        subs_by_cat[cat_id].append(sub)
+    
+    # Calculate category-level stats
+    category_stats = []
+    for cat in categories:
+        cat_subs = subs_by_cat.get(cat["id"], [])
+        cat_kpis = []
+        for sub in cat_subs:
+            cat_kpis.extend(kpis_by_sub.get(sub["id"], []))
+        
+        # Calculate average progress for category
+        if cat_kpis:
+            total_progress = sum(calculate_kpi_progress(k) for k in cat_kpis)
+            avg_progress = total_progress / len(cat_kpis)
+        else:
+            avg_progress = 0
+        
+        # Count KPIs by performance
+        on_track = sum(1 for k in cat_kpis if calculate_kpi_progress(k) >= 70)
+        at_risk = sum(1 for k in cat_kpis if 40 <= calculate_kpi_progress(k) < 70)
+        off_track = sum(1 for k in cat_kpis if calculate_kpi_progress(k) < 40)
+        
+        category_stats.append({
+            "id": cat["id"],
+            "name": cat["name"],
+            "sub_outcomes_count": len(cat_subs),
+            "kpis_count": len(cat_kpis),
+            "avg_progress": round(avg_progress, 1),
+            "on_track": on_track,
+            "at_risk": at_risk,
+            "off_track": off_track
+        })
+    
+    # Overall KPI performance
+    total_kpis = len(kpis)
+    total_on_track = sum(1 for k in kpis if calculate_kpi_progress(k) >= 70)
+    total_at_risk = sum(1 for k in kpis if 40 <= calculate_kpi_progress(k) < 70)
+    total_off_track = sum(1 for k in kpis if calculate_kpi_progress(k) < 40)
+    
+    overall_progress = sum(calculate_kpi_progress(k) for k in kpis) / len(kpis) if kpis else 0
+    
+    return {
+        "category_stats": category_stats,
+        "total_categories": len(categories),
+        "total_sub_outcomes": len(sub_outcomes),
+        "total_kpis": total_kpis,
+        "overall_progress": round(overall_progress, 1),
+        "kpi_performance": {
+            "on_track": total_on_track,
+            "at_risk": total_at_risk,
+            "off_track": total_off_track
+        }
+    }
+
 # ==================== DASHBOARD & PIPELINE ENDPOINTS ====================
 
 @api_router.get("/dashboard/stats", response_model=DashboardStats)
