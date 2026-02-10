@@ -9,7 +9,6 @@ import {
   BarChart3,
   Gauge,
   Truck,
-  Settings,
 } from 'lucide-react';
 
 const navigation = [
