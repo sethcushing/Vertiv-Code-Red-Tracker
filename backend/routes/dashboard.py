@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
-from typing import List
+from typing import List, Optional
 import uuid
 from datetime import datetime, timezone, timedelta
 
 from models.schemas import DashboardStats
-from utils.auth import get_current_user
 from utils.helpers import calculate_kpi_progress
 
 router = APIRouter(tags=["Dashboard & Pipeline"])
@@ -22,7 +21,7 @@ def set_database(database):
 # ==================== DASHBOARD ENDPOINTS ====================
 
 @router.get("/dashboard/stats", response_model=DashboardStats)
-async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
+async def get_dashboard_stats():
     initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
     projects = await db.projects.find({}, {"_id": 0}).to_list(500)
     categories = await db.business_outcome_categories.find({}, {"_id": 0}).to_list(50)
