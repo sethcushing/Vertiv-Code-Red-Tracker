@@ -186,18 +186,26 @@ const ProcessPipeline = () => {
       {/* Legend */}
       <div className="flex items-center gap-6 pt-4 border-t border-gray-200">
         <span className="text-xs text-gray-500 uppercase tracking-wider font-lato-bold">Status:</span>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
           <span className="flex items-center gap-1.5 text-sm font-lato-light">
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            On Track
+            <div className="w-3 h-3 rounded-full bg-gray-400"></div>
+            Not Started
+          </span>
+          <span className="flex items-center gap-1.5 text-sm font-lato-light">
+            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+            Discovery
+          </span>
+          <span className="flex items-center gap-1.5 text-sm font-lato-light">
+            <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+            Frame
           </span>
           <span className="flex items-center gap-1.5 text-sm font-lato-light">
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            At Risk
+            WIP
           </span>
           <span className="flex items-center gap-1.5 text-sm font-lato-light">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            Off Track
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            Implemented
           </span>
         </div>
       </div>
