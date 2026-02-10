@@ -1438,7 +1438,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "status": "Work In Progress",
             "start_date": "2024-02-15",
             "target_end_date": "2024-09-30",
-            "metric_ids": [metrics_map["Quote-to-Order Cycle Time"], metrics_map["Forecast Accuracy"]],
+            "metric_ids": [metrics_map["Quote-to-Order Cycle Time"], metrics_map["Configuration Accuracy"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Pricing Logic Documentation", "description": "Document all pricing rules, exceptions, and approval thresholds", "owner": "Alex Rivera", "due_date": "2024-03-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Vendor Selection", "description": "Select and contract with pricing software vendor", "owner": "IT Procurement", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
