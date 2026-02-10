@@ -287,7 +287,7 @@ const Dashboard = () => {
 
               {/* Risks */}
               {blocker.top_risks.length > 0 && (
-                <div className="mb-4">
+                <div>
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Top Risks</p>
                   <div className="space-y-1">
                     {blocker.top_risks.slice(0, 2).map((risk, i) => (
@@ -303,20 +303,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               )}
-
-              {/* Financial */}
-              <div className="border-t border-gray-100 pt-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500">Budget</span>
-                  <span className="font-medium">{formatCurrency(blocker.budget)}</span>
-                </div>
-                <div className="flex items-center justify-between text-sm mt-1">
-                  <span className="text-gray-500">Variance</span>
-                  <span className={`font-medium ${blocker.variance > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                    {blocker.variance > 0 ? '+' : ''}{formatCurrency(blocker.variance)}
-                  </span>
-                </div>
-              </div>
             </div>
           ))}
         </div>
