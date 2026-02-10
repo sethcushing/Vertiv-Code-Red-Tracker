@@ -4,7 +4,7 @@ import { useAuth } from '../App';
 import {
   LayoutDashboard,
   AlertTriangle,
-  DollarSign,
+  GitBranch,
   Grid3X3,
   List,
   Plus,
@@ -23,7 +23,7 @@ import {
 const navigation = [
   { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Code Red', href: '/code-red', icon: AlertTriangle },
-  { name: 'Financial Exposure', href: '/financial', icon: DollarSign },
+  { name: 'Process Pipeline', href: '/pipeline', icon: GitBranch },
   { name: 'Risk Heatmap', href: '/risk-heatmap', icon: Grid3X3 },
   { name: 'All Initiatives', href: '/initiatives', icon: List },
 ];
@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
     if (path === '/code-red') return 'Code Red Initiatives';
-    if (path === '/financial') return 'Financial Exposure';
+    if (path === '/pipeline') return 'Process Pipeline';
     if (path === '/risk-heatmap') return 'Risk Heatmap';
     if (path === '/initiatives') return 'All Initiatives';
     if (path.includes('/initiatives/new')) return 'New Initiative';
