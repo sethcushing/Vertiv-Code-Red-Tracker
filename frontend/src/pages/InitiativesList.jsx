@@ -148,8 +148,8 @@ const InitiativesList = () => {
   return (
     <div className="space-y-6 animate-fade-in" data-testid="initiatives-list-page">
       {/* Filters */}
-      <Card className="border-gray-200 shadow-sm rounded-sm">
-        <CardContent className="p-4">
+      <Card className="border-gray-200/80 shadow-md rounded-xl">
+        <CardContent className="p-5">
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex-1 min-w-[200px] relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -225,7 +225,8 @@ const InitiativesList = () => {
             <Button
               onClick={() => navigate('/initiatives/new')}
               data-testid="add-initiative-btn"
-              className="bg-[#FE5B1B] hover:bg-[#E0480E] text-white rounded-sm font-semibold uppercase tracking-wide ml-auto"
+              className="text-white rounded-lg font-semibold uppercase tracking-wide ml-auto shadow-lg hover:shadow-xl transition-all duration-200"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Initiative
@@ -247,7 +248,7 @@ const InitiativesList = () => {
           <div className="w-10 h-10 border-4 border-[#FE5B1B] border-t-transparent rounded-full animate-spin"></div>
         </div>
       ) : filteredInitiatives.length === 0 ? (
-        <Card className="border-gray-200 shadow-sm rounded-sm">
+        <Card className="border-gray-200/80 shadow-md rounded-xl">
           <CardContent className="py-12 text-center">
             <Filter className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h3 className="font-heading font-bold text-lg text-gray-900 uppercase">No Initiatives Found</h3>
@@ -255,7 +256,7 @@ const InitiativesList = () => {
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-gray-200 shadow-sm rounded-sm">
+        <Card className="border-gray-200/80 shadow-md rounded-xl overflow-hidden">
           <CardContent className="p-0">
             <Table>
               <TableHeader>
@@ -304,7 +305,7 @@ const InitiativesList = () => {
                       </span>
                     </TableCell>
                     <TableCell className="text-center">
-                      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-sm ${getConfidenceColor(initiative.confidence_score)}`}>
+                      <div className={`inline-flex items-center justify-center w-11 h-11 rounded-lg shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
                         <span className="text-white font-bold text-sm">{initiative.confidence_score}</span>
                       </div>
                     </TableCell>
