@@ -12,6 +12,7 @@ import ProjectDetail from './pages/ProjectDetail';
 import StrategicInitiativeDetail from './pages/StrategicInitiativeDetail';
 import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Reporting from './pages/Reporting';
+import ExecutiveDashboard from './pages/ExecutiveDashboard';
 import Layout from './components/Layout';
 
 import './App.css';
@@ -157,6 +158,7 @@ function App() {
                     <Route path="/strategic-initiatives/new" element={<StrategicInitiativeForm />} />
                     <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
                     <Route path="/reporting" element={<Reporting />} />
+                    <Route path="/executive" element={<ExecutiveDashboard />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>
