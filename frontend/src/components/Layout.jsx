@@ -93,13 +93,13 @@ const Layout = ({ children }) => {
         <div className="p-6 border-b border-gray-800/50">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl font-heading">V</span>
+              <span className="text-white font-bold text-xl font-heading">CR</span>
             </div>
             <div>
               <h1 className="text-white font-heading font-bold text-lg tracking-tight">
-                VERTIV
+                CODE RED
               </h1>
-              <p className="text-xs text-gray-500">Control Tower</p>
+              <p className="text-xs text-gray-500">Initiatives</p>
             </div>
           </div>
         </div>
@@ -108,7 +108,8 @@ const Layout = ({ children }) => {
         <nav className="flex-1 py-4 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href || 
-              (item.href === '/dashboard' && location.pathname === '/');
+              (item.href === '/dashboard' && location.pathname === '/') ||
+              (item.href === '/enterprise-metrics' && location.pathname.startsWith('/enterprise-metrics'));
             const Icon = item.icon;
             
             return (
@@ -125,9 +126,6 @@ const Layout = ({ children }) => {
               >
                 <Icon className="w-5 h-5" />
                 {item.name}
-                {item.name === 'Code Red' && (
-                  <span className="ml-auto w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                )}
               </Link>
             );
           })}
