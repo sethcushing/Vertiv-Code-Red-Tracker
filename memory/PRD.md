@@ -5,14 +5,21 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 
 ## Core Features
 
-### 1. Code Red Pipeline (Dashboard)
+### 1. Executive Dashboard (NEW - Dec 2025)
+- Scrollable single-page view combining all key metrics
+- **Code Red Pipeline** - Initiative status summary (Not Started, Discovery, Frame, Work In Progress)
+- **Business Outcomes** - Expandable category cards with KPI progress
+- **Delivery Lifecycle Pipeline** - 8-stage project flow (Request → Solution Design → Commercials → Quote and Approval → Order Capture → Availability → Fulfillment → Post-Delivery)
+- **KPI Trends** - Split view showing "Trending in Right Direction" vs "Needs Attention" with mini charts
+
+### 2. Code Red Pipeline (Dashboard)
 - Four-column Kanban board: Not Started, Discovery, Frame, Work In Progress
 - Drag-and-drop functionality for moving initiatives between stages
 - Expandable initiative cards showing underlying projects
 - Add/edit/delete initiatives and projects
 - Summary statistics (Initiatives, Projects, Outcomes, KPIs)
 
-### 2. Business Outcomes (Card-Based Layout - Dec 2025)
+### 3. Business Outcomes (Card-Based Layout - Dec 2025)
 - **Card-based side-by-side layout** for categories
 - Three-level hierarchy: Category → Sub-Outcome → KPI
 - Categories: ETO, Quality, PDSL (seeded)
@@ -25,7 +32,7 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 - KPI history tracking with trend charts
 - CRUD operations for categories, sub-outcomes, and KPIs
 
-### 3. Reporting Dashboard (NEW - Dec 2025)
+### 4. Reporting Dashboard (Dec 2025)
 - **Initiative Status Distribution**: Pie chart showing initiatives by status
 - **Project Status Distribution**: Horizontal bar chart
 - **KPI Performance Overview**: Pie chart (On Track, At Risk, Off Track)
@@ -33,7 +40,7 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 - **KPI Trends Over Time**: Line charts for top KPIs with historical data
 - **Business Outcome Summary Table**: Detailed metrics per category
 
-### 4. Authentication
+### 5. Authentication
 - JWT-based authentication
 - User registration and login
 - Role-based access (admin, initiative_lead, project_manager)
