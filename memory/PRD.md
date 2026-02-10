@@ -40,7 +40,23 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 - **KPI Trends Over Time**: Line charts for top KPIs with historical data
 - **Business Outcome Summary Table**: Detailed metrics per category
 
-### 5. Authentication
+### 5. User Management (NEW - Dec 2025)
+- **Admin Page** for user CRUD operations
+- View all users with name, email, role, created date
+- Add new users with name, email, password, role
+- Edit users (name, role)
+- Reset user passwords
+- Delete users (cannot delete yourself)
+- **Two Roles:**
+  - Admin: Full access to everything
+  - Project Manager: View-only access, can only edit assigned projects
+- **Role-based UI Controls:**
+  - Hide "Add Initiative" button for Project Managers
+  - Hide "Add Category" and edit buttons on Business Outcomes for PMs
+  - Hide Admin navigation section for non-admins
+  - Drag-and-drop disabled for Project Managers on pipelines
+
+### 6. Authentication
 - JWT-based authentication
 - User registration and login
 - Role-based access (admin, initiative_lead, project_manager)
