@@ -229,7 +229,7 @@ const Login = () => {
         </Card>
 
         <p className="text-center text-xs text-gray-500 mt-6 font-lato-light">
-          Enterprise Initiative Control Tower • Vertiv © 2024
+          Code Red Initiatives © 2024
         </p>
       </div>
     </div>
