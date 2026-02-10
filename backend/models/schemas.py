@@ -186,7 +186,7 @@ class KPIHistoryEntry(BaseModel):
 
 
 # ========== USER MODELS ==========
-VALID_ROLES = ["admin", "initiative_lead", "project_manager"]
+VALID_ROLES = ["admin", "project_manager"]
 
 
 class UserBase(BaseModel):
