@@ -9,26 +9,26 @@ import {
   AlertTriangle,
   Target,
   ChevronRight,
-  ChevronDown,
   RefreshCw,
   AlertCircle,
   Loader2,
   Calendar,
-  Layers,
   TrendingUp,
   CheckCircle2,
   Clock,
   PlayCircle,
   Pause,
   Users,
+  Layers,
 } from 'lucide-react';
+import KPITree from './KPITree';
 
 const STATUS_CONFIG = {
-  'Not Started': { icon: Pause, color: 'bg-gray-100', textColor: 'text-gray-700', borderColor: 'border-gray-300' },
-  'Discovery': { icon: Target, color: 'bg-blue-100', textColor: 'text-blue-700', borderColor: 'border-blue-300' },
-  'Frame': { icon: Clock, color: 'bg-purple-100', textColor: 'text-purple-700', borderColor: 'border-purple-300' },
-  'Work In Progress': { icon: PlayCircle, color: 'bg-yellow-100', textColor: 'text-yellow-700', borderColor: 'border-yellow-300' },
-  'Implemented': { icon: CheckCircle2, color: 'bg-green-100', textColor: 'text-green-700', borderColor: 'border-green-300' },
+  'Not Started': { icon: Pause, color: 'bg-gray-100', textColor: 'text-gray-700', borderColor: 'border-gray-400', headerBg: 'bg-gray-200' },
+  'Discovery': { icon: Target, color: 'bg-blue-100', textColor: 'text-blue-700', borderColor: 'border-blue-400', headerBg: 'bg-blue-200' },
+  'Frame': { icon: Clock, color: 'bg-purple-100', textColor: 'text-purple-700', borderColor: 'border-purple-400', headerBg: 'bg-purple-200' },
+  'Work In Progress': { icon: PlayCircle, color: 'bg-yellow-100', textColor: 'text-yellow-700', borderColor: 'border-yellow-400', headerBg: 'bg-yellow-200' },
+  'Implemented': { icon: CheckCircle2, color: 'bg-green-100', textColor: 'text-green-700', borderColor: 'border-green-400', headerBg: 'bg-green-200' },
 };
 
 const Dashboard = () => {
@@ -37,13 +37,6 @@ const Dashboard = () => {
   const [metrics, setMetrics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
-  const [expandedStatuses, setExpandedStatuses] = useState({
-    'Not Started': true,
-    'Discovery': true,
-    'Frame': true,
-    'Work In Progress': true,
-    'Implemented': true,
-  });
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -80,10 +73,6 @@ const Dashboard = () => {
     } finally {
       setSeeding(false);
     }
-  };
-
-  const toggleStatus = (status) => {
-    setExpandedStatuses(prev => ({ ...prev, [status]: !prev[status] }));
   };
 
   const getConfidenceColor = (score) => {
@@ -153,15 +142,34 @@ const Dashboard = () => {
     );
   }
 
-  const statuses = ['Not Started', 'Discovery', 'Frame', 'Work In Progress', 'Implemented'];
+  // Pipeline statuses (excluding Implemented for the 4-column view)
+  const pipelineStatuses = ['Not Started', 'Discovery', 'Frame', 'Work In Progress'];
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Initiatives by Status - Main Section */}
+    <div className="space-y-8 animate-fade-in">
+      {/* KPI Tree Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-heading font-bold text-gray-900 uppercase tracking-tight">
-            Initiatives by Status
+            KPI Tree
+          </h2>
+          <Link 
+            to="/kpi-tree"
+            data-testid="view-full-kpi-tree-link"
+            className="text-sm text-[#FE5B1B] hover:text-[#E0480E] font-lato-regular flex items-center"
+          >
+            View Full KPI Tree
+            <ChevronRight className="w-4 h-4 ml-1" />
+          </Link>
+        </div>
+        <KPITree embedded={true} />
+      </div>
+
+      {/* Code Red Pipeline - 4 Column Layout */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-heading font-bold text-gray-900 uppercase tracking-tight">
+            Code Red Pipeline
           </h2>
           <Link 
             to="/initiatives"
@@ -173,126 +181,74 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="space-y-3">
-          {statuses.map(status => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {pipelineStatuses.map(status => {
             const config = STATUS_CONFIG[status];
             const StatusIcon = config.icon;
             const statusInitiatives = initiativesByStatus[status] || [];
-            const isExpanded = expandedStatuses[status];
 
             return (
               <Card key={status} className={`border-0 shadow-md rounded-xl overflow-hidden`}>
                 {/* Status Header */}
-                <button
-                  onClick={() => toggleStatus(status)}
-                  className={`w-full flex items-center justify-between p-4 ${config.color} border-l-4 ${config.borderColor} hover:opacity-90 transition-all`}
-                  data-testid={`status-header-${status.toLowerCase().replace(/\s+/g, '-')}`}
-                >
-                  <div className="flex items-center gap-3">
-                    <StatusIcon className={`w-5 h-5 ${config.textColor}`} />
-                    <span className={`font-heading font-bold uppercase tracking-tight ${config.textColor}`}>
+                <div className={`flex items-center justify-between p-3 ${config.headerBg} border-b-2 ${config.borderColor}`}>
+                  <div className="flex items-center gap-2">
+                    <StatusIcon className={`w-4 h-4 ${config.textColor}`} />
+                    <span className={`font-heading font-bold text-sm uppercase tracking-tight ${config.textColor}`}>
                       {status}
                     </span>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-lato-bold ${config.color} ${config.textColor}`}>
-                      {statusInitiatives.length}
-                    </span>
                   </div>
-                  {isExpanded ? (
-                    <ChevronDown className={`w-5 h-5 ${config.textColor}`} />
-                  ) : (
-                    <ChevronRight className={`w-5 h-5 ${config.textColor}`} />
-                  )}
-                </button>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-lato-bold bg-white/50 ${config.textColor}`}>
+                    {statusInitiatives.length}
+                  </span>
+                </div>
 
                 {/* Initiatives List */}
-                {isExpanded && statusInitiatives.length > 0 && (
-                  <div className="divide-y divide-gray-100">
-                    {statusInitiatives.map(initiative => (
-                      <div
-                        key={initiative.id}
-                        onClick={() => navigate(`/initiatives/${initiative.id}`)}
-                        className="p-4 hover:bg-gray-50 cursor-pointer transition-all flex items-center justify-between"
-                        data-testid={`initiative-row-${initiative.id}`}
-                      >
-                        <div className="flex-1">
-                          <h4 className="font-lato-bold text-gray-900">{initiative.name}</h4>
-                          <div className="flex items-center gap-4 mt-1 text-sm text-gray-500 font-lato-light">
-                            <span className="flex items-center gap-1">
-                              <Users className="w-3 h-3" />
-                              {initiative.owner}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              {initiative.milestones_completed}/{initiative.milestones_count} milestones
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <AlertCircle className="w-3 h-3" />
-                              {initiative.risks_count} risks
-                            </span>
+                <div className="max-h-[400px] overflow-y-auto">
+                  {statusInitiatives.length > 0 ? (
+                    <div className="divide-y divide-gray-100">
+                      {statusInitiatives.map(initiative => (
+                        <div
+                          key={initiative.id}
+                          onClick={() => navigate(`/initiatives/${initiative.id}`)}
+                          className="p-3 hover:bg-gray-50 cursor-pointer transition-all"
+                          data-testid={`pipeline-initiative-${initiative.id}`}
+                        >
+                          <h4 className="font-lato-bold text-sm text-gray-900 line-clamp-2 mb-1">
+                            {initiative.name}
+                          </h4>
+                          <div className="flex items-center gap-2 text-xs text-gray-500 font-lato-light mb-2">
+                            <Users className="w-3 h-3" />
+                            <span className="truncate">{initiative.owner}</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-xs text-gray-400 font-lato-light">
+                              <span>{initiative.milestones_completed}/{initiative.milestones_count} done</span>
+                              {initiative.risks_count > 0 && (
+                                <span className="flex items-center gap-0.5 text-amber-500">
+                                  <AlertCircle className="w-3 h-3" />
+                                  {initiative.risks_count}
+                                </span>
+                              )}
+                            </div>
+                            <div className={`w-6 h-6 rounded ${getConfidenceColor(initiative.confidence_score)} flex items-center justify-center`}>
+                              <span className="text-white font-lato-bold text-xs">{initiative.confidence_score}</span>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <div className={`w-10 h-10 rounded-lg ${getConfidenceColor(initiative.confidence_score)} flex items-center justify-center`}>
-                            <span className="text-white font-lato-bold text-sm">{initiative.confidence_score}</span>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-gray-300" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {isExpanded && statusInitiatives.length === 0 && (
-                  <div className="p-6 text-center">
-                    <p className="text-gray-400 font-lato-light text-sm">No initiatives in this status</p>
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-6 text-center">
+                      <Layers className="w-8 h-8 text-gray-200 mx-auto mb-2" />
+                      <p className="text-gray-400 font-lato-light text-xs">No initiatives</p>
+                    </div>
+                  )}
+                </div>
               </Card>
             );
           })}
         </div>
       </div>
-
-      {/* Core Business Outcomes Quick View */}
-      {metrics.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-heading font-bold text-gray-900 uppercase tracking-tight">
-              Core Business Outcomes
-            </h2>
-            <Link 
-              to="/enterprise-metrics"
-              className="text-sm text-[#FE5B1B] hover:text-[#E0480E] font-lato-regular flex items-center"
-            >
-              View All Outcomes
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {metrics.slice(0, 6).map((metric) => {
-              const progress = metric.target_value && metric.current_value 
-                ? Math.min(100, (metric.current_value / metric.target_value) * 100)
-                : 0;
-              return (
-                <Card key={metric.id} className="border-0 shadow-md rounded-xl hover:shadow-lg transition-all cursor-pointer" onClick={() => navigate(`/enterprise-metrics/${metric.id}`)}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs text-gray-500 font-lato-light uppercase">{metric.category}</span>
-                      <span className="text-xs text-gray-400 font-lato-light">{metric.initiative_count} initiatives</span>
-                    </div>
-                    <p className="font-lato-bold text-gray-900 mb-2 line-clamp-1">{metric.name}</p>
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span className="text-gray-500 font-lato-light">{metric.current_value ?? '-'} {metric.unit}</span>
-                      <span className="font-lato-bold">{metric.target_value ?? '-'} {metric.unit}</span>
-                    </div>
-                    <Progress value={progress} className="h-2" />
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
       {/* Summary Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -352,6 +308,44 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Implemented Initiatives Section */}
+      {(initiativesByStatus['Implemented'] || []).length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-green-600" />
+              <h2 className="text-lg font-heading font-bold text-gray-900 uppercase tracking-tight">
+                Implemented
+              </h2>
+              <span className="px-2 py-0.5 rounded-full text-xs font-lato-bold bg-green-100 text-green-700">
+                {(initiativesByStatus['Implemented'] || []).length}
+              </span>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {(initiativesByStatus['Implemented'] || []).slice(0, 4).map(initiative => (
+              <Card 
+                key={initiative.id} 
+                className="border-0 shadow-md rounded-xl cursor-pointer hover:shadow-lg transition-all bg-green-50/50"
+                onClick={() => navigate(`/initiatives/${initiative.id}`)}
+              >
+                <CardContent className="p-4">
+                  <h4 className="font-lato-bold text-sm text-gray-900 line-clamp-2 mb-2">
+                    {initiative.name}
+                  </h4>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500 font-lato-light">{initiative.owner}</span>
+                    <div className={`w-6 h-6 rounded ${getConfidenceColor(initiative.confidence_score)} flex items-center justify-center`}>
+                      <span className="text-white font-lato-bold text-xs">{initiative.confidence_score}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Quick Actions */}
       <div className="flex justify-end gap-4">
