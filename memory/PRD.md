@@ -1,174 +1,136 @@
 # Code Red Initiatives - PRD
 
 ## Overview
-Executive-grade initiative tracking and reporting tool to manage critical enterprise initiatives. Features Enterprise Metrics alignment, lifecycle stage tracking, and process pipeline visualization.
+Executive-grade initiative tracking and reporting tool to manage critical enterprise initiatives. Features Core Business Outcomes alignment, lifecycle stage tracking, process pipeline visualization, and comprehensive audit trails.
 
 ## App Name
-**Code Red Initiatives** (renamed from Enterprise Initiative Control Tower)
+**Code Red Initiatives**
 
-## User Personas
-- **Executive Viewer (C-Suite)**: View rollups, risks, metrics progress, filter by owner/stage/bucket
-- **Initiative Owner**: Owns delivery, milestones, risks, metric alignment
-- **Program/Ops Lead**: Manages cross-initiative visibility and dependencies
-- **Admin**: Configure taxonomies, seed data, permissions
+## Core Features
 
-## Core Requirements
+### 1. Core Business Outcomes (KPIs)
+- Create and manage business outcomes (Planning, Sales, Quality, Delivery, Customer Satisfaction, Engineering)
+- Each outcome has: Name, Description, Category, Target Value, Current Value, Unit
+- Many-to-many relationship with initiatives
+- **KPI Tree View**: Hierarchical view showing Outcome → Initiatives → Milestones & Risks
 
-### Authentication
-- JWT-based authentication (register, login)
+### 2. Initiative Management
+- **Status Lifecycle**: Not Started → Discovery → Frame → Work In Progress → Implemented
+- Link initiatives to multiple Core Business Outcomes
+- Track milestones, risks, and team members per initiative
+- Confidence scoring (rule-based, AI-ready)
 
-### Enterprise Metrics System (NEW - December 2025)
-- Create Enterprise Metrics at the highest level (Planning, Sales, Quality, Delivery, Customer Satisfaction categories)
-- Each metric has: Name, Description, Category, Target Value, Current Value, Unit
-- Many-to-many relationship: One initiative can align to multiple metrics, one metric can have multiple initiatives
-- Metrics roll up to dashboard with initiative counts
-- Dedicated Enterprise Metrics view page
+### 3. Audit Trails (NEW - December 2025)
+- Track all changes to initiatives, milestones, and metrics
+- Captures: Who, When, What changed (field, old value → new value)
+- Last 50 entries per entity (configurable)
+- History tab on Initiative Detail page
 
-### Initiative Status Options (UPDATED - December 2025)
-Replaced previous statuses with new lifecycle stages:
-- **Not Started** - Initiative not yet begun
-- **Discovery** - Requirements gathering and analysis
-- **Frame** - Solution design and planning
-- **Work In Progress** - Active development/implementation
-- **Implemented** - Completed and deployed
-
-### Initiative CRUD
-- Create initiatives with name, description, bucket, domain, lifecycle stage
-- Assign to Enterprise Metrics via multi-select
-- Milestones, Risks, Team members tracking
-- Confidence scoring (currently rule-based, AI integration available)
-
-### Views & Navigation
-1. **Executive Dashboard** - Overview stats, metrics summary, top initiatives
-2. **Enterprise Metrics** - Metrics by category with initiative roll-up
-3. **Initiatives** - All initiatives list with filters
-4. **Milestones** - Cross-initiative milestone view (sorted newest to oldest)
-5. **Pipeline Process** - Kanban-style view by lifecycle stage
-6. **Risk** - Risk heatmap (3x3 matrix)
+### 4. Dashboard Views
+- **Executive Dashboard**: Initiatives grouped by status (collapsible buckets)
+- **Core Business Outcomes**: Metrics by category with KPI Tree view
+- **Milestones**: Cross-initiative milestone view
+- **Pipeline Process**: Kanban-style by lifecycle stage
+- **Risk Heatmap**: 3x3 impact/likelihood matrix
 
 ## What's Been Implemented (December 2025)
 
 ### Backend (FastAPI + MongoDB)
-- [x] JWT Authentication (register, login, me)
-- [x] Enterprise Metrics CRUD with category support
-- [x] Initiative CRUD with metric_ids array for alignment
-- [x] Milestone CRUD per initiative
-- [x] Risk CRUD per initiative with escalation flags
+- [x] JWT Authentication
+- [x] Core Business Outcomes CRUD (7 seeded including "Engineer To Order")
+- [x] Initiative CRUD with metric alignment
+- [x] Milestone CRUD with audit logging
+- [x] Risk CRUD per initiative
 - [x] Team member management
-- [x] Dashboard stats endpoint (new status counts)
-- [x] Four-blocker aggregation endpoint
-- [x] Risk heatmap endpoint (3x3 matrix)
-- [x] All Milestones endpoint (cross-initiative, sorted by date)
-- [x] Configuration endpoints (buckets, stages, statuses, domains, teams, metric-categories)
-- [x] Seed data: 6 enterprise metrics + 8 initiatives
+- [x] **Audit Log System** - tracks changes with last 50 entries limit
+- [x] KPI Tree endpoint - hierarchical data structure
+- [x] Dashboard initiatives-by-status endpoint
+- [x] All configuration endpoints
 
 ### Frontend (React + Tailwind + Shadcn/UI)
-- [x] Login/Register page with "Code Red" branding
-- [x] Executive Dashboard with:
-  - Status breakdown cards (Total, Not Started, Discovery, Frame, WIP, Implemented)
-  - Enterprise Metrics quick view with progress bars
-  - Initiative overview cards
-- [x] Enterprise Metrics page (by category, with CRUD)
-- [x] Metric Detail page with aligned initiatives
-- [x] Milestones page (cross-initiative view, search, filter)
-- [x] Initiatives list with new status filter and badges
-- [x] Initiative Detail with tabs (Milestones, Risks, Team)
-- [x] Initiative Create/Edit forms with metric alignment
-- [x] Process Pipeline (Kanban by lifecycle stage)
-- [x] Risk Heatmap (3x3 interactive matrix)
-- [x] Updated navigation sidebar
+- [x] Executive Dashboard with status-based initiative grouping
+- [x] Core Business Outcomes page with KPI Tree View button
+- [x] KPI Tree page - hierarchical expandable view
+- [x] Initiative Detail with History tab (audit trails)
+- [x] All other pages updated with new terminology
 
-### Design System
-- App branding: "Code Red Initiatives" with CR logo
-- Light professional theme with orange accent (#FE5B1B)
-- Modern rounded aesthetic
-- Mixed Lato font weights (Light, Regular, Bold)
-- Barlow Condensed for headings
-- Status colors: Gray (Not Started), Blue (Discovery), Purple (Frame), Yellow (WIP), Green (Implemented)
+### Database Schema
 
-## Removed Features
-- Code Red flag on initiatives (removed per user request)
-- Code Red Dashboard (removed)
-
-## Database Schema
-
-### enterprise_metrics
+**audit_logs** (NEW)
 ```
 {
   id: string,
-  name: string,
-  description: string,
-  category: string (Planning|Sales|Quality|Delivery|Customer Satisfaction),
-  target_value: float,
-  current_value: float,
-  unit: string,
-  created_at: datetime,
-  updated_at: datetime
+  entity_type: "initiative" | "metric" | "milestone",
+  entity_id: string,
+  entity_name: string,
+  action: "created" | "updated" | "deleted",
+  user_email: string,
+  user_name: string,
+  timestamp: datetime,
+  changes: [{ field, old_value, new_value }]
 }
 ```
 
-### initiatives  
+**enterprise_metrics** (Core Business Outcomes)
 ```
 {
-  id: string,
-  name: string,
-  description: string,
-  bucket: string (Stabilization|Modernization|Growth),
-  business_domain: string,
-  lifecycle_stage: string,
-  status: string (Not Started|Discovery|Frame|Work In Progress|Implemented),
-  metric_ids: string[] (references enterprise_metrics),
-  milestones: array,
-  risks: array,
-  team_members: array,
-  confidence_score: int,
-  ...
+  id, name, description, category, target_value, current_value, unit,
+  created_at, updated_at
+}
+```
+
+**initiatives**
+```
+{
+  id, name, description, bucket, business_domain, lifecycle_stage,
+  status: "Not Started|Discovery|Frame|Work In Progress|Implemented",
+  metric_ids: string[] (many-to-many with outcomes),
+  milestones, risks, team_members, confidence_score,
+  created_at, updated_at
 }
 ```
 
 ## API Endpoints
 
-### Enterprise Metrics
-- `POST /api/enterprise-metrics` - Create metric
-- `GET /api/enterprise-metrics` - List all metrics
-- `GET /api/enterprise-metrics/:id` - Get metric details
-- `GET /api/enterprise-metrics/:id/initiatives` - Get aligned initiatives
-- `PUT /api/enterprise-metrics/:id` - Update metric
-- `DELETE /api/enterprise-metrics/:id` - Delete metric
+### Audit Logs
+- `GET /api/audit-logs/{entity_type}/{entity_id}` - Get entity audit history
+- `GET /api/audit-logs/initiative/{id}/all` - Get initiative + milestone history
 
-### Milestones
-- `GET /api/milestones` - Get all milestones across initiatives (sorted by due_date desc)
+### KPI Tree
+- `GET /api/kpi-tree` - Full hierarchical tree data
 
-### Configuration
-- `GET /api/config/statuses` - Returns new status options
-- `GET /api/config/metric-categories` - Returns metric categories
+### Dashboard
+- `GET /api/dashboard/initiatives-by-status` - Initiatives grouped by status
 
 ## Test Credentials
 - Email: demo@vertiv.com
 - Password: Demo2024!
 
+## Seeded Data
+- 7 Core Business Outcomes (including new "Engineer To Order Cycle Time")
+- 8 Initiatives with realistic data
+
 ## Prioritized Backlog
 
 ### P0 (Complete)
-- [x] Enterprise Metrics system
-- [x] New status options
-- [x] Updated navigation
-- [x] Milestones view
-- [x] App rebranding
+- [x] Audit trails for initiatives, milestones, metrics
+- [x] Dashboard redesign with status buckets
+- [x] Rename to "Core Business Outcomes"
+- [x] Add "Engineer To Order" metric
+- [x] KPI Tree view
 
 ### P1 (High Priority)
-- [ ] Real AI confidence scoring using GPT-5.2 (currently rule-based)
-- [ ] Bulk edit initiatives
+- [ ] Real AI confidence scoring
+- [ ] Audit trail for risks
+- [ ] Bulk operations
 - [ ] Export to PDF/CSV
 
 ### P2 (Medium Priority)
 - [ ] Role-based permissions
+- [ ] Email notifications
 - [ ] Dependency visualization
-- [ ] Milestone Gantt chart
-- [ ] Audit trail
 
 ### P3 (Nice to Have)
 - [ ] Dark mode
 - [ ] Slack/Teams integration
-- [ ] Trend analysis
-- [ ] Scheduled reports
+- [ ] Trend analysis charts
