@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Barlow+Condensed:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
     :root {
-        --background: 210 20% 97%;
+        --background: 210 20% 98%;
         --foreground: 220 20% 10%;
         --card: 0 0% 100%;
         --card-foreground: 220 20% 10%;
@@ -30,7 +30,7 @@
         --chart-3: 45 93% 47%;
         --chart-4: 0 84% 60%;
         --chart-5: 220 70% 50%;
-        --radius: 0.125rem;
+        --radius: 0.75rem;
         
         /* Vertiv Custom Colors */
         --vertiv-orange: #FE5B1B;
@@ -62,13 +62,19 @@
     }
     body {
         @apply bg-background text-foreground;
-        font-family: 'IBM Plex Sans', sans-serif;
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
     }
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 600;
     }
-    code, pre {
-        font-family: 'JetBrains Mono', monospace;
+    p, span, div, td, th, label {
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
+    }
+    strong, b {
+        font-weight: 700;
     }
 }
 
