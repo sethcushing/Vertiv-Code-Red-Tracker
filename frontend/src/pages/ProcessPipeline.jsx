@@ -102,7 +102,7 @@ const ProcessPipeline = () => {
                 <h3 className="font-heading font-semibold text-sm tracking-wide">
                   {stage.label}
                 </h3>
-                <p className="text-white/80 text-xs mt-1">
+                <p className="text-white/80 text-xs mt-1 font-lato-light">
                   {stageInitiatives.length} initiative{stageInitiatives.length !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -111,7 +111,7 @@ const ProcessPipeline = () => {
               <div className="space-y-2 min-h-[200px]">
                 {stageInitiatives.length === 0 ? (
                   <div className="p-4 border-2 border-dashed border-gray-200 rounded-lg text-center">
-                    <p className="text-gray-400 text-sm">No initiatives</p>
+                    <p className="text-gray-400 text-sm font-lato-light">No initiatives</p>
                   </div>
                 ) : (
                   stageInitiatives.map((initiative) => {
@@ -133,41 +133,41 @@ const ProcessPipeline = () => {
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div className="flex-1 min-w-0">
                               {initiative.code_red_flag && (
-                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold uppercase bg-red-100 text-red-700 mb-1">
+                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-lato-bold uppercase bg-red-100 text-red-700 mb-1">
                                   <AlertTriangle className="w-3 h-3 mr-1" />
                                   Code Red
                                 </span>
                               )}
-                              <h4 className="font-semibold text-sm text-gray-900 line-clamp-2">
+                              <h4 className="font-lato-bold text-sm text-gray-900 line-clamp-2">
                                 {initiative.name}
                               </h4>
                             </div>
                             <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
-                              <span className="text-white text-xs font-bold">{initiative.confidence_score}</span>
+                              <span className="text-white text-xs font-lato-bold">{initiative.confidence_score}</span>
                             </div>
                           </div>
 
                           {/* Owner */}
-                          <p className="text-xs text-gray-500 mb-2 truncate">
+                          <p className="text-xs text-gray-500 mb-2 truncate font-lato-light">
                             {initiative.initiative_owner || 'Unassigned'}
                           </p>
 
                           {/* Stats Row */}
-                          <div className="flex items-center gap-3 text-xs text-gray-600">
+                          <div className="flex items-center gap-3 text-xs text-gray-600 font-lato-light">
                             <span className="flex items-center gap-1" title="Milestones">
                               <Target className="w-3 h-3" />
-                              {completed}/{milestones.length}
+                              <span className="font-lato-bold">{completed}</span>/{milestones.length}
                             </span>
                             <span className="flex items-center gap-1" title="Risks">
                               <AlertCircle className={`w-3 h-3 ${escalatedCount > 0 ? 'text-red-500' : ''}`} />
-                              {risks.length}
+                              <span className="font-lato-bold">{risks.length}</span>
                               {escalatedCount > 0 && (
-                                <span className="text-red-500">({escalatedCount})</span>
+                                <span className="text-red-500 font-lato-regular">({escalatedCount})</span>
                               )}
                             </span>
                             <span className="flex items-center gap-1" title="Team Members">
                               <Users className="w-3 h-3" />
-                              {teamCount}
+                              <span className="font-lato-bold">{teamCount}</span>
                             </span>
                           </div>
                         </CardContent>
