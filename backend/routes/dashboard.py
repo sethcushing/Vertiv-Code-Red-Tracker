@@ -304,6 +304,16 @@ async def get_milestone_statuses():
     return ["Pending", "In Progress", "Completed", "Delayed"]
 
 
+@router.get("/config/business-units")
+async def get_business_units():
+    return ["IT", "Sales", "Manufacturing", "Fulfillment", "Engineering", "Finance", "Operations", "HR", "Marketing"]
+
+
+@router.get("/config/rag-statuses")
+async def get_rag_statuses():
+    return ["Green", "Amber", "Red"]
+
+
 # ==================== DELIVERY PIPELINE ENDPOINTS ====================
 
 @router.get("/delivery-pipeline")
