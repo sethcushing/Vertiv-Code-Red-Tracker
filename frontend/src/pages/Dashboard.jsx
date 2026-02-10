@@ -230,7 +230,7 @@ const Dashboard = () => {
           <Link 
             to="/initiatives"
             data-testid="view-all-initiatives-link"
-            className="text-sm text-[#FE5B1B] hover:text-[#E0480E] font-medium flex items-center"
+            className="text-sm text-[#FE5B1B] hover:text-[#E0480E] font-lato-regular flex items-center"
           >
             View All Initiatives
             <ChevronRight className="w-4 h-4 ml-1" />
@@ -250,34 +250,34 @@ const Dashboard = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     {blocker.code_red && (
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-red-100 to-red-50 text-red-700 animate-pulse-code-red">
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-lato-bold bg-gradient-to-r from-red-100 to-red-50 text-red-700 animate-pulse-code-red">
                         Code Red
                       </span>
                     )}
-                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(blocker.status)}`}>
+                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-lato-bold ${getStatusColor(blocker.status)}`}>
                       {blocker.status}
                     </span>
                   </div>
                   <h3 className="font-heading font-bold text-lg text-gray-900 uppercase tracking-tight line-clamp-2">
                     {blocker.name}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Owner: <span className="font-medium text-gray-700">{blocker.owner || 'Unassigned'}</span>
+                  <p className="text-sm text-gray-500 mt-1 font-lato-light">
+                    Owner: <span className="font-lato-regular text-gray-700">{blocker.owner || 'Unassigned'}</span>
                   </p>
                 </div>
                 <div className="text-right">
                   <div className={`w-16 h-16 rounded-2xl ${getConfidenceColor(blocker.confidence_score)} flex items-center justify-center shadow-lg`}>
-                    <span className="text-white font-bold text-xl">{blocker.confidence_score}</span>
+                    <span className="text-white font-lato-bold text-xl">{blocker.confidence_score}</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-2">Confidence</p>
+                  <p className="text-xs text-gray-400 mt-2 font-lato-light">Confidence</p>
                 </div>
               </div>
 
               {/* Progress */}
               <div className="mb-4">
                 <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-gray-500">Milestones</span>
-                  <span className="font-medium">{blocker.milestones_completed} / {blocker.milestones_total}</span>
+                  <span className="text-gray-500 font-lato-light">Milestones</span>
+                  <span className="font-lato-bold">{blocker.milestones_completed} / {blocker.milestones_total}</span>
                 </div>
                 <Progress 
                   value={blocker.milestones_total > 0 ? (blocker.milestones_completed / blocker.milestones_total) * 100 : 0} 
@@ -288,7 +288,7 @@ const Dashboard = () => {
               {/* Risks */}
               {blocker.top_risks.length > 0 && (
                 <div>
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Top Risks</p>
+                  <p className="text-xs font-lato-bold text-gray-500 uppercase tracking-wider mb-2">Top Risks</p>
                   <div className="space-y-1">
                     {blocker.top_risks.slice(0, 2).map((risk, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
@@ -297,7 +297,7 @@ const Dashboard = () => {
                         ) : (
                           <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
                         )}
-                        <span className="text-gray-700 line-clamp-1">{risk.description}</span>
+                        <span className="text-gray-700 font-lato-light line-clamp-1">{risk.description}</span>
                       </div>
                     ))}
                   </div>
