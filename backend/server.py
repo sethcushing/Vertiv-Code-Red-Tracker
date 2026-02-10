@@ -94,6 +94,7 @@ class ProjectBase(BaseModel):
     owner: Optional[str] = ""
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
+    business_outcome_ids: List[str] = []  # Links to Business Outcome Categories
 
 class ProjectCreate(ProjectBase):
     milestones: List[MilestoneBase] = []
@@ -106,6 +107,7 @@ class ProjectUpdate(BaseModel):
     owner: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
+    business_outcome_ids: Optional[List[str]] = None
 
 class ProjectResponse(ProjectBase):
     id: str
