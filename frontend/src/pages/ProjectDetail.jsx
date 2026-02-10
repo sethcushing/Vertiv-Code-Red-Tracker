@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent } from '../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Progress } from '../components/ui/progress';
@@ -16,6 +16,10 @@ import {
   Clock,
   AlertCircle,
   Save,
+  Users,
+  Building2,
+  Truck,
+  History,
 } from 'lucide-react';
 import { api } from '../App';
 import { toast } from 'sonner';
@@ -33,6 +37,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+
+const STATUS_OPTIONS = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
+const RAG_OPTIONS = ['Green', 'Amber', 'Red'];
+const BUSINESS_UNITS = ['IT', 'Sales', 'Manufacturing', 'Fulfillment', 'Engineering', 'Finance', 'Operations', 'HR', 'Marketing'];
+const DELIVERY_STAGES = ['Request', 'Solution Design', 'Commercials', 'Quote and Approval', 'Order Capture', 'Availability', 'Fulfillment', 'Post-Delivery'];
+
+const RAG_CONFIG = {
+  'Red': { color: 'bg-red-500', text: 'text-red-700', light: 'bg-red-100' },
+  'Amber': { color: 'bg-amber-500', text: 'text-amber-700', light: 'bg-amber-100' },
+  'Green': { color: 'bg-emerald-500', text: 'text-emerald-700', light: 'bg-emerald-100' },
+};
 
 const MILESTONE_STATUS_COLORS = {
   'Pending': 'bg-gray-100 text-gray-600',
@@ -52,6 +67,7 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
   const [initiative, setInitiative] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
@@ -59,27 +75,30 @@ const ProjectDetail = () => {
   // Modal states
   const [showMilestoneModal, setShowMilestoneModal] = useState(false);
   const [showIssueModal, setShowIssueModal] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [formData, setFormData] = useState({});
+  const [teamMemberForm, setTeamMemberForm] = useState({ name: '', role: '', responsibility: '' });
 
   useEffect(() => {
-    fetchProject();
+    fetchData();
   }, [id]);
 
-  const fetchProject = async () => {
+  const fetchData = async () => {
     try {
-      const response = await api.get(`/projects/${id}`);
-      setProject(response.data);
-      setEditForm({
-        name: response.data.name,
-        description: response.data.description,
-        status: response.data.status,
-        owner: response.data.owner,
-      });
+      const [projRes, catRes] = await Promise.all([
+        api.get(`/projects/${id}`),
+        api.get('/business-outcomes/categories'),
+      ]);
+      setProject(projRes.data);
+      setCategories(catRes.data);
+      setEditForm(projRes.data);
       
       // Fetch parent initiative
-      const initRes = await api.get(`/strategic-initiatives/${response.data.strategic_initiative_id}`);
-      setInitiative(initRes.data);
+      if (projRes.data.strategic_initiative_id) {
+        const initRes = await api.get(`/strategic-initiatives/${projRes.data.strategic_initiative_id}`);
+        setInitiative(initRes.data);
+      }
     } catch (error) {
       toast.error('Failed to load project');
       navigate('/');
@@ -88,14 +107,88 @@ const ProjectDetail = () => {
     }
   };
 
-  const handleSaveProject = async () => {
+  const handleSave = async () => {
     try {
-      await api.put(`/projects/${id}`, editForm);
+      await api.put(`/projects/${id}`, {
+        name: editForm.name,
+        description: editForm.description,
+        status: editForm.status,
+        rag_status: editForm.rag_status,
+        owner: editForm.owner,
+        business_unit: editForm.business_unit,
+        delivery_stages_impacted: editForm.delivery_stages_impacted,
+        business_outcome_ids: editForm.business_outcome_ids,
+      });
       toast.success('Project updated');
       setEditing(false);
-      fetchProject();
+      fetchData();
     } catch (error) {
       toast.error('Failed to update project');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm('Delete this project?')) {
+      try {
+        await api.delete(`/projects/${id}`);
+        toast.success('Project deleted');
+        navigate(-1);
+      } catch (error) {
+        toast.error('Failed to delete project');
+      }
+    }
+  };
+
+  // Team Members
+  const handleAddTeamMember = async () => {
+    if (!teamMemberForm.name || !teamMemberForm.role) {
+      toast.error('Name and role are required');
+      return;
+    }
+    try {
+      const newMember = {
+        id: Date.now().toString(),
+        ...teamMemberForm
+      };
+      const updatedTeam = [...(project.team_members || []), newMember];
+      await api.put(`/projects/${id}`, { team_members: updatedTeam });
+      toast.success('Team member added');
+      setShowTeamModal(false);
+      setTeamMemberForm({ name: '', role: '', responsibility: '' });
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to add team member');
+    }
+  };
+
+  const handleDeleteTeamMember = async (memberId) => {
+    try {
+      const updatedTeam = (project.team_members || []).filter(m => m.id !== memberId);
+      await api.put(`/projects/${id}`, { team_members: updatedTeam });
+      toast.success('Team member removed');
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to remove team member');
+    }
+  };
+
+  // Toggle delivery stage in edit form
+  const toggleDeliveryStage = (stage) => {
+    const current = editForm.delivery_stages_impacted || [];
+    if (current.includes(stage)) {
+      setEditForm({ ...editForm, delivery_stages_impacted: current.filter(s => s !== stage) });
+    } else {
+      setEditForm({ ...editForm, delivery_stages_impacted: [...current, stage] });
+    }
+  };
+
+  // Toggle business outcome in edit form
+  const toggleBusinessOutcome = (catId) => {
+    const current = editForm.business_outcome_ids || [];
+    if (current.includes(catId)) {
+      setEditForm({ ...editForm, business_outcome_ids: current.filter(id => id !== catId) });
+    } else {
+      setEditForm({ ...editForm, business_outcome_ids: [...current, catId] });
     }
   };
 
@@ -122,7 +215,7 @@ const ProjectDetail = () => {
         toast.success('Milestone added');
       }
       setShowMilestoneModal(false);
-      fetchProject();
+      fetchData();
     } catch (error) {
       toast.error('Failed to save milestone');
     }
@@ -133,7 +226,7 @@ const ProjectDetail = () => {
       try {
         await api.delete(`/projects/${id}/milestones/${milestoneId}`);
         toast.success('Milestone deleted');
-        fetchProject();
+        fetchData();
       } catch (error) {
         toast.error('Failed to delete milestone');
       }
@@ -163,7 +256,7 @@ const ProjectDetail = () => {
         toast.success('Issue added');
       }
       setShowIssueModal(false);
-      fetchProject();
+      fetchData();
     } catch (error) {
       toast.error('Failed to save issue');
     }
@@ -174,7 +267,7 @@ const ProjectDetail = () => {
       try {
         await api.delete(`/projects/${id}/issues/${issueId}`);
         toast.success('Issue deleted');
-        fetchProject();
+        fetchData();
       } catch (error) {
         toast.error('Failed to delete issue');
       }
@@ -191,147 +284,315 @@ const ProjectDetail = () => {
 
   if (!project) return null;
 
-  const completedMilestones = project.milestones.filter(m => m.status === 'Completed').length;
-  const progress = project.milestones.length > 0 ? (completedMilestones / project.milestones.length) * 100 : 0;
+  const ragConfig = RAG_CONFIG[project.rag_status || 'Green'];
+  const completedMilestones = project.milestones?.filter(m => m.status === 'Completed').length || 0;
+  const totalMilestones = project.milestones?.length || 0;
+  const progress = totalMilestones > 0 ? (completedMilestones / totalMilestones) * 100 : 0;
 
   return (
     <div className="space-y-6" data-testid="project-detail-page">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </button>
+
       {/* Header */}
       <div className="flex items-start justify-between">
-        <div>
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </button>
-          <div className="flex items-center gap-3">
-            <FolderKanban className="w-8 h-8 text-[#FE5B1B]" />
+        <div className="flex items-center gap-4">
+          <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${ragConfig.light}`}>
+            <FolderKanban className={`w-7 h-7 ${ragConfig.text}`} />
+          </div>
+          <div>
             {editing ? (
               <Input
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                className="text-2xl font-heading font-bold"
+                className="text-2xl font-bold"
               />
             ) : (
-              <h1 className="text-2xl font-heading font-bold text-gray-900">{project.name}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{project.name}</h1>
             )}
+            <div className="flex items-center gap-3 mt-1">
+              <div className={`w-2.5 h-2.5 rounded-full ${ragConfig.color}`} />
+              <span className="text-sm text-gray-500">{project.rag_status || 'Green'}</span>
+              {initiative && (
+                <span className="text-sm text-gray-400">
+                  Part of: <span className="font-medium text-gray-600">{initiative.name}</span>
+                </span>
+              )}
+            </div>
           </div>
-          {initiative && (
-            <p className="text-sm text-gray-500 mt-1">
-              Part of: <span className="font-medium">{initiative.name}</span>
-            </p>
-          )}
         </div>
         <div className="flex items-center gap-2">
           {editing ? (
             <>
-              <Button variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
-              <Button onClick={handleSaveProject}>
+              <Button variant="outline" onClick={() => { setEditing(false); setEditForm(project); }}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>
                 <Save className="w-4 h-4 mr-2" />
                 Save
               </Button>
             </>
           ) : (
-            <Button variant="outline" onClick={() => setEditing(true)}>
-              <Edit2 className="w-4 h-4 mr-2" />
-              Edit
-            </Button>
+            <>
+              <Button variant="outline" onClick={() => setEditing(true)}>
+                <Edit2 className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+              <Button variant="destructive" onClick={handleDelete}>
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </Button>
+            </>
           )}
         </div>
       </div>
 
-      {/* Project Info */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="border border-gray-200">
+      {/* Main Info Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-4">
-            <p className="text-xs text-gray-400 uppercase mb-1">Status</p>
+            <p className="text-xs text-gray-500 uppercase mb-1">Status</p>
             {editing ? (
-              <Select
-                value={editForm.status}
-                onValueChange={(value) => setEditForm({ ...editForm, status: value })}
-              >
-                <SelectTrigger className="h-8">
-                  <SelectValue />
-                </SelectTrigger>
+              <Select value={editForm.status} onValueChange={(v) => setEditForm({ ...editForm, status: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Not Started">Not Started</SelectItem>
-                  <SelectItem value="In Progress">In Progress</SelectItem>
-                  <SelectItem value="Completed">Completed</SelectItem>
-                  <SelectItem value="On Hold">On Hold</SelectItem>
+                  {STATUS_OPTIONS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                 </SelectContent>
               </Select>
             ) : (
-              <p className="font-lato-bold text-gray-900">{project.status}</p>
+              <p className="font-semibold text-gray-900">{project.status}</p>
             )}
           </CardContent>
         </Card>
-        <Card className="border border-gray-200">
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-4">
-            <p className="text-xs text-gray-400 uppercase mb-1">Owner</p>
+            <p className="text-xs text-gray-500 uppercase mb-1">RAG Status</p>
+            {editing ? (
+              <Select value={editForm.rag_status || 'Green'} onValueChange={(v) => setEditForm({ ...editForm, rag_status: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {RAG_OPTIONS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className={`w-3 h-3 rounded-full ${ragConfig.color}`} />
+                <span className="font-semibold">{project.rag_status || 'Green'}</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-4">
+            <p className="text-xs text-gray-500 uppercase mb-1">Owner</p>
             {editing ? (
               <Input
-                value={editForm.owner}
+                value={editForm.owner || ''}
                 onChange={(e) => setEditForm({ ...editForm, owner: e.target.value })}
-                className="h-8"
               />
             ) : (
-              <p className="font-lato-bold text-gray-900 flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 <User className="w-4 h-4 text-gray-400" />
-                {project.owner || 'Unassigned'}
-              </p>
+                <span className="font-semibold">{project.owner || 'Not assigned'}</span>
+              </div>
             )}
           </CardContent>
         </Card>
-        <Card className="border border-gray-200">
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-4">
-            <p className="text-xs text-gray-400 uppercase mb-1">Milestones</p>
-            <p className="font-lato-bold text-gray-900">
-              {completedMilestones} / {project.milestones.length}
-            </p>
+            <p className="text-xs text-gray-500 uppercase mb-1">Milestones</p>
+            <p className="font-semibold text-gray-900">{completedMilestones} / {totalMilestones}</p>
           </CardContent>
         </Card>
-        <Card className="border border-gray-200">
+        <Card className="border-0 shadow-sm">
           <CardContent className="p-4">
-            <p className="text-xs text-gray-400 uppercase mb-1">Progress</p>
+            <p className="text-xs text-gray-500 uppercase mb-1">Progress</p>
             <div className="flex items-center gap-2">
               <Progress value={progress} className="h-2 flex-1" />
-              <span className="text-sm font-lato-bold">{progress.toFixed(0)}%</span>
+              <span className="text-sm font-semibold">{progress.toFixed(0)}%</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Description */}
-      {(project.description || editing) && (
-        <Card className="border border-gray-200">
-          <CardContent className="p-4">
-            <p className="text-xs text-gray-400 uppercase mb-2">Description</p>
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-4">
+          <p className="text-xs text-gray-500 uppercase mb-2">Description</p>
+          {editing ? (
+            <textarea
+              value={editForm.description || ''}
+              onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+              className="w-full p-2 border rounded-lg resize-none h-24"
+            />
+          ) : (
+            <p className="text-gray-700">{project.description || 'No description'}</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Business Unit & Delivery Stages */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-gray-400" />
+              Business Unit
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             {editing ? (
-              <Input
-                value={editForm.description}
-                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                placeholder="Project description..."
-              />
+              <Select value={editForm.business_unit || ''} onValueChange={(v) => setEditForm({ ...editForm, business_unit: v })}>
+                <SelectTrigger><SelectValue placeholder="Select business unit" /></SelectTrigger>
+                <SelectContent>
+                  {BUSINESS_UNITS.map(u => <SelectItem key={u} value={u}>{u}</SelectItem>)}
+                </SelectContent>
+              </Select>
             ) : (
-              <p className="text-gray-700">{project.description || 'No description'}</p>
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${project.business_unit ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'}`}>
+                {project.business_unit || 'Not set'}
+              </span>
             )}
           </CardContent>
         </Card>
-      )}
+
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <Truck className="w-4 h-4 text-gray-400" />
+              Delivery Stages Impacted
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {editing ? (
+                DELIVERY_STAGES.map(stage => (
+                  <button
+                    key={stage}
+                    onClick={() => toggleDeliveryStage(stage)}
+                    className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                      (editForm.delivery_stages_impacted || []).includes(stage)
+                        ? 'bg-violet-100 text-violet-700 border border-violet-300'
+                        : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+                    }`}
+                  >
+                    {stage}
+                  </button>
+                ))
+              ) : (
+                (project.delivery_stages_impacted || []).length > 0 ? (
+                  project.delivery_stages_impacted.map(stage => (
+                    <span key={stage} className="px-2 py-1 bg-violet-100 text-violet-700 rounded text-xs font-medium">
+                      {stage}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-400 text-sm">None selected</span>
+                )
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Team Members */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Users className="w-4 h-4 text-gray-400" />
+            Team Members
+          </CardTitle>
+          <Button size="sm" variant="outline" onClick={() => setShowTeamModal(true)}>
+            <Plus className="w-3 h-3 mr-1" />
+            Add Member
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {(project.team_members || []).length > 0 ? (
+            <div className="space-y-2">
+              {project.team_members.map(member => (
+                <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">{member.name}</p>
+                      <p className="text-xs text-gray-500">{member.role}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {member.responsibility && (
+                      <span className="text-xs text-gray-400 max-w-[200px] truncate">{member.responsibility}</span>
+                    )}
+                    <button
+                      onClick={() => handleDeleteTeamMember(member.id)}
+                      className="p-1 hover:bg-red-100 rounded"
+                    >
+                      <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-4">No team members added</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Status History */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <History className="w-4 h-4 text-gray-400" />
+            Status History
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {(project.status_history || []).length > 0 ? (
+            <div className="space-y-3">
+              {[...(project.status_history || [])].reverse().map((update, idx) => (
+                <div key={update.id || idx} className="flex items-start gap-3 pb-3 border-b border-gray-100 last:border-0">
+                  <div className="w-2 h-2 bg-gray-300 rounded-full mt-2" />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs">{update.old_status}</span>
+                      <span className="text-gray-400">-&gt;</span>
+                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">{update.new_status}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {new Date(update.changed_at).toLocaleDateString()} at {new Date(update.changed_at).toLocaleTimeString()}
+                      {update.changed_by && ` by ${update.changed_by}`}
+                    </p>
+                    {update.notes && <p className="text-xs text-gray-500 mt-1">{update.notes}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-4">No status changes recorded</p>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Milestones */}
-      <Card className="border border-gray-200">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-lato-bold text-gray-900">Milestones</h3>
-            <Button size="sm" onClick={handleAddMilestone}>
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-          {project.milestones.length > 0 ? (
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Milestones</CardTitle>
+          <Button size="sm" onClick={handleAddMilestone}>
+            <Plus className="w-4 h-4 mr-1" />
+            Add
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {(project.milestones || []).length > 0 ? (
             <div className="space-y-2">
               {project.milestones.map((milestone) => (
                 <div
@@ -345,7 +606,7 @@ const ProjectDetail = () => {
                       <Clock className="w-5 h-5 text-gray-400" />
                     )}
                     <div>
-                      <p className="font-lato-bold text-gray-900">{milestone.name}</p>
+                      <p className="font-medium text-gray-900">{milestone.name}</p>
                       <div className="flex items-center gap-3 text-xs text-gray-500">
                         {milestone.due_date && (
                           <span className="flex items-center gap-1">
@@ -363,7 +624,7 @@ const ProjectDetail = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs font-lato-bold ${MILESTONE_STATUS_COLORS[milestone.status]}`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${MILESTONE_STATUS_COLORS[milestone.status]}`}>
                       {milestone.status}
                     </span>
                     <button onClick={() => handleEditMilestone(milestone)} className="p-1 hover:bg-gray-200 rounded">
@@ -383,16 +644,16 @@ const ProjectDetail = () => {
       </Card>
 
       {/* Issues */}
-      <Card className="border border-gray-200">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-lato-bold text-gray-900">Issues</h3>
-            <Button size="sm" onClick={handleAddIssue}>
-              <Plus className="w-4 h-4 mr-1" />
-              Add
-            </Button>
-          </div>
-          {project.issues.length > 0 ? (
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Issues</CardTitle>
+          <Button size="sm" onClick={handleAddIssue}>
+            <Plus className="w-4 h-4 mr-1" />
+            Add
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {(project.issues || []).length > 0 ? (
             <div className="space-y-2">
               {project.issues.map((issue) => (
                 <div
@@ -412,7 +673,7 @@ const ProjectDetail = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`px-2 py-1 rounded text-xs font-lato-bold ${ISSUE_SEVERITY_COLORS[issue.severity]}`}>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${ISSUE_SEVERITY_COLORS[issue.severity]}`}>
                       {issue.severity}
                     </span>
                     <button onClick={() => handleEditIssue(issue)} className="p-1 hover:bg-gray-200 rounded">
@@ -430,6 +691,45 @@ const ProjectDetail = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Add Team Member Modal */}
+      <Dialog open={showTeamModal} onOpenChange={setShowTeamModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Team Member</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="text-sm font-medium">Name</label>
+              <Input
+                value={teamMemberForm.name}
+                onChange={(e) => setTeamMemberForm({ ...teamMemberForm, name: e.target.value })}
+                placeholder="Enter name"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Role</label>
+              <Input
+                value={teamMemberForm.role}
+                onChange={(e) => setTeamMemberForm({ ...teamMemberForm, role: e.target.value })}
+                placeholder="e.g., Project Lead, Developer"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Responsibility Area</label>
+              <Input
+                value={teamMemberForm.responsibility}
+                onChange={(e) => setTeamMemberForm({ ...teamMemberForm, responsibility: e.target.value })}
+                placeholder="e.g., Backend development, QA testing"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowTeamModal(false)}>Cancel</Button>
+            <Button onClick={handleAddTeamMember}>Add Member</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Milestone Modal */}
       <Dialog open={showMilestoneModal} onOpenChange={setShowMilestoneModal}>
