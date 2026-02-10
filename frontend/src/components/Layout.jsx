@@ -26,13 +26,7 @@ const adminNavigation = [
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const { user } = useAuth();
 
   // Get page title from path
   const getPageTitle = () => {
