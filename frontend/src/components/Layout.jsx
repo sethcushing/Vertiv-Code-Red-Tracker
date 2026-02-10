@@ -79,18 +79,18 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-[#F4F5F7]">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-64 bg-[#1A1A1A] text-gray-300 z-50 flex flex-col">
+      <aside className="fixed left-0 top-0 h-screen w-64 text-gray-300 z-50 flex flex-col" style={{ background: 'linear-gradient(180deg, #1F1F1F 0%, #171717 100%)' }}>
         {/* Logo */}
-        <div className="p-6 border-b border-gray-800">
+        <div className="p-6 border-b border-gray-800/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#FE5B1B] rounded-sm flex items-center justify-center">
-              <span className="text-white font-bold text-lg font-heading">V</span>
+            <div className="w-11 h-11 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-xl font-heading">V</span>
             </div>
             <div>
-              <h1 className="text-white font-heading font-bold text-lg tracking-tight uppercase">
-                Vertiv
+              <h1 className="text-white font-heading font-bold text-lg tracking-tight">
+                VERTIV
               </h1>
-              <p className="text-xs text-gray-500 uppercase tracking-wider">Control Tower</p>
+              <p className="text-xs text-gray-500">Control Tower</p>
             </div>
           </div>
         </div>
