@@ -231,16 +231,16 @@
     @apply relative inline-flex items-center justify-center;
 }
 
-/* Modern Risk Heatmap Cell */
+/* Modern Rounded Risk Heatmap Cell */
 .heatmap-cell {
-    @apply aspect-square flex items-center justify-center text-xs font-bold cursor-pointer rounded-lg;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.1);
+    @apply aspect-square flex items-center justify-center text-xs font-semibold cursor-pointer rounded-2xl;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,0.1);
 }
 
 .heatmap-cell:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15), inset 0 -2px 4px rgba(0,0,0,0.1);
+    transform: scale(1.08);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), inset 0 -3px 6px rgba(0,0,0,0.1);
 }
 
 /* Scrollbar Styling */
