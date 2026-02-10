@@ -55,6 +55,7 @@ const PROJECT_STATUS_COLORS = {
 };
 
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
   const [pipeline, setPipeline] = useState({});
   const [categories, setCategories] = useState([]);
@@ -62,6 +63,8 @@ const Dashboard = () => {
   const [seeding, setSeeding] = useState(false);
   const [expandedInitiatives, setExpandedInitiatives] = useState({});
   const navigate = useNavigate();
+
+  const isAdmin = user?.role === 'admin';
 
   // Modal states
   const [showProjectModal, setShowProjectModal] = useState(false);
