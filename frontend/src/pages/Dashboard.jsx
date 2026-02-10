@@ -266,10 +266,10 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className={`w-14 h-14 rounded-lg ${getConfidenceColor(blocker.confidence_score)} flex items-center justify-center shadow-lg`}>
-                    <span className="text-white font-bold text-lg">{blocker.confidence_score}</span>
+                  <div className={`w-16 h-16 rounded-2xl ${getConfidenceColor(blocker.confidence_score)} flex items-center justify-center shadow-lg`}>
+                    <span className="text-white font-bold text-xl">{blocker.confidence_score}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1.5">Confidence</p>
+                  <p className="text-xs text-gray-400 mt-2">Confidence</p>
                 </div>
               </div>
 
