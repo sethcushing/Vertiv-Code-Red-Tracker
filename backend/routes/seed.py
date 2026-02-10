@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 import uuid
 from datetime import datetime, timezone, timedelta
 
-from utils.auth import get_current_user
+# from utils.auth import get_current_user
 
 router = APIRouter(tags=["Seed Data"])
 
@@ -17,7 +17,7 @@ def set_database(database):
 
 
 @router.post("/seed")
-async def seed_data(current_user: dict = Depends(get_current_user)):
+async def seed_data():
     """Seed database with sample data for the new data model"""
     
     # Clear existing data
