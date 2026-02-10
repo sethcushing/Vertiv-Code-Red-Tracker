@@ -37,11 +37,28 @@ logger = logging.getLogger(__name__)
 
 # ==================== PYDANTIC MODELS ====================
 
-# Enterprise Metrics Models
+# Audit Log Models
+class AuditChange(BaseModel):
+    field: str
+    old_value: Optional[Any] = None
+    new_value: Optional[Any] = None
+
+class AuditLogEntry(BaseModel):
+    id: str
+    entity_type: str  # initiative, metric, milestone
+    entity_id: str
+    entity_name: str
+    action: str  # created, updated, deleted
+    user_email: str
+    user_name: str
+    timestamp: str
+    changes: List[AuditChange] = []
+
+# Core Business Outcomes Models (formerly Enterprise Metrics)
 class EnterpriseMetricBase(BaseModel):
     name: str
     description: Optional[str] = ""
-    category: str  # Planning, Sales, Quality, Delivery, Customer Satisfaction
+    category: str  # Planning, Sales, Quality, Delivery, Customer Satisfaction, Engineering
     target_value: Optional[float] = None
     current_value: Optional[float] = None
     unit: Optional[str] = ""  # %, days, $, count, etc.
