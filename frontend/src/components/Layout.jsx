@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   // Get page title from path
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
+    if (path === '/' || path === '/dashboard') return 'Code Red Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
     if (path.includes('/projects/')) return 'Project Details';
     if (path.includes('/strategic-initiatives/new')) return 'New Initiative';
