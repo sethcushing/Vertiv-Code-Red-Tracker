@@ -343,29 +343,46 @@ const InitiativeForm = () => {
                   value={formData.status}
                   onValueChange={(v) => setFormData({ ...formData, status: v })}
                 >
-                  <SelectTrigger className="rounded-sm" data-testid="status-select">
+                  <SelectTrigger className="rounded-lg" data-testid="status-select">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="On Track">On Track</SelectItem>
-                    <SelectItem value="At Risk">At Risk</SelectItem>
-                    <SelectItem value="Off Track">Off Track</SelectItem>
+                    {config.statuses.map((status) => (
+                      <SelectItem key={status} value={status}>{status}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="md:col-span-2 flex items-center gap-4 p-4 bg-red-50 border border-red-200 rounded-sm">
-                <Switch
-                  checked={formData.code_red_flag}
-                  onCheckedChange={(checked) => setFormData({ ...formData, code_red_flag: checked })}
-                  data-testid="code-red-switch"
-                />
-                <div>
-                  <Label className="text-red-800 font-semibold flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4" />
-                    Code Red Initiative
-                  </Label>
-                  <p className="text-sm text-red-600">Mark this initiative as critical and requiring immediate executive attention</p>
+              {/* Enterprise Metrics */}
+              <div className="md:col-span-2">
+                <Label>Enterprise Metrics Alignment</Label>
+                <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
+                  <div className="flex flex-wrap gap-2">
+                    {config.metrics.map((metric) => (
+                      <button
+                        key={metric.id}
+                        type="button"
+                        onClick={() => {
+                          const ids = formData.metric_ids.includes(metric.id)
+                            ? formData.metric_ids.filter(id => id !== metric.id)
+                            : [...formData.metric_ids, metric.id];
+                          setFormData({ ...formData, metric_ids: ids });
+                        }}
+                        className={`px-3 py-1.5 rounded-full text-xs font-lato-regular transition-all ${
+                          formData.metric_ids.includes(metric.id)
+                            ? 'bg-[#FE5B1B] text-white'
+                            : 'bg-white border border-gray-200 text-gray-700 hover:border-[#FE5B1B]'
+                        }`}
+                        data-testid={`metric-tag-${metric.id}`}
+                      >
+                        {metric.name}
+                      </button>
+                    ))}
+                  </div>
+                  {config.metrics.length === 0 && (
+                    <p className="text-sm text-gray-400 font-lato-light">No metrics defined yet. Create metrics first.</p>
+                  )}
                 </div>
               </div>
             </div>
