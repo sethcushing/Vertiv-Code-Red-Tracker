@@ -192,15 +192,15 @@
     @apply text-sm text-gray-600 px-4;
 }
 
-/* Modern Sidebar Styles */
+/* Modern Rounded Sidebar Styles */
 .sidebar {
     @apply text-gray-300 min-h-screen w-64 fixed left-0 top-0;
-    background: linear-gradient(180deg, #1A1A1A 0%, #111111 100%);
+    background: linear-gradient(180deg, #1F1F1F 0%, #171717 100%);
 }
 
 .sidebar-item {
-    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium cursor-pointer mx-2 rounded-md;
-    transition: all 0.2s ease;
+    @apply flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm cursor-pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar-item:hover {
@@ -210,7 +210,7 @@
 .sidebar-item-active {
     @apply text-white;
     background: linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%);
-    box-shadow: 0 2px 8px rgba(254, 91, 27, 0.3);
+    box-shadow: 0 4px 12px rgba(254, 91, 27, 0.4);
 }
 
 .sidebar-item-active:hover {
