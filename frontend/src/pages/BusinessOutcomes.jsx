@@ -344,16 +344,18 @@ const BusinessOutcomes = () => {
         <p className="text-sm text-gray-500 font-lato-light">
           Business outcome categories with KPI tracking
         </p>
-        <Button
-          onClick={handleAddCategory}
-          data-testid="add-category-btn"
-          size="sm"
-          className="text-white rounded-lg font-lato-bold text-xs"
-          style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
-        >
-          <Plus className="w-3 h-3 mr-1" />
-          Add Category
-        </Button>
+        {isAdmin && (
+          <Button
+            onClick={handleAddCategory}
+            data-testid="add-category-btn"
+            size="sm"
+            className="text-white rounded-lg font-lato-bold text-xs"
+            style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+          >
+            <Plus className="w-3 h-3 mr-1" />
+            Add Category
+          </Button>
+        )}
       </div>
 
       {/* Card-based Grid Layout */}
