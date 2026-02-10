@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent } from '../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { Input } from '../components/ui/input';
@@ -14,8 +13,10 @@ import {
   Minus,
   Edit2,
   Trash2,
-  History,
   BarChart3,
+  Target,
+  Layers,
+  Activity,
 } from 'lucide-react';
 import { api } from '../App';
 import { toast } from 'sonner';
@@ -34,11 +35,17 @@ import {
   SelectValue,
 } from '../components/ui/select';
 
+const CATEGORY_COLORS = {
+  0: { bg: 'bg-gradient-to-br from-orange-500 to-red-600', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600' },
+  1: { bg: 'bg-gradient-to-br from-blue-500 to-indigo-600', light: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-600' },
+  2: { bg: 'bg-gradient-to-br from-emerald-500 to-teal-600', light: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600' },
+  3: { bg: 'bg-gradient-to-br from-violet-500 to-purple-600', light: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-600' },
+  4: { bg: 'bg-gradient-to-br from-amber-500 to-yellow-600', light: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-600' },
+};
+
 const BusinessOutcomes = () => {
-  const navigate = useNavigate();
   const [tree, setTree] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [expandedCategories, setExpandedCategories] = useState({});
   const [expandedSubOutcomes, setExpandedSubOutcomes] = useState({});
   
   // Modal states
@@ -61,26 +68,19 @@ const BusinessOutcomes = () => {
     try {
       const response = await api.get('/business-outcomes/tree');
       setTree(response.data);
-      // Expand all by default
-      const catExpanded = {};
+      // Initialize sub-outcome expansion
       const subExpanded = {};
       response.data.forEach(cat => {
-        catExpanded[cat.id] = true;
         cat.sub_outcomes.forEach(sub => {
-          subExpanded[sub.id] = false;
+          subExpanded[sub.id] = true; // Expand all by default in card view
         });
       });
-      setExpandedCategories(catExpanded);
       setExpandedSubOutcomes(subExpanded);
     } catch (error) {
       toast.error('Failed to load business outcomes');
     } finally {
       setLoading(false);
     }
-  };
-
-  const toggleCategory = (id) => {
-    setExpandedCategories(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
   const toggleSubOutcome = (id) => {
@@ -99,6 +99,12 @@ const BusinessOutcomes = () => {
     return 'bg-red-500';
   };
 
+  const getProgressBgLight = (progress) => {
+    if (progress >= 70) return 'bg-emerald-100';
+    if (progress >= 40) return 'bg-amber-100';
+    return 'bg-red-100';
+  };
+
   const getChartColor = (progress) => {
     if (progress >= 70) return '#10b981';
     if (progress >= 40) return '#f59e0b';
@@ -114,6 +120,33 @@ const BusinessOutcomes = () => {
   const formatValue = (value, unit) => {
     if (value === null || value === undefined) return '-';
     return `${value}${unit ? ` ${unit}` : ''}`;
+  };
+
+  // Calculate category stats
+  const getCategoryStats = (category) => {
+    let totalProgress = 0;
+    let kpiCount = 0;
+    let onTrack = 0;
+    let atRisk = 0;
+    let offTrack = 0;
+    
+    category.sub_outcomes.forEach(sub => {
+      sub.kpis.forEach(kpi => {
+        totalProgress += kpi.progress_percent;
+        kpiCount++;
+        if (kpi.progress_percent >= 70) onTrack++;
+        else if (kpi.progress_percent >= 40) atRisk++;
+        else offTrack++;
+      });
+    });
+    
+    return {
+      avgProgress: kpiCount > 0 ? totalProgress / kpiCount : 0,
+      kpiCount,
+      onTrack,
+      atRisk,
+      offTrack
+    };
   };
 
   // CRUD Handlers
@@ -282,7 +315,7 @@ const BusinessOutcomes = () => {
   };
 
   // Prepare chart data from history
-  const prepareChartData = (history, kpi) => {
+  const prepareChartData = (history) => {
     if (!history || history.length === 0) return [];
     return history
       .slice()
@@ -302,14 +335,15 @@ const BusinessOutcomes = () => {
   }
 
   return (
-    <div className="space-y-4" data-testid="business-outcomes-page">
+    <div className="space-y-6" data-testid="business-outcomes-page">
       {/* Header */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500 font-lato-light">
-          Category → Sub-Outcomes → KPIs
+          Business outcome categories with KPI tracking
         </p>
         <Button
           onClick={handleAddCategory}
+          data-testid="add-category-btn"
           size="sm"
           className="text-white rounded-lg font-lato-bold text-xs"
           style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
@@ -319,209 +353,283 @@ const BusinessOutcomes = () => {
         </Button>
       </div>
 
-      {/* Tree View - Streamlined */}
-      <div className="space-y-3">
-        {tree.map((category) => {
-          const isCatExpanded = expandedCategories[category.id];
-          
-          // Calculate category progress
-          let totalProgress = 0;
-          let kpiCount = 0;
-          category.sub_outcomes.forEach(sub => {
-            sub.kpis.forEach(kpi => {
-              totalProgress += kpi.progress_percent;
-              kpiCount++;
-            });
-          });
-          const avgProgress = kpiCount > 0 ? totalProgress / kpiCount : 0;
+      {/* Card-based Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        {tree.map((category, categoryIndex) => {
+          const colorScheme = CATEGORY_COLORS[categoryIndex % 5];
+          const stats = getCategoryStats(category);
 
           return (
-            <Card key={category.id} className="border border-gray-200 shadow-sm rounded-lg overflow-hidden">
-              {/* Category Header - Streamlined */}
-              <div
-                className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-all cursor-pointer"
-                data-testid={`category-${category.id}`}
-              >
-                <div 
-                  className="flex items-center gap-3 flex-1"
-                  onClick={() => toggleCategory(category.id)}
-                >
-                  {isCatExpanded ? (
-                    <ChevronDown className="w-4 h-4 text-gray-400" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
-                  )}
-                  <span className="font-lato-bold text-gray-900">{category.name}</span>
-                  <span className="text-xs text-gray-400 font-lato-light">
-                    {category.sub_outcomes_count} sub-outcomes
-                  </span>
-                  <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                    <div className={`h-full ${getProgressBg(avgProgress)}`} style={{ width: `${avgProgress}%` }} />
+            <Card 
+              key={category.id} 
+              className={`border-0 shadow-md rounded-xl overflow-hidden`}
+              data-testid={`category-card-${category.id}`}
+            >
+              {/* Category Header */}
+              <div className={`${colorScheme.bg} p-4 text-white`}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-heading font-bold text-lg uppercase tracking-wide">
+                      {category.name}
+                    </h3>
+                    {category.description && (
+                      <p className="text-white/80 text-xs mt-1 line-clamp-2">
+                        {category.description}
+                      </p>
+                    )}
                   </div>
-                  <span className={`text-xs font-lato-bold ${getProgressColor(avgProgress)}`}>
-                    {avgProgress.toFixed(0)}%
-                  </span>
+                  <div className="flex items-center gap-1 ml-2">
+                    <button
+                      onClick={(e) => handleAddSubOutcome(category.id, e)}
+                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                      title="Add Sub-Outcome"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => handleEditCategory(category, e)}
+                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                      title="Edit"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteCategory(category.id, e)}
+                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                      title="Delete"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={(e) => handleAddSubOutcome(category.id, e)}
-                    className="p-1 hover:bg-gray-200 rounded"
-                    title="Add Sub-Outcome"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-                  <button
-                    onClick={(e) => handleEditCategory(category, e)}
-                    className="p-1 hover:bg-gray-200 rounded"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-                  <button
-                    onClick={(e) => handleDeleteCategory(category.id, e)}
-                    className="p-1 hover:bg-red-50 rounded"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
-                  </button>
+
+                {/* Progress Ring */}
+                <div className="flex items-center gap-4 mt-4">
+                  <div className="relative w-16 h-16">
+                    <svg className="w-16 h-16 transform -rotate-90">
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="28"
+                        stroke="rgba(255,255,255,0.2)"
+                        strokeWidth="6"
+                        fill="none"
+                      />
+                      <circle
+                        cx="32"
+                        cy="32"
+                        r="28"
+                        stroke="white"
+                        strokeWidth="6"
+                        fill="none"
+                        strokeDasharray={`${(stats.avgProgress / 100) * 176} 176`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-lg font-bold">{stats.avgProgress.toFixed(0)}%</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 grid grid-cols-3 gap-2 text-center">
+                    <div className="bg-white/10 rounded-lg p-2">
+                      <p className="text-2xl font-bold">{stats.onTrack}</p>
+                      <p className="text-[10px] text-white/70 uppercase">On Track</p>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-2">
+                      <p className="text-2xl font-bold">{stats.atRisk}</p>
+                      <p className="text-[10px] text-white/70 uppercase">At Risk</p>
+                    </div>
+                    <div className="bg-white/10 rounded-lg p-2">
+                      <p className="text-2xl font-bold">{stats.offTrack}</p>
+                      <p className="text-[10px] text-white/70 uppercase">Off Track</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Sub-Outcomes */}
-              {isCatExpanded && (
-                <div className="bg-white">
-                  {category.sub_outcomes.length === 0 ? (
-                    <div className="p-4 text-center text-sm text-gray-400">No sub-outcomes</div>
-                  ) : (
-                    category.sub_outcomes.map((subOutcome) => {
-                      const isSubExpanded = expandedSubOutcomes[subOutcome.id];
-                      const subProgress = subOutcome.kpis.length > 0
-                        ? subOutcome.kpis.reduce((sum, kpi) => sum + kpi.progress_percent, 0) / subOutcome.kpis.length
-                        : 0;
+              {/* Sub-Outcomes & KPIs */}
+              <CardContent className="p-0 max-h-[400px] overflow-y-auto">
+                {category.sub_outcomes.length === 0 ? (
+                  <div className="p-6 text-center">
+                    <Layers className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                    <p className="text-sm text-gray-400">No sub-outcomes yet</p>
+                    <Button
+                      onClick={(e) => handleAddSubOutcome(category.id, e)}
+                      size="sm"
+                      variant="outline"
+                      className="mt-3 text-xs"
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add Sub-Outcome
+                    </Button>
+                  </div>
+                ) : (
+                  category.sub_outcomes.map((subOutcome) => {
+                    const isSubExpanded = expandedSubOutcomes[subOutcome.id];
+                    const subProgress = subOutcome.kpis.length > 0
+                      ? subOutcome.kpis.reduce((sum, kpi) => sum + kpi.progress_percent, 0) / subOutcome.kpis.length
+                      : 0;
 
-                      return (
-                        <div key={subOutcome.id} className="border-t border-gray-100">
-                          {/* Sub-Outcome Row */}
-                          <div
-                            className="w-full flex items-center justify-between p-2.5 pl-8 hover:bg-gray-50 transition-all cursor-pointer"
-                            data-testid={`sub-outcome-${subOutcome.id}`}
-                          >
-                            <div 
-                              className="flex items-center gap-3 flex-1"
-                              onClick={() => toggleSubOutcome(subOutcome.id)}
-                            >
-                              {isSubExpanded ? (
-                                <ChevronDown className="w-3.5 h-3.5 text-[#FE5B1B]" />
-                              ) : (
-                                <ChevronRight className="w-3.5 h-3.5 text-[#FE5B1B]" />
-                              )}
-                              <span className="text-sm text-gray-700">{subOutcome.name}</span>
-                              <span className="text-xs text-gray-400 font-lato-light">
-                                {subOutcome.kpis_count} KPIs
-                              </span>
-                              <div className="w-12 h-1 bg-gray-200 rounded-full overflow-hidden">
-                                <div className={`h-full ${getProgressBg(subProgress)}`} style={{ width: `${subProgress}%` }} />
-                              </div>
+                    return (
+                      <div key={subOutcome.id} className="border-b border-gray-100 last:border-b-0">
+                        {/* Sub-Outcome Row */}
+                        <div
+                          className={`flex items-center justify-between p-3 hover:bg-gray-50 transition-all cursor-pointer ${colorScheme.light}`}
+                          onClick={() => toggleSubOutcome(subOutcome.id)}
+                          data-testid={`sub-outcome-${subOutcome.id}`}
+                        >
+                          <div className="flex items-center gap-2 flex-1 min-w-0">
+                            {isSubExpanded ? (
+                              <ChevronDown className={`w-4 h-4 ${colorScheme.text} flex-shrink-0`} />
+                            ) : (
+                              <ChevronRight className={`w-4 h-4 ${colorScheme.text} flex-shrink-0`} />
+                            )}
+                            <span className="text-sm font-lato-bold text-gray-800 truncate">
+                              {subOutcome.name}
+                            </span>
+                            <span className="text-xs text-gray-400 flex-shrink-0">
+                              {subOutcome.kpis_count} KPIs
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                              <div 
+                                className={`h-full ${getProgressBg(subProgress)}`} 
+                                style={{ width: `${subProgress}%` }} 
+                              />
                             </div>
-                            <div className="flex items-center gap-1">
+                            <span className={`text-xs font-lato-bold w-8 text-right ${getProgressColor(subProgress)}`}>
+                              {subProgress.toFixed(0)}%
+                            </span>
+                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100">
                               <button
-                                onClick={(e) => handleAddKPI(subOutcome.id, e)}
+                                onClick={(e) => { e.stopPropagation(); handleAddKPI(subOutcome.id, e); }}
                                 className="p-1 hover:bg-gray-200 rounded"
                                 title="Add KPI"
                               >
                                 <Plus className="w-3 h-3 text-gray-400" />
                               </button>
                               <button
-                                onClick={(e) => handleEditSubOutcome(subOutcome, e)}
+                                onClick={(e) => { e.stopPropagation(); handleEditSubOutcome(subOutcome, e); }}
                                 className="p-1 hover:bg-gray-200 rounded"
                               >
                                 <Edit2 className="w-3 h-3 text-gray-400" />
                               </button>
                               <button
-                                onClick={(e) => handleDeleteSubOutcome(subOutcome.id, e)}
+                                onClick={(e) => { e.stopPropagation(); handleDeleteSubOutcome(subOutcome.id, e); }}
                                 className="p-1 hover:bg-red-50 rounded"
                               >
                                 <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
                               </button>
                             </div>
                           </div>
+                        </div>
 
-                          {/* KPIs */}
-                          {isSubExpanded && (
-                            <div className="bg-gray-50/50 border-t border-gray-100 px-4 py-2 space-y-2">
-                              {subOutcome.kpis.length === 0 ? (
-                                <p className="text-xs text-gray-400 py-2 text-center">No KPIs</p>
-                              ) : (
-                                subOutcome.kpis.map((kpi) => (
-                                  <div
-                                    key={kpi.id}
-                                    className="bg-white rounded border border-gray-100 p-3 hover:shadow-sm transition-all"
-                                    data-testid={`kpi-${kpi.id}`}
-                                  >
-                                    <div className="flex items-center justify-between mb-2">
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-sm font-lato-bold text-gray-800">{kpi.name}</span>
-                                        {getTrendIcon(kpi.progress_percent)}
-                                      </div>
-                                      <div className="flex items-center gap-1">
-                                        <button
-                                          onClick={(e) => handleViewHistory(kpi, e)}
-                                          className="p-1 hover:bg-gray-100 rounded"
-                                          title="View Trend"
-                                        >
-                                          <BarChart3 className="w-3 h-3 text-gray-400" />
-                                        </button>
-                                        <button
-                                          onClick={(e) => handleEditKPI(kpi, e)}
-                                          className="p-1 hover:bg-gray-100 rounded"
-                                        >
-                                          <Edit2 className="w-3 h-3 text-gray-400" />
-                                        </button>
-                                        <button
-                                          onClick={(e) => handleDeleteKPI(kpi.id, e)}
-                                          className="p-1 hover:bg-red-50 rounded"
-                                        >
-                                          <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
-                                        </button>
-                                      </div>
-                                    </div>
-                                    <div className="flex items-center gap-4">
-                                      <div className="flex-1">
-                                        <div className="flex items-center justify-between text-xs mb-1">
-                                          <span className="text-gray-500">
-                                            {formatValue(kpi.current_value, kpi.unit)}
-                                          </span>
-                                          <span className="text-gray-400">
-                                            → {formatValue(kpi.target_value, kpi.unit)}
-                                          </span>
-                                        </div>
-                                        <Progress value={kpi.progress_percent} className="h-1.5" />
-                                      </div>
-                                      <span className={`text-sm font-lato-bold ${getProgressColor(kpi.progress_percent)}`}>
-                                        {kpi.progress_percent.toFixed(0)}%
+                        {/* KPIs */}
+                        {isSubExpanded && (
+                          <div className="bg-white px-3 pb-3 space-y-2">
+                            {subOutcome.kpis.length === 0 ? (
+                              <div className="text-center py-3">
+                                <p className="text-xs text-gray-400 mb-2">No KPIs</p>
+                                <button
+                                  onClick={(e) => handleAddKPI(subOutcome.id, e)}
+                                  className={`text-xs ${colorScheme.text} hover:underline`}
+                                >
+                                  + Add KPI
+                                </button>
+                              </div>
+                            ) : (
+                              subOutcome.kpis.map((kpi) => (
+                                <div
+                                  key={kpi.id}
+                                  className={`rounded-lg border ${colorScheme.border} p-3 hover:shadow-sm transition-all`}
+                                  data-testid={`kpi-${kpi.id}`}
+                                >
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                      <Activity className={`w-3.5 h-3.5 ${colorScheme.text} flex-shrink-0`} />
+                                      <span className="text-sm font-lato-bold text-gray-800 truncate">
+                                        {kpi.name}
                                       </span>
+                                      {getTrendIcon(kpi.progress_percent)}
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                      <button
+                                        onClick={(e) => handleViewHistory(kpi, e)}
+                                        className="p-1 hover:bg-gray-100 rounded"
+                                        title="View Trend"
+                                      >
+                                        <BarChart3 className="w-3 h-3 text-gray-400" />
+                                      </button>
+                                      <button
+                                        onClick={(e) => handleEditKPI(kpi, e)}
+                                        className="p-1 hover:bg-gray-100 rounded"
+                                      >
+                                        <Edit2 className="w-3 h-3 text-gray-400" />
+                                      </button>
+                                      <button
+                                        onClick={(e) => handleDeleteKPI(kpi.id, e)}
+                                        className="p-1 hover:bg-red-50 rounded"
+                                      >
+                                        <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
+                                      </button>
                                     </div>
                                   </div>
-                                ))
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              )}
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex-1">
+                                      <div className="flex items-center justify-between text-xs mb-1">
+                                        <span className="text-gray-600 font-medium">
+                                          {formatValue(kpi.current_value, kpi.unit)}
+                                        </span>
+                                        <span className="text-gray-400">
+                                          Target: {formatValue(kpi.target_value, kpi.unit)}
+                                        </span>
+                                      </div>
+                                      <div className={`h-2 rounded-full ${getProgressBgLight(kpi.progress_percent)} overflow-hidden`}>
+                                        <div 
+                                          className={`h-full ${getProgressBg(kpi.progress_percent)} rounded-full transition-all`}
+                                          style={{ width: `${kpi.progress_percent}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                    <span className={`text-lg font-heading font-bold ${getProgressColor(kpi.progress_percent)}`}>
+                                      {kpi.progress_percent.toFixed(0)}%
+                                    </span>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                            {subOutcome.kpis.length > 0 && (
+                              <button
+                                onClick={(e) => handleAddKPI(subOutcome.id, e)}
+                                className={`w-full text-center py-2 text-xs ${colorScheme.text} hover:bg-gray-50 rounded-lg transition-colors`}
+                              >
+                                + Add KPI
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                )}
+              </CardContent>
             </Card>
           );
         })}
       </div>
 
       {tree.length === 0 && (
-        <Card className="border-2 border-dashed border-gray-200 rounded-lg">
-          <CardContent className="p-8 text-center">
-            <p className="text-gray-500 mb-4">No business outcomes yet</p>
-            <Button onClick={handleAddCategory} size="sm">
+        <Card className="border-2 border-dashed border-gray-200 rounded-xl">
+          <CardContent className="p-12 text-center">
+            <Target className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-heading font-bold text-gray-700 mb-2">No Business Outcomes Yet</h3>
+            <p className="text-gray-500 mb-6 text-sm">Start by creating your first outcome category</p>
+            <Button 
+              onClick={handleAddCategory} 
+              className="text-white"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add First Category
             </Button>
@@ -677,7 +785,7 @@ const BusinessOutcomes = () => {
                 {/* Trend Chart */}
                 <div className="h-48 mb-4">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={prepareChartData(kpiHistory.history, kpiHistory.kpi)}>
+                    <LineChart data={prepareChartData(kpiHistory.history)}>
                       <XAxis 
                         dataKey="date" 
                         tick={{ fontSize: 10 }}
@@ -737,7 +845,7 @@ const BusinessOutcomes = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {kpiHistory.history.map((entry, i) => (
+                      {kpiHistory.history.map((entry) => (
                         <tr key={entry.id} className="border-t border-gray-100">
                           <td className="px-3 py-2 text-gray-600">
                             {new Date(entry.recorded_at).toLocaleDateString()}
