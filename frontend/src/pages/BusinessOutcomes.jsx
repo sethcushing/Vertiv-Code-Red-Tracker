@@ -319,12 +319,14 @@ const BusinessOutcomes = () => {
           return (
             <Card key={category.id} className="border border-gray-200 shadow-sm rounded-lg overflow-hidden">
               {/* Category Header - Streamlined */}
-              <button
-                onClick={() => toggleCategory(category.id)}
-                className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-all"
+              <div
+                className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-all cursor-pointer"
                 data-testid={`category-${category.id}`}
               >
-                <div className="flex items-center gap-3 flex-1">
+                <div 
+                  className="flex items-center gap-3 flex-1"
+                  onClick={() => toggleCategory(category.id)}
+                >
                   {isCatExpanded ? (
                     <ChevronDown className="w-4 h-4 text-gray-400" />
                   ) : (
