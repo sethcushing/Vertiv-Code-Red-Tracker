@@ -149,8 +149,8 @@ const Layout = ({ children }) => {
                   <User className="w-4 h-4 text-gray-400" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm text-white truncate">{user?.name}</p>
-                  <p className="text-xs text-gray-500 truncate">{user?.role}</p>
+                  <p className="text-sm text-white truncate font-lato-regular">{user?.name}</p>
+                  <p className="text-xs text-gray-500 truncate font-lato-light">{user?.role}</p>
                 </div>
               </button>
             </DropdownMenuTrigger>
@@ -158,7 +158,7 @@ const Layout = ({ children }) => {
               <DropdownMenuItem 
                 onClick={handleLogout}
                 data-testid="logout-btn"
-                className="text-red-600 cursor-pointer"
+                className="text-red-600 cursor-pointer font-lato-regular"
               >
                 <LogOut className="w-4 h-4 mr-2" />
                 Logout
