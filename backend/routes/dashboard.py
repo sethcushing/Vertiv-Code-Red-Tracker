@@ -329,6 +329,7 @@ async def get_delivery_pipeline():
                     "name": proj["name"],
                     "description": proj.get("description", ""),
                     "status": proj.get("status", "Not Started"),
+                    "rag_status": proj.get("rag_status", "Green"),
                     "owner": proj.get("owner", ""),
                     "initiative_id": proj.get("strategic_initiative_id"),
                     "initiative_name": initiative.get("name", "Unknown"),
