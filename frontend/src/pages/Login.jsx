@@ -64,7 +64,7 @@ const Login = () => {
             <CardTitle className="text-xl font-heading uppercase tracking-tight">
               Access Control Tower
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="font-lato-light">
               Sign in or create an account to manage initiatives
             </CardDescription>
           </CardHeader>
