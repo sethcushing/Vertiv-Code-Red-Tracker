@@ -107,10 +107,10 @@ const Layout = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm transition-all duration-300 ${
                   isActive
                     ? 'text-white shadow-lg'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
                 style={isActive ? { background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' } : {}}
               >
