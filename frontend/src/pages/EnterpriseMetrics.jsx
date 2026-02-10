@@ -138,29 +138,39 @@ const EnterpriseMetrics = () => {
             Track key performance indicators aligned to initiatives
           </p>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={(open) => {
-          setIsDialogOpen(open);
-          if (!open) {
-            setEditingMetric(null);
-            setFormData({ name: '', description: '', category: '', target_value: '', current_value: '', unit: '' });
-          }
-        }}>
-          <DialogTrigger asChild>
-            <Button 
-              data-testid="add-metric-btn"
-              className="text-white rounded-xl font-lato-bold shadow-lg"
-              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Outcome
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle className="font-heading">
-                {editingMetric ? 'Edit Outcome' : 'Create Business Outcome'}
-              </DialogTitle>
-            </DialogHeader>
+        <div className="flex items-center gap-3">
+          <Button 
+            variant="outline"
+            onClick={() => navigate('/kpi-tree')}
+            data-testid="kpi-tree-btn"
+            className="rounded-xl font-lato-regular"
+          >
+            <Target className="w-4 h-4 mr-2" />
+            KPI Tree View
+          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={(open) => {
+            setIsDialogOpen(open);
+            if (!open) {
+              setEditingMetric(null);
+              setFormData({ name: '', description: '', category: '', target_value: '', current_value: '', unit: '' });
+            }
+          }}>
+            <DialogTrigger asChild>
+              <Button 
+                data-testid="add-metric-btn"
+                className="text-white rounded-xl font-lato-bold shadow-lg"
+                style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Outcome
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="font-heading">
+                  {editingMetric ? 'Edit Outcome' : 'Create Business Outcome'}
+                </DialogTitle>
+              </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label className="font-lato-regular">Name</Label>
