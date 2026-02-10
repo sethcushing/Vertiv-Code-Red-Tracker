@@ -48,7 +48,7 @@ async def get_dashboard_stats():
 # ==================== PIPELINE ENDPOINTS ====================
 
 @router.get("/pipeline")
-async def get_pipeline(current_user: dict = Depends(get_current_user)):
+async def get_pipeline():
     """Get Code Red Pipeline: Strategic Initiatives grouped by status with their projects"""
     initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
     projects = await db.projects.find({}, {"_id": 0}).to_list(500)
@@ -91,7 +91,7 @@ async def get_pipeline(current_user: dict = Depends(get_current_user)):
 
 
 @router.put("/pipeline/move/{initiative_id}")
-async def move_initiative_status(initiative_id: str, new_status: str, current_user: dict = Depends(get_current_user)):
+async def move_initiative_status(initiative_id: str, new_status: str):
     """Move an initiative to a different status column"""
     valid_statuses = ["Not Started", "Discovery", "Frame", "Work In Progress"]
     if new_status not in valid_statuses:
@@ -112,7 +112,7 @@ async def move_initiative_status(initiative_id: str, new_status: str, current_us
 # ==================== REPORTING ENDPOINTS ====================
 
 @router.get("/reports/pipeline")
-async def get_pipeline_report(current_user: dict = Depends(get_current_user)):
+async def get_pipeline_report():
     """Get pipeline analytics for reporting dashboard"""
     initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
     projects = await db.projects.find({}, {"_id": 0}).to_list(500)
@@ -166,7 +166,7 @@ async def get_pipeline_report(current_user: dict = Depends(get_current_user)):
 
 
 @router.get("/reports/business-outcomes")
-async def get_business_outcomes_report(current_user: dict = Depends(get_current_user)):
+async def get_business_outcomes_report():
     """Get business outcomes analytics for reporting dashboard"""
     categories = await db.business_outcome_categories.find({}, {"_id": 0}).to_list(50)
     sub_outcomes = await db.sub_outcomes.find({}, {"_id": 0}).to_list(200)
@@ -242,7 +242,7 @@ async def get_business_outcomes_report(current_user: dict = Depends(get_current_
 
 
 @router.get("/reports/trends")
-async def get_trends_report(current_user: dict = Depends(get_current_user)):
+async def get_trends_report():
     """Get KPI trends over time for reporting dashboard"""
     kpis = await db.kpis.find({}, {"_id": 0}).to_list(500)
     
@@ -305,7 +305,7 @@ async def get_milestone_statuses():
 # ==================== DELIVERY PIPELINE ENDPOINTS ====================
 
 @router.get("/delivery-pipeline")
-async def get_delivery_pipeline(current_user: dict = Depends(get_current_user)):
+async def get_delivery_pipeline():
     """Get Delivery Pipeline: Projects grouped by delivery stage"""
     projects = await db.projects.find({}, {"_id": 0}).to_list(500)
     initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
@@ -339,7 +339,7 @@ async def get_delivery_pipeline(current_user: dict = Depends(get_current_user)):
 
 
 @router.put("/delivery-pipeline/move/{project_id}")
-async def move_project_delivery_stage(project_id: str, new_stage: str, current_user: dict = Depends(get_current_user)):
+async def move_project_delivery_stage(project_id: str, new_stage: str):
     """Move a project to a different delivery stage"""
     valid_stages = ["Request", "Solution Design", "Commercials", "Quote and Approval", "Order Capture", "Availability", "Fulfillment", "Post-Delivery"]
     if new_stage not in valid_stages:
