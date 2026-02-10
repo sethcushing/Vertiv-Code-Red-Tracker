@@ -37,6 +37,24 @@ logger = logging.getLogger(__name__)
 
 # ==================== PYDANTIC MODELS ====================
 
+# Enterprise Metrics Models
+class EnterpriseMetricBase(BaseModel):
+    name: str
+    description: Optional[str] = ""
+    category: str  # Planning, Sales, Quality, Delivery, Customer Satisfaction
+    target_value: Optional[float] = None
+    current_value: Optional[float] = None
+    unit: Optional[str] = ""  # %, days, $, count, etc.
+
+class EnterpriseMetricCreate(EnterpriseMetricBase):
+    pass
+
+class EnterpriseMetricResponse(EnterpriseMetricBase):
+    id: str
+    created_at: str
+    updated_at: str
+    initiative_count: int = 0
+
 # User Models
 class UserBase(BaseModel):
     email: str
