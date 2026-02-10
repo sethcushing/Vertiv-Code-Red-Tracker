@@ -263,16 +263,22 @@ const InitiativesList = () => {
                 <TableRow className="bg-gray-100 hover:bg-gray-100">
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Initiative</TableHead>
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Owner</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Team</TableHead>
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Stage</TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Milestones</TableHead>
+                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Risks</TableHead>
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Status</TableHead>
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Confidence</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-right">Budget</TableHead>
                   <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredInitiatives.map((initiative) => (
+                {filteredInitiatives.map((initiative) => {
+                  const milestones = initiative.milestones || [];
+                  const completed = milestones.filter(m => m.status === 'Completed').length;
+                  const risks = initiative.risks || [];
+                  const escalated = risks.filter(r => r.escalation_flag).length;
+                  
+                  return (
                   <TableRow 
                     key={initiative.id}
                     data-testid={`initiative-row-${initiative.id}`}
@@ -294,29 +300,32 @@ const InitiativesList = () => {
                       {initiative.initiative_owner || 'Unassigned'}
                     </TableCell>
                     <TableCell className="text-sm text-gray-600">
-                      {initiative.owning_team}
+                      <span className="line-clamp-1 text-xs">{initiative.lifecycle_stage}</span>
                     </TableCell>
-                    <TableCell className="text-sm text-gray-600">
-                      <span className="line-clamp-1">{initiative.lifecycle_stage}</span>
+                    <TableCell className="text-center text-sm">
+                      <span className="font-medium">{completed}</span>
+                      <span className="text-gray-400">/{milestones.length}</span>
+                    </TableCell>
+                    <TableCell className="text-center text-sm">
+                      <span className="font-medium">{risks.length}</span>
+                      {escalated > 0 && <span className="text-red-500 ml-1">({escalated})</span>}
                     </TableCell>
                     <TableCell className="text-center">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-bold uppercase tracking-wide border ${getStatusBadge(initiative.status)}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
                         {initiative.status}
                       </span>
                     </TableCell>
                     <TableCell className="text-center">
-                      <div className={`inline-flex items-center justify-center w-11 h-11 rounded-lg shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
+                      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
                         <span className="text-white font-bold text-sm">{initiative.confidence_score}</span>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-right font-mono text-sm">
-                      {formatCurrency(initiative.financial?.approved_budget || 0)}
                     </TableCell>
                     <TableCell>
                       <ChevronRight className="w-4 h-4 text-gray-400" />
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           </CardContent>
