@@ -107,7 +107,7 @@ const Layout = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className={`flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm transition-all duration-300 ${
+                className={`flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm font-lato-regular transition-all duration-300 ${
                   isActive
                     ? 'text-white shadow-lg'
                     : 'text-gray-400 hover:bg-white/10 hover:text-white'
@@ -128,7 +128,7 @@ const Layout = ({ children }) => {
             <Button
               onClick={() => navigate('/initiatives/new')}
               data-testid="nav-add-initiative"
-              className="w-full text-white rounded-xl font-semibold text-sm py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
+              className="w-full text-white rounded-xl font-lato-bold text-sm py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
               style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
