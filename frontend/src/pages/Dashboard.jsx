@@ -151,55 +151,55 @@ const Dashboard = () => {
     <div className="space-y-6 animate-fade-in">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-gray-200 shadow-sm rounded-sm" data-testid="stat-total-initiatives">
-          <CardContent className="p-4">
+        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-total-initiatives">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Initiatives</p>
                 <p className="text-3xl font-heading font-bold text-gray-900 mt-1">{stats.total_initiatives}</p>
               </div>
-              <div className="w-12 h-12 bg-gray-100 rounded-sm flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shadow-inner">
                 <Target className="w-6 h-6 text-gray-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-red-200 shadow-sm rounded-sm bg-red-50" data-testid="stat-code-red">
-          <CardContent className="p-4">
+        <Card className="border-red-200/80 shadow-sm rounded-lg bg-gradient-to-br from-red-50 to-red-100/50 hover:shadow-md transition-all duration-200" data-testid="stat-code-red">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-red-600 uppercase tracking-wider">Code Red</p>
                 <p className="text-3xl font-heading font-bold text-red-700 mt-1">{stats.code_red_count}</p>
               </div>
-              <div className="w-12 h-12 bg-red-100 rounded-sm flex items-center justify-center animate-pulse-code-red">
+              <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-red-200 rounded-lg flex items-center justify-center animate-pulse-code-red shadow-inner">
                 <AlertTriangle className="w-6 h-6 text-red-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200 shadow-sm rounded-sm" data-testid="stat-financial">
-          <CardContent className="p-4">
+        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-financial">
+          <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Budget</p>
                 <p className="text-2xl font-heading font-bold text-gray-900 mt-1">{formatCurrency(stats.total_budget)}</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-sm flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center shadow-inner">
                 <DollarSign className="w-6 h-6 text-green-600" />
               </div>
             </div>
-            <div className="mt-2 flex items-center gap-2 text-sm">
+            <div className="mt-3 flex items-center gap-2 text-sm">
               <span className="text-gray-500">Spent:</span>
               <span className="font-semibold">{formatCurrency(stats.total_actual_spend)}</span>
               {stats.total_variance < 0 ? (
-                <span className="text-green-600 flex items-center">
+                <span className="text-green-600 flex items-center bg-green-50 px-2 py-0.5 rounded-full text-xs font-medium">
                   <TrendingDown className="w-3 h-3 mr-1" />
                   Under
                 </span>
               ) : (
-                <span className="text-red-600 flex items-center">
+                <span className="text-red-600 flex items-center bg-red-50 px-2 py-0.5 rounded-full text-xs font-medium">
                   <TrendingUp className="w-3 h-3 mr-1" />
                   Over
                 </span>
@@ -208,30 +208,30 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200 shadow-sm rounded-sm" data-testid="stat-status">
-          <CardContent className="p-4">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Status Breakdown</p>
-            <div className="space-y-2">
+        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-status">
+          <CardContent className="p-5">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Status Breakdown</p>
+            <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
                   On Track
                 </span>
-                <span className="font-bold">{stats.on_track_count}</span>
+                <span className="font-bold text-gray-900">{stats.on_track_count}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-yellow-500" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
                   At Risk
                 </span>
-                <span className="font-bold">{stats.at_risk_count}</span>
+                <span className="font-bold text-gray-900">{stats.at_risk_count}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-500" />
+                  <div className="w-2 h-2 rounded-full bg-red-500"></div>
                   Off Track
                 </span>
-                <span className="font-bold">{stats.off_track_count}</span>
+                <span className="font-bold text-gray-900">{stats.off_track_count}</span>
               </div>
             </div>
           </CardContent>
@@ -254,12 +254,12 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-gray-200 border border-gray-200 rounded-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 bg-gray-200/60 border border-gray-200/80 rounded-xl overflow-hidden shadow-lg">
           {topInitiatives.map((blocker, index) => (
             <div 
               key={blocker.initiative_id}
               data-testid={`four-blocker-${index}`}
-              className="bg-white p-6 min-h-[280px] hover:bg-gray-50 transition-colors cursor-pointer"
+              className="bg-white p-6 min-h-[280px] hover:bg-gradient-to-br hover:from-white hover:to-gray-50/80 transition-all duration-300 cursor-pointer group"
               onClick={() => navigate(`/initiatives/${blocker.initiative_id}`)}
             >
               {/* Header */}
@@ -267,11 +267,11 @@ const Dashboard = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     {blocker.code_red && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-bold uppercase tracking-wide bg-red-100 text-red-800 border border-red-200 animate-pulse-code-red">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide bg-gradient-to-r from-red-100 to-red-50 text-red-800 shadow-sm animate-pulse-code-red">
                         Code Red
                       </span>
                     )}
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-bold uppercase tracking-wide border ${getStatusColor(blocker.status)}`}>
+                    <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide shadow-sm ${getStatusColor(blocker.status)}`}>
                       {blocker.status}
                     </span>
                   </div>
@@ -283,10 +283,10 @@ const Dashboard = () => {
                   </p>
                 </div>
                 <div className="text-right">
-                  <div className={`w-14 h-14 rounded-sm ${getConfidenceColor(blocker.confidence_score)} flex items-center justify-center`}>
+                  <div className={`w-14 h-14 rounded-lg ${getConfidenceColor(blocker.confidence_score)} flex items-center justify-center shadow-lg`}>
                     <span className="text-white font-bold text-lg">{blocker.confidence_score}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Confidence</p>
+                  <p className="text-xs text-gray-500 mt-1.5">Confidence</p>
                 </div>
               </div>
 

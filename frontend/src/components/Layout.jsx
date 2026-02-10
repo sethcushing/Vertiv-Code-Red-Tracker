@@ -107,11 +107,12 @@ const Layout = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className={`flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? 'bg-[#FE5B1B] text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                    ? 'text-white shadow-lg'
+                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
                 }`}
+                style={isActive ? { background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' } : {}}
               >
                 <Icon className="w-5 h-5" />
                 {item.name}
