@@ -237,12 +237,12 @@ const Dashboard = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 bg-gray-200/60 border border-gray-200/80 rounded-xl overflow-hidden shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 bg-gray-100 rounded-3xl overflow-hidden shadow-xl">
           {topInitiatives.map((blocker, index) => (
             <div 
               key={blocker.initiative_id}
               data-testid={`four-blocker-${index}`}
-              className="bg-white p-6 min-h-[280px] hover:bg-gradient-to-br hover:from-white hover:to-gray-50/80 transition-all duration-300 cursor-pointer group"
+              className="bg-white p-7 min-h-[260px] hover:bg-gradient-to-br hover:from-white hover:to-orange-50/30 transition-all duration-300 cursor-pointer group"
               onClick={() => navigate(`/initiatives/${blocker.initiative_id}`)}
             >
               {/* Header */}
