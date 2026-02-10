@@ -54,6 +54,9 @@ class StrategicInitiativeUpdate(BaseModel):
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
     business_outcome_ids: Optional[List[str]] = None
+    business_unit: Optional[str] = None
+    delivery_stages_impacted: Optional[List[str]] = None
+    team_members: Optional[List[dict]] = None
 
 
 class StrategicInitiativeResponse(StrategicInitiativeBase):
