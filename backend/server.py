@@ -925,9 +925,9 @@ async def get_risk_types():
 
 @api_router.get("/config/metric-categories")
 async def get_metric_categories():
-    return ["Planning", "Sales", "Quality", "Delivery", "Customer Satisfaction"]
+    return ["Planning", "Sales", "Quality", "Delivery", "Customer Satisfaction", "Engineering"]
 
-# ==================== ENTERPRISE METRICS ENDPOINTS ====================
+# ==================== CORE BUSINESS OUTCOMES ENDPOINTS (formerly Enterprise Metrics) ====================
 
 @api_router.post("/enterprise-metrics", response_model=EnterpriseMetricResponse)
 async def create_enterprise_metric(metric: EnterpriseMetricCreate, current_user: dict = Depends(get_current_user)):
@@ -942,6 +942,15 @@ async def create_enterprise_metric(metric: EnterpriseMetricCreate, current_user:
     }
     
     await db.enterprise_metrics.insert_one(metric_doc)
+    
+    # Audit log for metric creation
+    await create_audit_log(
+        entity_type="metric",
+        entity_id=metric_id,
+        entity_name=metric.name,
+        action="created",
+        user=current_user
+    )
     
     return EnterpriseMetricResponse(**{k: v for k, v in metric_doc.items() if k != '_id'}, initiative_count=0)
 
@@ -987,14 +996,29 @@ async def get_initiatives_by_metric(metric_id: str, current_user: dict = Depends
 
 @api_router.put("/enterprise-metrics/{metric_id}", response_model=EnterpriseMetricResponse)
 async def update_enterprise_metric(metric_id: str, metric: EnterpriseMetricCreate, current_user: dict = Depends(get_current_user)):
-    existing = await db.enterprise_metrics.find_one({"id": metric_id})
+    existing = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Metric not found")
     
     update_data = metric.model_dump()
     update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
     
+    # Track changes for audit
+    tracked_fields = ["name", "description", "category", "target_value", "current_value", "unit"]
+    changes = compute_changes(existing, update_data, tracked_fields)
+    
     await db.enterprise_metrics.update_one({"id": metric_id}, {"$set": update_data})
+    
+    # Audit log if changes were made
+    if changes:
+        await create_audit_log(
+            entity_type="metric",
+            entity_id=metric_id,
+            entity_name=metric.name,
+            action="updated",
+            user=current_user,
+            changes=changes
+        )
     
     updated = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
     count = await db.initiatives.count_documents({"metric_ids": metric_id})
@@ -1003,9 +1027,20 @@ async def update_enterprise_metric(metric_id: str, metric: EnterpriseMetricCreat
 
 @api_router.delete("/enterprise-metrics/{metric_id}")
 async def delete_enterprise_metric(metric_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.enterprise_metrics.delete_one({"id": metric_id})
-    if result.deleted_count == 0:
+    metric = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
+    if not metric:
         raise HTTPException(status_code=404, detail="Metric not found")
+    
+    # Audit log before deletion
+    await create_audit_log(
+        entity_type="metric",
+        entity_id=metric_id,
+        entity_name=metric.get("name", ""),
+        action="deleted",
+        user=current_user
+    )
+    
+    result = await db.enterprise_metrics.delete_one({"id": metric_id})
     
     # Remove metric from all initiatives
     await db.initiatives.update_many({}, {"$pull": {"metric_ids": metric_id}})
