@@ -91,7 +91,7 @@ const Login = () => {
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-sm font-medium">
+                    <Label htmlFor="login-email" className="text-sm font-lato-regular">
                       Email
                     </Label>
                     <Input
