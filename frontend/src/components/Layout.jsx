@@ -203,7 +203,7 @@ const Layout = ({ children }) => {
             </div>
             <div className="flex items-center gap-4">
               <span className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">
-                Enterprise Initiative Control Tower
+                Code Red Initiatives
               </span>
             </div>
           </div>
