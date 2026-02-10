@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '../components/ui/dialog';
 import { Progress } from '../components/ui/progress';
 import { Target, Plus, ChevronRight, TrendingUp, TrendingDown, Minus, Edit2, Trash2 } from 'lucide-react';
-import api from '../utils/api';
+import { api } from '../App';
 import { toast } from 'sonner';
 
 const EnterpriseMetrics = () => {
