@@ -5,7 +5,7 @@ import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Search, Calendar, CheckCircle2, Clock, AlertTriangle, ChevronRight } from 'lucide-react';
-import api from '../utils/api';
+import { api } from '../App';
 import { toast } from 'sonner';
 
 const MilestonesView = () => {
