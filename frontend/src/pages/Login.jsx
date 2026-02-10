@@ -74,14 +74,14 @@ const Login = () => {
                 <TabsTrigger 
                   value="login" 
                   data-testid="login-tab"
-                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-semibold transition-all"
+                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-lato-bold transition-all"
                 >
                   Sign In
                 </TabsTrigger>
                 <TabsTrigger 
                   value="register" 
                   data-testid="register-tab"
-                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-semibold transition-all"
+                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-lato-bold transition-all"
                 >
                   Register
                 </TabsTrigger>
