@@ -31,7 +31,6 @@ const Layout = ({ children }) => {
     if (path === '/delivery-pipeline') return 'Delivery Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
     if (path === '/reporting') return 'Reporting Dashboard';
-    if (path === '/admin') return 'User Management';
     if (path.includes('/projects/')) return 'Project Details';
     if (path.includes('/strategic-initiatives/new')) return 'New Initiative';
     if (path.includes('/strategic-initiatives/')) return 'Initiative Details';
