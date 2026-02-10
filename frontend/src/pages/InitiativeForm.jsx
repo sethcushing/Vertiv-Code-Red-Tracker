@@ -352,9 +352,9 @@ const InitiativeForm = () => {
                 </Select>
               </div>
 
-              {/* Enterprise Metrics */}
+              {/* Core Business Outcomes */}
               <div className="md:col-span-2">
-                <Label>Enterprise Metrics Alignment</Label>
+                <Label>Core Business Outcomes Alignment</Label>
                 <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
                   <div className="flex flex-wrap gap-2">
                     {config.metrics.map((metric) => (
@@ -379,7 +379,7 @@ const InitiativeForm = () => {
                     ))}
                   </div>
                   {config.metrics.length === 0 && (
-                    <p className="text-sm text-gray-400 font-lato-light">No metrics defined yet. Create metrics first.</p>
+                    <p className="text-sm text-gray-400 font-lato-light">No outcomes defined yet. Create outcomes first.</p>
                   )}
                 </div>
               </div>
