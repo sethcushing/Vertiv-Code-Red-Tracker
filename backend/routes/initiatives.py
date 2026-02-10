@@ -74,7 +74,22 @@ async def update_strategic_initiative(initiative_id: str, update: StrategicIniti
         raise HTTPException(status_code=404, detail="Strategic Initiative not found")
     
     update_data = {k: v for k, v in update.model_dump().items() if v is not None}
-    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(timezone.utc).isoformat()
+    update_data["updated_at"] = now
+    
+    # Track status change in history
+    if "status" in update_data and update_data["status"] != existing.get("status"):
+        status_update = {
+            "id": str(uuid.uuid4()),
+            "old_status": existing.get("status", "Not Started"),
+            "new_status": update_data["status"],
+            "changed_at": now,
+            "changed_by": "Admin",
+            "notes": ""
+        }
+        existing_history = existing.get("status_history", [])
+        existing_history.append(status_update)
+        update_data["status_history"] = existing_history
     
     await db.strategic_initiatives.update_one({"id": initiative_id}, {"$set": update_data})
     
