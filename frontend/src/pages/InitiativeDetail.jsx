@@ -343,8 +343,8 @@ const InitiativeDetail = () => {
             <div className="flex items-center gap-3">
               <User className="w-5 h-5 text-gray-400" />
               <div>
-                <p className="text-xs text-gray-500">Owner</p>
-                <p className="font-semibold text-sm">{initiative.initiative_owner || 'Unassigned'}</p>
+                <p className="text-xs text-gray-500 font-lato-light">Owner</p>
+                <p className="font-lato-bold text-sm">{initiative.initiative_owner || 'Unassigned'}</p>
               </div>
             </div>
           </CardContent>
@@ -354,8 +354,8 @@ const InitiativeDetail = () => {
             <div className="flex items-center gap-3">
               <Users className="w-5 h-5 text-gray-400" />
               <div>
-                <p className="text-xs text-gray-500">Team</p>
-                <p className="font-semibold text-sm">{initiative.owning_team}</p>
+                <p className="text-xs text-gray-500 font-lato-light">Team</p>
+                <p className="font-lato-bold text-sm">{initiative.owning_team}</p>
               </div>
             </div>
           </CardContent>
@@ -365,8 +365,8 @@ const InitiativeDetail = () => {
             <div className="flex items-center gap-3">
               <Flag className="w-5 h-5 text-gray-400" />
               <div>
-                <p className="text-xs text-gray-500">Stage</p>
-                <p className="font-semibold text-sm truncate">{initiative.lifecycle_stage}</p>
+                <p className="text-xs text-gray-500 font-lato-light">Stage</p>
+                <p className="font-lato-bold text-sm truncate">{initiative.lifecycle_stage}</p>
               </div>
             </div>
           </CardContent>
@@ -375,11 +375,11 @@ const InitiativeDetail = () => {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className={`w-12 h-12 rounded-lg ${getConfidenceColor(initiative.confidence_score)} flex items-center justify-center`}>
-                <span className="text-white font-bold text-lg">{initiative.confidence_score}</span>
+                <span className="text-white font-lato-bold text-lg">{initiative.confidence_score}</span>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Confidence</p>
-                <p className="font-semibold text-sm">{initiative.confidence_score >= 70 ? 'High' : initiative.confidence_score >= 40 ? 'Medium' : 'Low'}</p>
+                <p className="text-xs text-gray-500 font-lato-light">Confidence</p>
+                <p className="font-lato-bold text-sm">{initiative.confidence_score >= 70 ? 'High' : initiative.confidence_score >= 40 ? 'Medium' : 'Low'}</p>
               </div>
             </div>
           </CardContent>
