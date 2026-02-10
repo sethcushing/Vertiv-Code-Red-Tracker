@@ -13,6 +13,8 @@ import StrategicInitiativeDetail from './pages/StrategicInitiativeDetail';
 import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Reporting from './pages/Reporting';
 import ExecutiveDashboard from './pages/ExecutiveDashboard';
+import DeliveryPipeline from './pages/DeliveryPipeline';
+import Admin from './pages/Admin';
 import Layout from './components/Layout';
 
 import './App.css';
@@ -159,6 +161,8 @@ function App() {
                     <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
                     <Route path="/reporting" element={<Reporting />} />
                     <Route path="/executive" element={<ExecutiveDashboard />} />
+                    <Route path="/delivery-pipeline" element={<DeliveryPipeline />} />
+                    <Route path="/admin" element={<Admin />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>
