@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CodeRedDashboard from './pages/CodeRedDashboard';
-import FinancialExposure from './pages/FinancialExposure';
+import ProcessPipeline from './pages/ProcessPipeline';
 import RiskHeatmap from './pages/RiskHeatmap';
 import InitiativesList from './pages/InitiativesList';
 import InitiativeDetail from './pages/InitiativeDetail';
@@ -154,7 +154,7 @@ function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/code-red" element={<CodeRedDashboard />} />
-                    <Route path="/financial" element={<FinancialExposure />} />
+                    <Route path="/pipeline" element={<ProcessPipeline />} />
                     <Route path="/risk-heatmap" element={<RiskHeatmap />} />
                     <Route path="/initiatives" element={<InitiativesList />} />
                     <Route path="/initiatives/new" element={<InitiativeForm />} />
