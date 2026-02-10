@@ -4,6 +4,7 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { Input } from '../components/ui/input';
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { 
   ChevronRight, 
   ChevronDown, 
@@ -14,7 +15,7 @@ import {
   Edit2,
   Trash2,
   History,
-  X,
+  BarChart3,
 } from 'lucide-react';
 import { api } from '../App';
 import { toast } from 'sonner';
@@ -66,7 +67,7 @@ const BusinessOutcomes = () => {
       response.data.forEach(cat => {
         catExpanded[cat.id] = true;
         cat.sub_outcomes.forEach(sub => {
-          subExpanded[sub.id] = false; // Start collapsed for cleaner look
+          subExpanded[sub.id] = false;
         });
       });
       setExpandedCategories(catExpanded);
@@ -96,6 +97,12 @@ const BusinessOutcomes = () => {
     if (progress >= 70) return 'bg-emerald-500';
     if (progress >= 40) return 'bg-amber-500';
     return 'bg-red-500';
+  };
+
+  const getChartColor = (progress) => {
+    if (progress >= 70) return '#10b981';
+    if (progress >= 40) return '#f59e0b';
+    return '#ef4444';
   };
 
   const getTrendIcon = (progress) => {
@@ -274,6 +281,18 @@ const BusinessOutcomes = () => {
     }
   };
 
+  // Prepare chart data from history
+  const prepareChartData = (history, kpi) => {
+    if (!history || history.length === 0) return [];
+    return history
+      .slice()
+      .reverse()
+      .map(entry => ({
+        date: new Date(entry.recorded_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        value: entry.value,
+      }));
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -436,7 +455,7 @@ const BusinessOutcomes = () => {
                                 subOutcome.kpis.map((kpi) => (
                                   <div
                                     key={kpi.id}
-                                    className="bg-white rounded border border-gray-100 p-2.5 hover:shadow-sm transition-all"
+                                    className="bg-white rounded border border-gray-100 p-3 hover:shadow-sm transition-all"
                                     data-testid={`kpi-${kpi.id}`}
                                   >
                                     <div className="flex items-center justify-between mb-2">
@@ -448,9 +467,9 @@ const BusinessOutcomes = () => {
                                         <button
                                           onClick={(e) => handleViewHistory(kpi, e)}
                                           className="p-1 hover:bg-gray-100 rounded"
-                                          title="View History"
+                                          title="View Trend"
                                         >
-                                          <History className="w-3 h-3 text-gray-400" />
+                                          <BarChart3 className="w-3 h-3 text-gray-400" />
                                         </button>
                                         <button
                                           onClick={(e) => handleEditKPI(kpi, e)}
@@ -619,7 +638,7 @@ const BusinessOutcomes = () => {
                 <Input
                   value={formData.unit || ''}
                   onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-                  placeholder="%  days, etc."
+                  placeholder="%, days, etc."
                 />
               </div>
             </div>
@@ -646,28 +665,94 @@ const BusinessOutcomes = () => {
         </DialogContent>
       </Dialog>
 
-      {/* History Modal */}
+      {/* History Modal with Chart */}
       <Dialog open={showHistoryModal} onOpenChange={setShowHistoryModal}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>KPI History: {kpiHistory?.kpi?.name}</DialogTitle>
+            <DialogTitle>KPI Trend: {kpiHistory?.kpi?.name}</DialogTitle>
           </DialogHeader>
-          <div className="py-4 max-h-[400px] overflow-y-auto">
+          <div className="py-4">
             {kpiHistory?.history?.length > 0 ? (
-              <div className="space-y-2">
-                {kpiHistory.history.map((entry, i) => (
-                  <div key={entry.id} className="flex items-center justify-between py-2 border-b border-gray-100">
-                    <span className="text-sm text-gray-600">
-                      {new Date(entry.recorded_at).toLocaleDateString()}
-                    </span>
-                    <span className="font-lato-bold text-gray-900">
-                      {entry.value} {kpiHistory.kpi?.unit}
-                    </span>
+              <>
+                {/* Trend Chart */}
+                <div className="h-48 mb-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={prepareChartData(kpiHistory.history, kpiHistory.kpi)}>
+                      <XAxis 
+                        dataKey="date" 
+                        tick={{ fontSize: 10 }}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                        tickLine={false}
+                      />
+                      <YAxis 
+                        tick={{ fontSize: 10 }}
+                        axisLine={{ stroke: '#e5e7eb' }}
+                        tickLine={false}
+                        domain={['auto', 'auto']}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'white', 
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          fontSize: '12px'
+                        }}
+                        formatter={(value) => [`${value} ${kpiHistory.kpi?.unit || ''}`, 'Value']}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="value" 
+                        stroke={getChartColor(kpiHistory.kpi?.progress_percent || 0)}
+                        strokeWidth={2}
+                        dot={{ fill: getChartColor(kpiHistory.kpi?.progress_percent || 0), strokeWidth: 0, r: 3 }}
+                        activeDot={{ r: 5 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Summary */}
+                <div className="grid grid-cols-3 gap-4 mb-4 text-center">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-500">Baseline</p>
+                    <p className="font-lato-bold">{kpiHistory.kpi?.baseline_value} {kpiHistory.kpi?.unit}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-500">Current</p>
+                    <p className="font-lato-bold">{kpiHistory.kpi?.current_value} {kpiHistory.kpi?.unit}</p>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs text-gray-500">Target</p>
+                    <p className="font-lato-bold">{kpiHistory.kpi?.target_value} {kpiHistory.kpi?.unit}</p>
+                  </div>
+                </div>
+
+                {/* History List */}
+                <div className="max-h-32 overflow-y-auto border rounded-lg">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
+                        <th className="text-left px-3 py-2 font-medium text-gray-600">Date</th>
+                        <th className="text-right px-3 py-2 font-medium text-gray-600">Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {kpiHistory.history.map((entry, i) => (
+                        <tr key={entry.id} className="border-t border-gray-100">
+                          <td className="px-3 py-2 text-gray-600">
+                            {new Date(entry.recorded_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-3 py-2 text-right font-lato-bold">
+                            {entry.value} {kpiHistory.kpi?.unit}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             ) : (
-              <p className="text-gray-400 text-center py-4">No history available</p>
+              <p className="text-gray-400 text-center py-8">No history available</p>
             )}
           </div>
           <DialogFooter>
