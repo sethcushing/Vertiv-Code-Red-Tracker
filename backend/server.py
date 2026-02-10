@@ -1273,6 +1273,17 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "unit": "%",
             "created_at": now,
             "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Engineer To Order Cycle Time",
+            "description": "Average time from engineering request to completed design specification",
+            "category": "Engineering",
+            "target_value": 10,
+            "current_value": 21,
+            "unit": "days",
+            "created_at": now,
+            "updated_at": now
         }
     ]
     
