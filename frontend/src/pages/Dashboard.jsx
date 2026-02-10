@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { api } from '../App';
+import { api, AuthContext } from '../App';
 import { toast } from 'sonner';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
