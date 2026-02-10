@@ -8,7 +8,7 @@ from models.schemas import (
     SubOutcomeCreate, SubOutcomeUpdate, SubOutcomeResponse,
     KPICreate, KPIUpdate, KPIResponse
 )
-from utils.auth import get_current_user
+# from utils.auth import get_current_user
 from utils.helpers import calculate_kpi_progress
 
 router = APIRouter(prefix="/business-outcomes", tags=["Business Outcomes"])
@@ -26,7 +26,7 @@ def set_database(database):
 # ==================== BUSINESS OUTCOME CATEGORY ENDPOINTS ====================
 
 @router.post("/categories", response_model=BusinessOutcomeCategoryResponse)
-async def create_business_outcome_category(category: BusinessOutcomeCategoryCreate, current_user: dict = Depends(get_current_user)):
+async def create_business_outcome_category(category: BusinessOutcomeCategoryCreate):
     category_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
     
@@ -42,7 +42,7 @@ async def create_business_outcome_category(category: BusinessOutcomeCategoryCrea
 
 
 @router.get("/categories", response_model=List[BusinessOutcomeCategoryResponse])
-async def get_business_outcome_categories(current_user: dict = Depends(get_current_user)):
+async def get_business_outcome_categories():
     categories = await db.business_outcome_categories.find({}, {"_id": 0}).to_list(50)
     
     result = []
@@ -54,7 +54,7 @@ async def get_business_outcome_categories(current_user: dict = Depends(get_curre
 
 
 @router.get("/categories/{category_id}", response_model=BusinessOutcomeCategoryResponse)
-async def get_business_outcome_category(category_id: str, current_user: dict = Depends(get_current_user)):
+async def get_business_outcome_category(category_id: str):
     category = await db.business_outcome_categories.find_one({"id": category_id}, {"_id": 0})
     if not category:
         raise HTTPException(status_code=404, detail="Business Outcome Category not found")
@@ -64,7 +64,7 @@ async def get_business_outcome_category(category_id: str, current_user: dict = D
 
 
 @router.put("/categories/{category_id}", response_model=BusinessOutcomeCategoryResponse)
-async def update_business_outcome_category(category_id: str, update: BusinessOutcomeCategoryUpdate, current_user: dict = Depends(get_current_user)):
+async def update_business_outcome_category(category_id: str, update: BusinessOutcomeCategoryUpdate):
     existing = await db.business_outcome_categories.find_one({"id": category_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Business Outcome Category not found")
@@ -80,7 +80,7 @@ async def update_business_outcome_category(category_id: str, update: BusinessOut
 
 
 @router.delete("/categories/{category_id}")
-async def delete_business_outcome_category(category_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_business_outcome_category(category_id: str):
     existing = await db.business_outcome_categories.find_one({"id": category_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Business Outcome Category not found")
@@ -99,7 +99,7 @@ async def delete_business_outcome_category(category_id: str, current_user: dict 
 # ==================== SUB-OUTCOME ENDPOINTS ====================
 
 @router.post("/sub-outcomes", response_model=SubOutcomeResponse)
-async def create_sub_outcome(sub_outcome: SubOutcomeCreate, current_user: dict = Depends(get_current_user)):
+async def create_sub_outcome(sub_outcome: SubOutcomeCreate):
     # Verify parent category exists
     category = await db.business_outcome_categories.find_one({"id": sub_outcome.category_id})
     if not category:
@@ -120,7 +120,7 @@ async def create_sub_outcome(sub_outcome: SubOutcomeCreate, current_user: dict =
 
 
 @router.get("/sub-outcomes", response_model=List[SubOutcomeResponse])
-async def get_sub_outcomes(category_id: Optional[str] = None, current_user: dict = Depends(get_current_user)):
+async def get_sub_outcomes(category_id: Optional[str] = None):
     query = {}
     if category_id:
         query["category_id"] = category_id
@@ -136,7 +136,7 @@ async def get_sub_outcomes(category_id: Optional[str] = None, current_user: dict
 
 
 @router.get("/sub-outcomes/{sub_outcome_id}", response_model=SubOutcomeResponse)
-async def get_sub_outcome(sub_outcome_id: str, current_user: dict = Depends(get_current_user)):
+async def get_sub_outcome(sub_outcome_id: str):
     sub_outcome = await db.sub_outcomes.find_one({"id": sub_outcome_id}, {"_id": 0})
     if not sub_outcome:
         raise HTTPException(status_code=404, detail="Sub-Outcome not found")
@@ -146,7 +146,7 @@ async def get_sub_outcome(sub_outcome_id: str, current_user: dict = Depends(get_
 
 
 @router.put("/sub-outcomes/{sub_outcome_id}", response_model=SubOutcomeResponse)
-async def update_sub_outcome(sub_outcome_id: str, update: SubOutcomeUpdate, current_user: dict = Depends(get_current_user)):
+async def update_sub_outcome(sub_outcome_id: str, update: SubOutcomeUpdate):
     existing = await db.sub_outcomes.find_one({"id": sub_outcome_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Sub-Outcome not found")
@@ -162,7 +162,7 @@ async def update_sub_outcome(sub_outcome_id: str, update: SubOutcomeUpdate, curr
 
 
 @router.delete("/sub-outcomes/{sub_outcome_id}")
-async def delete_sub_outcome(sub_outcome_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_sub_outcome(sub_outcome_id: str):
     existing = await db.sub_outcomes.find_one({"id": sub_outcome_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Sub-Outcome not found")
@@ -176,7 +176,7 @@ async def delete_sub_outcome(sub_outcome_id: str, current_user: dict = Depends(g
 # ==================== KPI ENDPOINTS ====================
 
 @router.post("/kpis", response_model=KPIResponse)
-async def create_kpi(kpi: KPICreate, current_user: dict = Depends(get_current_user)):
+async def create_kpi(kpi: KPICreate):
     # Verify parent sub-outcome exists
     sub_outcome = await db.sub_outcomes.find_one({"id": kpi.sub_outcome_id})
     if not sub_outcome:
@@ -209,7 +209,7 @@ async def create_kpi(kpi: KPICreate, current_user: dict = Depends(get_current_us
 
 
 @router.get("/kpis", response_model=List[KPIResponse])
-async def get_kpis(sub_outcome_id: Optional[str] = None, current_user: dict = Depends(get_current_user)):
+async def get_kpis(sub_outcome_id: Optional[str] = None):
     query = {}
     if sub_outcome_id:
         query["sub_outcome_id"] = sub_outcome_id
@@ -225,7 +225,7 @@ async def get_kpis(sub_outcome_id: Optional[str] = None, current_user: dict = De
 
 
 @router.get("/kpis/{kpi_id}", response_model=KPIResponse)
-async def get_kpi(kpi_id: str, current_user: dict = Depends(get_current_user)):
+async def get_kpi(kpi_id: str):
     kpi = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
     if not kpi:
         raise HTTPException(status_code=404, detail="KPI not found")
@@ -235,7 +235,7 @@ async def get_kpi(kpi_id: str, current_user: dict = Depends(get_current_user)):
 
 
 @router.put("/kpis/{kpi_id}", response_model=KPIResponse)
-async def update_kpi(kpi_id: str, update: KPIUpdate, current_user: dict = Depends(get_current_user)):
+async def update_kpi(kpi_id: str, update: KPIUpdate):
     existing = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="KPI not found")
@@ -262,7 +262,7 @@ async def update_kpi(kpi_id: str, update: KPIUpdate, current_user: dict = Depend
 
 
 @router.delete("/kpis/{kpi_id}")
-async def delete_kpi(kpi_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_kpi(kpi_id: str):
     existing = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="KPI not found")
@@ -275,7 +275,7 @@ async def delete_kpi(kpi_id: str, current_user: dict = Depends(get_current_user)
 
 # KPI History
 @router.get("/kpis/{kpi_id}/history")
-async def get_kpi_history(kpi_id: str, limit: int = 50, current_user: dict = Depends(get_current_user)):
+async def get_kpi_history(kpi_id: str, limit: int = 50):
     kpi = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
     if not kpi:
         raise HTTPException(status_code=404, detail="KPI not found")
@@ -292,7 +292,7 @@ async def get_kpi_history(kpi_id: str, limit: int = 50, current_user: dict = Dep
 
 
 @router.post("/kpis/{kpi_id}/history")
-async def add_kpi_history_entry(kpi_id: str, value: float, current_user: dict = Depends(get_current_user)):
+async def add_kpi_history_entry(kpi_id: str, value: float):
     """Manually add a historical KPI value"""
     kpi = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
     if not kpi:
@@ -319,7 +319,7 @@ async def add_kpi_history_entry(kpi_id: str, value: float, current_user: dict = 
 
 # Tree view
 @router.get("/tree")
-async def get_business_outcomes_tree(current_user: dict = Depends(get_current_user)):
+async def get_business_outcomes_tree():
     """Get full Business Outcomes hierarchy: Category -> Sub-Outcomes -> KPIs"""
     categories = await db.business_outcome_categories.find({}, {"_id": 0}).to_list(50)
     sub_outcomes = await db.sub_outcomes.find({}, {"_id": 0}).to_list(200)
