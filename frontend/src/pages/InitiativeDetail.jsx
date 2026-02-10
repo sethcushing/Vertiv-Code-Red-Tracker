@@ -295,12 +295,6 @@ const InitiativeDetail = () => {
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            {initiative.code_red_flag && (
-              <span className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-lato-bold uppercase tracking-wide bg-red-600 text-white animate-pulse">
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                Code Red
-              </span>
-            )}
             <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-lato-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
               {initiative.status}
             </span>
