@@ -83,8 +83,6 @@ const InitiativesList = () => {
         if (filters.domain) params.domain = filters.domain;
         if (filters.team) params.team = filters.team;
         if (filters.stage) params.stage = filters.stage;
-        if (filters.code_red === 'true') params.code_red = true;
-        if (filters.code_red === 'false') params.code_red = false;
         
         const response = await api.get('/initiatives', { params });
         setInitiatives(response.data);
@@ -95,7 +93,7 @@ const InitiativesList = () => {
       }
     };
     fetchInitiatives();
-  }, [filters.bucket, filters.status, filters.domain, filters.team, filters.stage, filters.code_red]);
+  }, [filters.bucket, filters.status, filters.domain, filters.team, filters.stage]);
 
   const clearFilters = () => {
     setFilters({
@@ -105,7 +103,6 @@ const InitiativesList = () => {
       domain: '',
       team: '',
       stage: '',
-      code_red: '',
     });
   };
 
@@ -125,9 +122,11 @@ const InitiativesList = () => {
 
   const getStatusBadge = (status) => {
     const styles = {
-      'On Track': 'bg-green-100 text-green-800 border-green-200',
-      'At Risk': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      'Off Track': 'bg-red-100 text-red-800 border-red-200',
+      'Not Started': 'bg-gray-100 text-gray-800 border-gray-200',
+      'Discovery': 'bg-blue-100 text-blue-800 border-blue-200',
+      'Frame': 'bg-purple-100 text-purple-800 border-purple-200',
+      'Work In Progress': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      'Implemented': 'bg-green-100 text-green-800 border-green-200',
     };
     return styles[status] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
