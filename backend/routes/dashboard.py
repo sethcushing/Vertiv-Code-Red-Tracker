@@ -293,6 +293,66 @@ async def get_project_statuses():
     return ["Not Started", "In Progress", "Completed", "On Hold"]
 
 
+@router.get("/config/delivery-stages")
+async def get_delivery_stages():
+    return ["Request", "Solution Design", "Commercials", "Quote and Approval", "Order Capture", "Availability", "Fulfillment", "Post-Delivery"]
+
+
 @router.get("/config/milestone-statuses")
 async def get_milestone_statuses():
     return ["Pending", "In Progress", "Completed", "Delayed"]
+
+
+# ==================== DELIVERY PIPELINE ENDPOINTS ====================
+
+@router.get("/delivery-pipeline")
+async def get_delivery_pipeline(current_user: dict = Depends(get_current_user)):
+    """Get Delivery Pipeline: Projects grouped by delivery stage"""
+    projects = await db.projects.find({}, {"_id": 0}).to_list(500)
+    initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
+    
+    # Create initiative lookup
+    init_lookup = {i["id"]: i for i in initiatives}
+    
+    # Delivery stages
+    stages = ["Request", "Solution Design", "Commercials", "Quote and Approval", "Order Capture", "Availability", "Fulfillment", "Post-Delivery"]
+    
+    pipeline = {}
+    for stage in stages:
+        stage_projects = []
+        for proj in projects:
+            if proj.get("delivery_stage", "Request") == stage:
+                initiative = init_lookup.get(proj.get("strategic_initiative_id"), {})
+                stage_projects.append({
+                    "id": proj["id"],
+                    "name": proj["name"],
+                    "description": proj.get("description", ""),
+                    "status": proj.get("status", "Not Started"),
+                    "owner": proj.get("owner", ""),
+                    "initiative_id": proj.get("strategic_initiative_id"),
+                    "initiative_name": initiative.get("name", "Unknown"),
+                    "milestones_count": len(proj.get("milestones", [])),
+                    "milestones_completed": sum(1 for m in proj.get("milestones", []) if m.get("status") == "Completed"),
+                })
+        pipeline[stage] = stage_projects
+    
+    return pipeline
+
+
+@router.put("/delivery-pipeline/move/{project_id}")
+async def move_project_delivery_stage(project_id: str, new_stage: str, current_user: dict = Depends(get_current_user)):
+    """Move a project to a different delivery stage"""
+    valid_stages = ["Request", "Solution Design", "Commercials", "Quote and Approval", "Order Capture", "Availability", "Fulfillment", "Post-Delivery"]
+    if new_stage not in valid_stages:
+        raise HTTPException(status_code=400, detail=f"Invalid stage. Must be one of: {valid_stages}")
+    
+    existing = await db.projects.find_one({"id": project_id}, {"_id": 0})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    await db.projects.update_one(
+        {"id": project_id},
+        {"$set": {"delivery_stage": new_stage, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    return {"message": f"Project moved to {new_stage}"}
