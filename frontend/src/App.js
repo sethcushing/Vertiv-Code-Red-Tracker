@@ -155,7 +155,9 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/code-red" element={<CodeRedDashboard />} />
+                    <Route path="/enterprise-metrics" element={<EnterpriseMetrics />} />
+                    <Route path="/enterprise-metrics/:id" element={<MetricDetail />} />
+                    <Route path="/milestones" element={<MilestonesView />} />
                     <Route path="/pipeline" element={<ProcessPipeline />} />
                     <Route path="/risk-heatmap" element={<RiskHeatmap />} />
                     <Route path="/initiatives" element={<InitiativesList />} />
