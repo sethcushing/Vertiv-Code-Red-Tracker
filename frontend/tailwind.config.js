@@ -10,7 +10,15 @@ module.exports = {
             fontFamily: {
                 sans: ['Lato', 'sans-serif'],
                 heading: ['Barlow Condensed', 'sans-serif'],
-                light: ['Lato', 'sans-serif'],
+                'lato': ['Lato', 'sans-serif'],
+                'lato-light': ['Lato', 'sans-serif'],
+                'lato-bold': ['Lato', 'sans-serif'],
+            },
+            fontWeight: {
+                'lato-light': '300',
+                'lato-regular': '400',
+                'lato-bold': '700',
+                'lato-black': '900',
             },
             borderRadius: {
                 lg: '1rem',
