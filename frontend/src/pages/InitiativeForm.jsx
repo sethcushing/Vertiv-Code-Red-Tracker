@@ -39,23 +39,25 @@ const InitiativeForm = () => {
     domains: [],
     teams: [],
     stages: [],
+    statuses: [],
     riskTypes: [],
+    metrics: [],
   });
 
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     bucket: 'Stabilization',
-    code_red_flag: false,
     business_domain: 'IT',
     lifecycle_stage: 'Request',
     executive_sponsor: '',
     initiative_owner: '',
     owning_team: 'Engineering',
     supporting_teams: [],
-    status: 'On Track',
+    status: 'Not Started',
     start_date: format(new Date(), 'yyyy-MM-dd'),
     target_end_date: format(new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
+    metric_ids: [],
     milestones: [],
     risks: [],
     financial: {
@@ -70,19 +72,23 @@ const InitiativeForm = () => {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const [buckets, domains, teams, stages, riskTypes] = await Promise.all([
+        const [buckets, domains, teams, stages, statuses, riskTypes, metrics] = await Promise.all([
           api.get('/config/buckets'),
           api.get('/config/domains'),
           api.get('/config/teams'),
           api.get('/config/stages'),
+          api.get('/config/statuses'),
           api.get('/config/risk-types'),
+          api.get('/enterprise-metrics'),
         ]);
         setConfig({
           buckets: buckets.data,
           domains: domains.data,
           teams: teams.data,
           stages: stages.data,
+          statuses: statuses.data,
           riskTypes: riskTypes.data,
+          metrics: metrics.data,
         });
       } catch (error) {
         console.error('Failed to load config:', error);
