@@ -207,6 +207,11 @@ const DeliveryPipeline = () => {
                                           ) : (
                                             <ChevronRight className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" />
                                           )}
+                                          {/* RAG Status */}
+                                          <div 
+                                            className={`w-2 h-2 rounded-full flex-shrink-0 mt-1 ${RAG_CONFIG[project.rag_status || 'Green']?.color}`}
+                                            title={`RAG: ${project.rag_status || 'Green'}`}
+                                          />
                                           <div className="flex-1 min-w-0">
                                             <p className="text-xs font-semibold text-gray-800 truncate">
                                               {project.name}
