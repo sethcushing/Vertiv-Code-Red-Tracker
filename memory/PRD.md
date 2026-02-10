@@ -12,46 +12,50 @@ Executive-grade initiative tracking and reporting tool for Vertiv to manage crit
 ## Core Requirements (Static)
 - JWT-based authentication
 - Initiative CRUD with Code Red flags
-- Milestones, Risks, Financials tracking
+- Milestones, Risks tracking (Financials removed per user request)
 - Team member assignments
 - Four-Blocker executive reporting pattern
-- AI-assisted confidence scoring (OpenAI GPT-5.2)
+- AI-assisted confidence scoring (Currently MOCKED - real implementation deferred)
 - Real-time dashboard with filtering
+- Process Pipeline view for lifecycle stages
 
-## What's Been Implemented (January 2026)
+## What's Been Implemented (December 2025)
 
-### Backend (FastAPI + MongoDB)
+### Backend (Flask + In-Memory Storage)
 - [x] JWT Authentication (register, login, me)
 - [x] Full Initiative CRUD with all nested data
 - [x] Milestone CRUD per initiative
 - [x] Risk CRUD per initiative with escalation flags
-- [x] Financial tracking with variance calculation
 - [x] Team member management
 - [x] Dashboard stats endpoint
 - [x] Four-blocker aggregation endpoint
 - [x] Risk heatmap endpoint (3x3 matrix)
-- [x] Financial exposure endpoint
+- [x] Process Pipeline endpoint
 - [x] Configuration endpoints (buckets, stages, domains, teams)
-- [x] Seed data endpoint with 8 realistic initiatives
-- [x] AI confidence scoring using OpenAI GPT-5.2 (Emergent LLM Key)
+- [x] Seed data endpoint with 8 realistic Vertiv process-focused initiatives
 
 ### Frontend (React + Tailwind + Shadcn/UI)
 - [x] Login/Register page with Vertiv branding
 - [x] Executive Dashboard with stats cards and four-blockers
 - [x] Code Red Dashboard with urgency indicators
-- [x] Financial Exposure view with table
 - [x] Risk Heatmap (3x3 interactive matrix)
+- [x] Process Pipeline view (Kanban-style by lifecycle stage)
 - [x] All Initiatives list with filters
-- [x] Initiative Detail with four-blocker summary
+- [x] Initiative Detail with tabs (Milestones, Risks, Team)
 - [x] Initiative Create/Edit forms
 - [x] Dark sidebar navigation with orange accents
 - [x] Professional light theme (#F4F5F7 bg, #FE5B1B primary)
-- [x] Barlow Condensed headings, IBM Plex Sans body fonts
+- [x] **Mixed Lato font weights typography system**
+  - Barlow Condensed for headings (weight 600)
+  - Lato Bold (700) for numbers, metrics, important values
+  - Lato Regular (400) for labels, UI elements
+  - Lato Light (300) for descriptions, secondary text
 
 ### Design System
 - Light professional theme with Vertiv orange (#FE5B1B)
-- Industrial aesthetic: sharp edges (rounded-sm), minimal shadows
-- High-density layouts for executive consumption
+- Modern rounded aesthetic with 2xl/3xl border radius
+- Gradient buttons and hover effects
+- Mixed Lato + Barlow Condensed typography
 - Status badges: Code Red (red pulse), At Risk (yellow), On Track (green), Off Track (red)
 - Confidence score color coding: 70+ green, 40-69 yellow, <40 red
 
@@ -59,10 +63,11 @@ Executive-grade initiative tracking and reporting tool for Vertiv to manage crit
 
 ### P0 (Critical)
 - All core features implemented ✓
+- Mixed Lato font weights ✓
 
 ### P1 (High Priority)
-- [ ] Initiative edit: Enable editing milestones, risks, financials inline
-- [ ] Audit trail for changes
+- [ ] Real AI confidence scoring using GPT-5.2 (currently MOCKED)
+- [ ] Persist data to database (currently in-memory)
 - [ ] Email notifications for escalated risks
 - [ ] Export four-blocker to PDF
 
@@ -70,7 +75,7 @@ Executive-grade initiative tracking and reporting tool for Vertiv to manage crit
 - [ ] Role-based permissions (viewer, owner, admin)
 - [ ] Dependency visualization between initiatives
 - [ ] Milestone Gantt chart view
-- [ ] Custom dashboard widgets
+- [ ] Audit trail for changes
 
 ### P3 (Nice to Have)
 - [ ] Dark mode theme toggle
@@ -78,8 +83,11 @@ Executive-grade initiative tracking and reporting tool for Vertiv to manage crit
 - [ ] Trend analysis charts
 - [ ] Scheduled report generation
 
-## Next Tasks
-1. Add inline editing for milestones, risks, and financials on initiative detail page
-2. Implement role-based access control
-3. Add PDF export for four-blocker reports
-4. Create audit history view per initiative
+## Test Credentials
+- Email: demo@vertiv.com
+- Password: Demo2024!
+
+## Technical Notes
+- **Data Persistence**: Currently using in-memory Python dictionaries. Data resets on server restart. Use "Reset Sample Data" button to restore defaults.
+- **AI Confidence Score**: Currently generates random numbers (45-95). Real GPT-5.2 integration via Emergent LLM Key is deferred.
+- **Financial Data**: Removed per user request - do not re-introduce.
