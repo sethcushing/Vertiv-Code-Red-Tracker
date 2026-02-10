@@ -37,8 +37,6 @@ const Layout = ({ children }) => {
     return 'Code Red Initiatives';
   };
 
-  const isAdmin = user?.role === 'admin';
-
   // Get breadcrumbs
   const getBreadcrumbs = () => {
     const path = location.pathname;
