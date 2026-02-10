@@ -15,8 +15,8 @@ import {
 const navigation = [
   { name: 'Executive Dashboard', href: '/executive', icon: Gauge },
   { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Delivery Pipeline', href: '/delivery-pipeline', icon: Truck },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
+  { name: 'Delivery Pipeline', href: '/delivery-pipeline', icon: Truck },
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
 ];
 
