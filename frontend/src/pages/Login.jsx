@@ -167,7 +167,7 @@ const Login = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-email" className="text-sm font-medium">
+                    <Label htmlFor="register-email" className="text-sm font-lato-regular">
                       Email
                     </Label>
                     <Input
