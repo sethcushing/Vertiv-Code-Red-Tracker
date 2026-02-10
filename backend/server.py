@@ -227,7 +227,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 # ==================== AI CONFIDENCE SCORING ====================
 
 async def calculate_confidence_score(initiative: dict) -> int:
-    """Calculate AI-assisted confidence score based on milestones, risks, and financials"""
+    """Calculate AI-assisted confidence score based on milestones, risks, and status"""
     try:
         from emergentintegrations.llm.chat import LlmChat, UserMessage
         
@@ -238,27 +238,23 @@ async def calculate_confidence_score(initiative: dict) -> int:
         # Prepare context for AI
         milestones = initiative.get('milestones', [])
         risks = initiative.get('risks', [])
-        financial = initiative.get('financial', {})
         
         delayed_milestones = sum(1 for m in milestones if m.get('status') == 'Delayed')
         high_risks = sum(1 for r in risks if r.get('impact') == 'High' or r.get('likelihood') == 'High')
-        variance = financial.get('variance', 0)
         
         context = f"""
         Initiative: {initiative.get('name', 'Unknown')}
         Status: {initiative.get('status', 'Unknown')}
-        Code Red: {initiative.get('code_red_flag', False)}
         
         Milestones: {len(milestones)} total, {delayed_milestones} delayed
         Risks: {len(risks)} total, {high_risks} high severity
-        Financial Variance: ${variance:,.2f}
         Target End Date: {initiative.get('target_end_date', 'Unknown')}
         """
         
         chat = LlmChat(
             api_key=api_key,
             session_id=f"confidence-{initiative.get('id', 'new')}",
-            system_message="You are an enterprise project analyst. Analyze the initiative data and return ONLY a single integer between 0-100 representing confidence score. Higher scores mean higher confidence in successful delivery. Consider milestone delays, risk severity, and financial variance."
+            system_message="You are an enterprise project analyst. Analyze the initiative data and return ONLY a single integer between 0-100 representing confidence score. Higher scores mean higher confidence in successful delivery. Consider milestone delays and risk severity."
         ).with_model("openai", "gpt-5.2")
         
         response = await chat.send_message(UserMessage(text=f"Calculate confidence score for:\n{context}"))
@@ -276,7 +272,6 @@ def rule_based_confidence(initiative: dict) -> int:
     
     milestones = initiative.get('milestones', [])
     risks = initiative.get('risks', [])
-    financial = initiative.get('financial', {})
     
     # Milestone impact
     delayed = sum(1 for m in milestones if m.get('status') == 'Delayed')
@@ -292,24 +287,18 @@ def rule_based_confidence(initiative: dict) -> int:
         if risk.get('escalation_flag'):
             score -= 5
     
-    # Financial impact
-    variance = financial.get('variance', 0)
-    if variance > 100000:
-        score -= 15
-    elif variance > 50000:
-        score -= 10
-    elif variance > 10000:
+    # Status impact - updated for new statuses
+    status = initiative.get('status', 'Not Started')
+    if status == 'Not Started':
         score -= 5
-    
-    # Status impact
-    if initiative.get('status') == 'Off Track':
-        score -= 20
-    elif initiative.get('status') == 'At Risk':
-        score -= 10
-    
-    # Code Red impact
-    if initiative.get('code_red_flag'):
-        score -= 10
+    elif status == 'Discovery':
+        score -= 0
+    elif status == 'Frame':
+        score += 5
+    elif status == 'Work In Progress':
+        score += 10
+    elif status == 'Implemented':
+        score += 15
     
     return max(0, min(100, score))
 
