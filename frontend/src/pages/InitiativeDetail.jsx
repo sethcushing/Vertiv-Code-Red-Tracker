@@ -557,6 +557,64 @@ const InitiativeDetail = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* History Tab */}
+        <TabsContent value="history">
+          <Card className="border-gray-200/80 rounded-lg">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-base font-heading uppercase flex items-center gap-2">
+                <History className="w-4 h-4" />
+                Audit History
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {auditLogs.length === 0 ? (
+                <div className="text-center py-8">
+                  <History className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                  <p className="text-gray-500 font-lato-light">No history recorded yet</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {auditLogs.map((log, idx) => (
+                    <div key={log.id || idx} className="flex gap-4 pb-4 border-b border-gray-100 last:border-0">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                        {log.action === 'created' && <Plus className="w-4 h-4 text-green-600" />}
+                        {log.action === 'updated' && <Edit className="w-4 h-4 text-blue-600" />}
+                        {log.action === 'deleted' && <Trash2 className="w-4 h-4 text-red-600" />}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-lato-bold text-gray-900 capitalize">{log.action}</span>
+                          <span className="text-gray-500 font-lato-light text-sm">{log.entity_type}</span>
+                          {log.entity_name && (
+                            <span className="text-gray-700 font-lato-regular text-sm">"{log.entity_name}"</span>
+                          )}
+                        </div>
+                        <div className="text-xs text-gray-500 font-lato-light mb-2">
+                          by {log.user_name} • {new Date(log.timestamp).toLocaleString()}
+                        </div>
+                        {log.changes && log.changes.length > 0 && (
+                          <div className="bg-gray-50 rounded-lg p-3 text-sm">
+                            {log.changes.map((change, cIdx) => (
+                              <div key={cIdx} className="flex items-center gap-2 text-gray-600">
+                                <span className="font-lato-bold">{change.field}:</span>
+                                {change.old_value && (
+                                  <span className="text-red-600 line-through font-lato-light">{change.old_value}</span>
+                                )}
+                                <span className="text-gray-400">→</span>
+                                <span className="text-green-600 font-lato-regular">{change.new_value}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
 
       {/* Milestone Dialog */}
