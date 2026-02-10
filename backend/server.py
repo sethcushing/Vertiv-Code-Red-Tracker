@@ -748,7 +748,7 @@ async def get_financial_exposure(current_user: dict = Depends(get_current_user))
 
 @api_router.get("/config/buckets")
 async def get_buckets():
-    return ["Code Red", "Stabilization", "Modernization", "Growth"]
+    return ["Stabilization", "Modernization", "Growth"]
 
 @api_router.get("/config/stages")
 async def get_stages():
@@ -763,6 +763,10 @@ async def get_stages():
         "Post-Delivery / Support"
     ]
 
+@api_router.get("/config/statuses")
+async def get_statuses():
+    return ["Not Started", "Discovery", "Frame", "Work In Progress", "Implemented"]
+
 @api_router.get("/config/domains")
 async def get_domains():
     return ["Sales", "Engineering", "Supply Chain", "Manufacturing", "Fulfillment", "Finance", "IT", "Data"]
@@ -774,6 +778,123 @@ async def get_teams():
 @api_router.get("/config/risk-types")
 async def get_risk_types():
     return ["Delivery", "Data", "Financial", "Vendor", "Security", "Operational"]
+
+@api_router.get("/config/metric-categories")
+async def get_metric_categories():
+    return ["Planning", "Sales", "Quality", "Delivery", "Customer Satisfaction"]
+
+# ==================== ENTERPRISE METRICS ENDPOINTS ====================
+
+@api_router.post("/enterprise-metrics", response_model=EnterpriseMetricResponse)
+async def create_enterprise_metric(metric: EnterpriseMetricCreate, current_user: dict = Depends(get_current_user)):
+    metric_id = str(uuid.uuid4())
+    now = datetime.now(timezone.utc).isoformat()
+    
+    metric_doc = {
+        "id": metric_id,
+        **metric.model_dump(),
+        "created_at": now,
+        "updated_at": now
+    }
+    
+    await db.enterprise_metrics.insert_one(metric_doc)
+    
+    return EnterpriseMetricResponse(**{k: v for k, v in metric_doc.items() if k != '_id'}, initiative_count=0)
+
+@api_router.get("/enterprise-metrics", response_model=List[EnterpriseMetricResponse])
+async def get_enterprise_metrics(
+    category: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    query = {}
+    if category:
+        query["category"] = category
+    
+    metrics = await db.enterprise_metrics.find(query, {"_id": 0}).to_list(100)
+    initiatives = await db.initiatives.find({}, {"_id": 0, "metric_ids": 1}).to_list(1000)
+    
+    # Count initiatives per metric
+    metric_counts = {}
+    for init in initiatives:
+        for mid in init.get("metric_ids", []):
+            metric_counts[mid] = metric_counts.get(mid, 0) + 1
+    
+    return [EnterpriseMetricResponse(**m, initiative_count=metric_counts.get(m["id"], 0)) for m in metrics]
+
+@api_router.get("/enterprise-metrics/{metric_id}", response_model=EnterpriseMetricResponse)
+async def get_enterprise_metric(metric_id: str, current_user: dict = Depends(get_current_user)):
+    metric = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
+    if not metric:
+        raise HTTPException(status_code=404, detail="Metric not found")
+    
+    # Count initiatives for this metric
+    count = await db.initiatives.count_documents({"metric_ids": metric_id})
+    
+    return EnterpriseMetricResponse(**metric, initiative_count=count)
+
+@api_router.get("/enterprise-metrics/{metric_id}/initiatives", response_model=List[InitiativeResponse])
+async def get_initiatives_by_metric(metric_id: str, current_user: dict = Depends(get_current_user)):
+    metric = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
+    if not metric:
+        raise HTTPException(status_code=404, detail="Metric not found")
+    
+    initiatives = await db.initiatives.find({"metric_ids": metric_id}, {"_id": 0}).to_list(1000)
+    return [InitiativeResponse(**i) for i in initiatives]
+
+@api_router.put("/enterprise-metrics/{metric_id}", response_model=EnterpriseMetricResponse)
+async def update_enterprise_metric(metric_id: str, metric: EnterpriseMetricCreate, current_user: dict = Depends(get_current_user)):
+    existing = await db.enterprise_metrics.find_one({"id": metric_id})
+    if not existing:
+        raise HTTPException(status_code=404, detail="Metric not found")
+    
+    update_data = metric.model_dump()
+    update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.enterprise_metrics.update_one({"id": metric_id}, {"$set": update_data})
+    
+    updated = await db.enterprise_metrics.find_one({"id": metric_id}, {"_id": 0})
+    count = await db.initiatives.count_documents({"metric_ids": metric_id})
+    
+    return EnterpriseMetricResponse(**updated, initiative_count=count)
+
+@api_router.delete("/enterprise-metrics/{metric_id}")
+async def delete_enterprise_metric(metric_id: str, current_user: dict = Depends(get_current_user)):
+    result = await db.enterprise_metrics.delete_one({"id": metric_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Metric not found")
+    
+    # Remove metric from all initiatives
+    await db.initiatives.update_many({}, {"$pull": {"metric_ids": metric_id}})
+    
+    return {"message": "Metric deleted"}
+
+# ==================== ALL MILESTONES ENDPOINT ====================
+
+@api_router.get("/milestones")
+async def get_all_milestones(current_user: dict = Depends(get_current_user)):
+    """Get all milestones across all initiatives, sorted by due date (latest first)"""
+    initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
+    
+    all_milestones = []
+    for i in initiatives:
+        for m in i.get("milestones", []):
+            all_milestones.append({
+                "milestone_id": m.get("id"),
+                "milestone_name": m.get("name"),
+                "milestone_description": m.get("description", ""),
+                "milestone_owner": m.get("owner", ""),
+                "due_date": m.get("due_date"),
+                "status": m.get("status", "Pending"),
+                "initiative_id": i.get("id"),
+                "initiative_name": i.get("name"),
+                "initiative_status": i.get("status"),
+                "initiative_owner": i.get("initiative_owner", "")
+            })
+    
+    # Sort by due_date descending (latest first)
+    all_milestones.sort(key=lambda x: x.get("due_date", ""), reverse=True)
+    
+    return all_milestones
 
 # ==================== SEED DATA ENDPOINT ====================
 
