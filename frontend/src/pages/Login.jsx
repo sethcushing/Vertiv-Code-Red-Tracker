@@ -46,14 +46,14 @@ const Login = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-[#FE5B1B] rounded-sm flex items-center justify-center">
-              <span className="text-white font-bold text-2xl font-heading">V</span>
+            <div className="w-12 h-12 bg-[#FE5B1B] rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-xl font-heading">CR</span>
             </div>
             <div className="text-left">
               <h1 className="text-2xl font-heading font-bold text-gray-900 uppercase tracking-tight">
-                Vertiv
+                Code Red
               </h1>
-              <p className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">Control Tower</p>
+              <p className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">Initiatives</p>
             </div>
           </div>
           <p className="text-gray-600 text-sm font-lato-light">Enterprise Initiative Management</p>
