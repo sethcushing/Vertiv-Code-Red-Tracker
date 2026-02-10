@@ -257,15 +257,15 @@
     @apply bg-gray-300 rounded-sm hover:bg-gray-400;
 }
 
-/* Modern Animation Classes */
+/* Modern Rounded Animation Classes */
 .animate-fade-in {
-    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -275,34 +275,53 @@
 
 /* Modern Card Hover Lift */
 .card-hover-lift {
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
 }
 
 /* Glassmorphism Effect for special cards */
 .glass-card {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 1.5rem;
 }
 
-/* Modern Input Focus States */
+/* Modern Rounded Input Focus States */
+input, select, textarea {
+    border-radius: 0.75rem !important;
+}
+
 input:focus, select:focus, textarea:focus {
-    box-shadow: 0 0 0 3px rgba(254, 91, 27, 0.1);
+    box-shadow: 0 0 0 4px rgba(254, 91, 27, 0.1);
 }
 
 /* Smooth Icon Transitions */
 .icon-hover {
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .icon-hover:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full hover:bg-gray-400;
 }
 
 /* Data Table Wrapper */
