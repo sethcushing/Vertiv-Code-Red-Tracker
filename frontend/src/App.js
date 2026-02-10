@@ -7,7 +7,9 @@ import { toast } from 'sonner';
 // Pages
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import CodeRedDashboard from './pages/CodeRedDashboard';
+import EnterpriseMetrics from './pages/EnterpriseMetrics';
+import MetricDetail from './pages/MetricDetail';
+import MilestonesView from './pages/MilestonesView';
 import ProcessPipeline from './pages/ProcessPipeline';
 import RiskHeatmap from './pages/RiskHeatmap';
 import InitiativesList from './pages/InitiativesList';
