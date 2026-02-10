@@ -126,17 +126,17 @@ class TeamMember(TeamMemberBase):
 class InitiativeBase(BaseModel):
     name: str
     description: Optional[str] = ""
-    bucket: str  # Code Red, Stabilization, Modernization, Growth
-    code_red_flag: bool = False
+    bucket: str  # Stabilization, Modernization, Growth
     business_domain: str  # Sales, Engineering, Supply Chain, Manufacturing, Fulfillment, Finance, IT, Data
     lifecycle_stage: str  # Request, Solution Design, etc.
     executive_sponsor: Optional[str] = ""
     initiative_owner: Optional[str] = ""
     owning_team: str
     supporting_teams: List[str] = []
-    status: str = "On Track"  # On Track, At Risk, Off Track
+    status: str = "Not Started"  # Not Started, Discovery, Frame, Work In Progress, Implemented
     start_date: str
     target_end_date: str
+    metric_ids: List[str] = []  # Links to Enterprise Metrics
 
 class InitiativeCreate(InitiativeBase):
     milestones: List[MilestoneBase] = []
@@ -148,7 +148,6 @@ class InitiativeUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     bucket: Optional[str] = None
-    code_red_flag: Optional[bool] = None
     business_domain: Optional[str] = None
     lifecycle_stage: Optional[str] = None
     executive_sponsor: Optional[str] = None
@@ -158,6 +157,7 @@ class InitiativeUpdate(BaseModel):
     status: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
+    metric_ids: Optional[List[str]] = None
 
 class InitiativeResponse(InitiativeBase):
     id: str
