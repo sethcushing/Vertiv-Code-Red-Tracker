@@ -44,8 +44,8 @@ const Layout = ({ children }) => {
   const getPageTitle = () => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
-    if (path === '/enterprise-metrics') return 'Enterprise Metrics';
-    if (path.includes('/enterprise-metrics/')) return 'Metric Details';
+    if (path === '/enterprise-metrics') return 'Core Business Outcomes';
+    if (path.includes('/enterprise-metrics/')) return 'Outcome Details';
     if (path === '/pipeline') return 'Pipeline Process';
     if (path === '/milestones') return 'All Milestones';
     if (path === '/risk-heatmap') return 'Risk Heatmap';
@@ -53,6 +53,7 @@ const Layout = ({ children }) => {
     if (path.includes('/initiatives/new')) return 'New Initiative';
     if (path.includes('/edit')) return 'Edit Initiative';
     if (path.includes('/initiatives/')) return 'Initiative Details';
+    if (path === '/kpi-tree') return 'KPI Tree';
     return 'Code Red Initiatives';
   };
 
@@ -71,7 +72,7 @@ const Layout = ({ children }) => {
         crumbs.push({ name: 'Details', href: path });
       }
     } else if (path.includes('/enterprise-metrics')) {
-      crumbs.push({ name: 'Enterprise Metrics', href: '/enterprise-metrics' });
+      crumbs.push({ name: 'Core Business Outcomes', href: '/enterprise-metrics' });
       if (path !== '/enterprise-metrics') {
         crumbs.push({ name: 'Details', href: path });
       }
