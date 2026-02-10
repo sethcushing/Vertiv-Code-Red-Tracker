@@ -133,7 +133,7 @@ const Login = () => {
                     type="submit"
                     data-testid="login-submit-btn"
                     disabled={isLoading}
-                    className="w-full text-white rounded-lg font-semibold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="w-full text-white rounded-lg font-lato-bold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
                     style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                   >
                     {isLoading ? (
@@ -210,7 +210,7 @@ const Login = () => {
                     type="submit"
                     data-testid="register-submit-btn"
                     disabled={isLoading}
-                    className="w-full text-white rounded-lg font-semibold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="w-full text-white rounded-lg font-lato-bold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
                     style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                   >
                     {isLoading ? (
