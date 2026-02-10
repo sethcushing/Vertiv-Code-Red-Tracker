@@ -73,31 +73,33 @@
         font-family: 'Lato', sans-serif;
         font-weight: 700;
     }
-    p, span {
-        font-family: 'Lato', sans-serif;
-        font-weight: 300;
-    }
-    label, th {
-        font-family: 'Lato', sans-serif;
-        font-weight: 400;
-    }
     strong, b {
         font-weight: 700;
     }
-    .font-light {
+    /* Lato Weight Utilities */
+    .font-light, .font-lato-light {
+        font-family: 'Lato', sans-serif;
         font-weight: 300;
     }
-    .font-normal {
+    .font-normal, .font-lato-regular {
+        font-family: 'Lato', sans-serif;
         font-weight: 400;
     }
     .font-medium {
+        font-family: 'Lato', sans-serif;
         font-weight: 400;
     }
-    .font-semibold {
+    .font-semibold, .font-lato-bold {
+        font-family: 'Lato', sans-serif;
         font-weight: 700;
     }
     .font-bold {
+        font-family: 'Lato', sans-serif;
         font-weight: 700;
+    }
+    .font-black, .font-lato-black {
+        font-family: 'Lato', sans-serif;
+        font-weight: 900;
     }
 }
 
