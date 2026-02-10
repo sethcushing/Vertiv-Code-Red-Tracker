@@ -78,45 +78,46 @@
     }
 }
 
-/* Modern Industrial Styling */
+/* Modern Rounded Styling */
 .card-sharp {
-    @apply bg-white border border-gray-200/80 rounded-md;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
-    transition: all 0.2s ease;
+    @apply bg-white border border-gray-100 rounded-2xl;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card-sharp:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
-    border-color: rgba(0,0,0,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 12px 32px rgba(0,0,0,0.06);
+    transform: translateY(-2px);
 }
 
 .btn-primary {
-    @apply text-white rounded-md font-semibold tracking-wide uppercase text-sm px-6 py-2.5;
+    @apply text-white rounded-xl font-semibold tracking-wide text-sm px-6 py-3;
     background: linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%);
-    box-shadow: 0 2px 4px rgba(254, 91, 27, 0.25), 0 4px 12px rgba(254, 91, 27, 0.15);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(254, 91, 27, 0.3), 0 2px 4px rgba(254, 91, 27, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-primary:hover {
     background: linear-gradient(135deg, #FF6B2B 0%, #FE5B1B 100%);
-    box-shadow: 0 4px 8px rgba(254, 91, 27, 0.3), 0 8px 20px rgba(254, 91, 27, 0.2);
-    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(254, 91, 27, 0.4), 0 4px 8px rgba(254, 91, 27, 0.25);
+    transform: translateY(-2px);
 }
 
 .btn-primary:active {
     transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(254, 91, 27, 0.2);
+    box-shadow: 0 2px 8px rgba(254, 91, 27, 0.3);
 }
 
 .btn-secondary {
-    @apply bg-white border border-gray-200 text-gray-700 rounded-md font-medium text-sm px-5 py-2.5;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-    transition: all 0.2s ease;
+    @apply bg-white border border-gray-200 text-gray-700 rounded-xl font-medium text-sm px-5 py-3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-secondary:hover {
     @apply bg-gray-50 border-gray-300 text-gray-900;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
 }
 
 /* Modern Status Badges */
