@@ -153,7 +153,7 @@ const Dashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Initiatives</p>
+                <p className="text-xs text-gray-400 tracking-wider font-normal">TOTAL INITIATIVES</p>
                 <p className="text-4xl font-heading font-bold text-gray-900 mt-2">{stats.total_initiatives}</p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
@@ -167,7 +167,7 @@ const Dashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-red-500 uppercase tracking-wider">Code Red</p>
+                <p className="text-xs text-red-500 tracking-wider font-normal">CODE RED</p>
                 <p className="text-4xl font-heading font-bold text-red-600 mt-2">{stats.code_red_count}</p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-red-100 to-red-200 rounded-2xl flex items-center justify-center animate-pulse-code-red">
@@ -181,7 +181,7 @@ const Dashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">At Risk</p>
+                <p className="text-xs text-gray-400 tracking-wider font-normal">AT RISK</p>
                 <p className="text-4xl font-heading font-bold text-amber-500 mt-2">{stats.at_risk_count}</p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl flex items-center justify-center">
@@ -193,24 +193,24 @@ const Dashboard = () => {
 
         <Card className="border-0 shadow-lg rounded-2xl bg-white hover:shadow-xl transition-all duration-300 hover:-translate-y-1" data-testid="stat-status">
           <CardContent className="p-6">
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-5">Status Breakdown</p>
+            <p className="text-xs text-gray-400 tracking-wider font-normal mb-5">STATUS BREAKDOWN</p>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-3 text-sm text-gray-600">
+                <span className="flex items-center gap-3 text-sm font-light text-gray-600">
                   <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
                   On Track
                 </span>
                 <span className="font-bold text-gray-900">{stats.on_track_count}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-3 text-sm text-gray-600">
+                <span className="flex items-center gap-3 text-sm font-light text-gray-600">
                   <div className="w-3 h-3 rounded-full bg-amber-500"></div>
                   At Risk
                 </span>
                 <span className="font-bold text-gray-900">{stats.at_risk_count}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-3 text-sm text-gray-600">
+                <span className="flex items-center gap-3 text-sm font-light text-gray-600">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   Off Track
                 </span>
