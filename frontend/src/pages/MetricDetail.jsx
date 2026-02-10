@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { ArrowLeft, Target, TrendingUp, TrendingDown, Minus, ChevronRight } from 'lucide-react';
-import api from '../utils/api';
+import { api } from '../App';
 import { toast } from 'sonner';
 
 const MetricDetail = () => {
