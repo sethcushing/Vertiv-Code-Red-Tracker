@@ -288,16 +288,18 @@ const Dashboard = () => {
           <span className="text-xs text-gray-400 font-lato-light">Drag initiatives to move between stages</span>
         </div>
         <div className="flex items-center gap-3">
-          <Button
-            onClick={() => navigate('/strategic-initiatives/new')}
-            data-testid="add-initiative-btn"
-            size="sm"
-            className="text-white rounded-lg font-lato-bold text-xs"
-            style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
-          >
-            <Plus className="w-3 h-3 mr-1" />
-            Add Initiative
-          </Button>
+          {isAdmin && (
+            <Button
+              onClick={() => navigate('/strategic-initiatives/new')}
+              data-testid="add-initiative-btn"
+              size="sm"
+              className="text-white rounded-lg font-lato-bold text-xs"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+            >
+              <Plus className="w-3 h-3 mr-1" />
+              Add Initiative
+            </Button>
+          )}
         </div>
       </div>
 
