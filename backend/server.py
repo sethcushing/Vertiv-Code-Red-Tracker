@@ -1206,19 +1206,54 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
     
     now = datetime.now(timezone.utc).isoformat()
     
-    # Seed Enterprise Metrics
+    # Seed Enterprise Metrics (Core Business Outcomes) - Two categories: ETO and Quality
     seed_metrics = [
+        # ETO (Engineer To Order) Category
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Engineer To Order Cycle Time",
+            "description": "Average time from engineering request to completed design specification",
+            "category": "ETO",
+            "target_value": 10,
+            "current_value": 21,
+            "unit": "days",
+            "created_at": now,
+            "updated_at": now
+        },
         {
             "id": str(uuid.uuid4()),
             "name": "Quote-to-Order Cycle Time",
             "description": "Average time from initial quote to confirmed order",
-            "category": "Sales",
+            "category": "ETO",
             "target_value": 5,
             "current_value": 14,
             "unit": "days",
             "created_at": now,
             "updated_at": now
         },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Configuration Accuracy",
+            "description": "Percentage of configurations completed correctly on first attempt",
+            "category": "ETO",
+            "target_value": 95,
+            "current_value": 78,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Engineering Change Order Rate",
+            "description": "Percentage of orders requiring engineering changes after submission",
+            "category": "ETO",
+            "target_value": 5,
+            "current_value": 18,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        },
+        # Quality Category
         {
             "id": str(uuid.uuid4()),
             "name": "Solution Design Accuracy",
@@ -1245,7 +1280,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "id": str(uuid.uuid4()),
             "name": "On-Time Delivery Rate",
             "description": "Percentage of orders delivered by promised date",
-            "category": "Delivery",
+            "category": "Quality",
             "target_value": 98,
             "current_value": 87,
             "unit": "%",
@@ -1256,32 +1291,10 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "id": str(uuid.uuid4()),
             "name": "Customer Satisfaction Score",
             "description": "Post-delivery NPS score",
-            "category": "Customer Satisfaction",
+            "category": "Quality",
             "target_value": 75,
             "current_value": 62,
             "unit": "NPS",
-            "created_at": now,
-            "updated_at": now
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Forecast Accuracy",
-            "description": "Accuracy of demand planning vs actual orders",
-            "category": "Planning",
-            "target_value": 90,
-            "current_value": 78,
-            "unit": "%",
-            "created_at": now,
-            "updated_at": now
-        },
-        {
-            "id": str(uuid.uuid4()),
-            "name": "Engineer To Order Cycle Time",
-            "description": "Average time from engineering request to completed design specification",
-            "category": "Engineering",
-            "target_value": 10,
-            "current_value": 21,
-            "unit": "days",
             "created_at": now,
             "updated_at": now
         }
