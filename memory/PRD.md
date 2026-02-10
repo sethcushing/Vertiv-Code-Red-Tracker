@@ -12,10 +12,16 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 - Add/edit/delete initiatives and projects
 - Summary statistics (Initiatives, Projects, Outcomes, KPIs)
 
-### 2. Business Outcomes
+### 2. Business Outcomes (Card-Based Layout - Dec 2025)
+- **Card-based side-by-side layout** for categories
 - Three-level hierarchy: Category → Sub-Outcome → KPI
 - Categories: ETO, Quality, PDSL (seeded)
-- Progress tracking with visual progress bars
+- Each card features:
+  - Colorful gradient header (orange, blue, green, violet, amber)
+  - Circular progress ring showing overall category progress
+  - On Track / At Risk / Off Track KPI counts
+  - Expandable sub-outcomes with progress bars
+  - KPI cards with current value, target, and visual progress
 - KPI history tracking with trend charts
 - CRUD operations for categories, sub-outcomes, and KPIs
 
@@ -142,7 +148,7 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 - Role-based UI controls
 
 ### P2 - Medium Priority
-- Business Outcomes card-based layout (user mentioned)
+- (All P2 items completed)
 
 ### Future Enhancements
 - Export reports to PDF/Excel
