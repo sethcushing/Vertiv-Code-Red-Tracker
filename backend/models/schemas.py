@@ -97,11 +97,15 @@ class ProjectBase(BaseModel):
     strategic_initiative_id: str  # Parent Strategic Initiative
     status: str = "Not Started"  # Not Started, In Progress, Completed, On Hold
     rag_status: str = "Green"  # Red, Amber, Green
-    delivery_stage: str = "Request"  # Request, Solution Design, Commercials, Quote and Approval, Order Capture, Availability, Fulfillment, Post-Delivery
+    delivery_stage: str = "Request"  # Current delivery stage
+    delivery_stages_impacted: List[str] = []  # Which delivery stages this impacts
+    business_unit: Optional[str] = ""  # IT, Sales, Manufacturing, etc.
     owner: Optional[str] = ""
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
     business_outcome_ids: List[str] = []  # Links to Business Outcome Categories
+    team_members: List[TeamMember] = []
+    status_history: List[StatusUpdate] = []
 
 
 class ProjectCreate(ProjectBase):
