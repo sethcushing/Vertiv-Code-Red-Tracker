@@ -27,6 +27,12 @@ const DELIVERY_STAGES = [
   { id: 'Post-Delivery', label: 'Post-Delivery', color: 'bg-teal-100', textColor: 'text-teal-700', dotColor: 'bg-teal-500' },
 ];
 
+const RAG_CONFIG = {
+  'Red': { color: 'bg-red-500', border: 'border-red-300' },
+  'Amber': { color: 'bg-amber-500', border: 'border-amber-300' },
+  'Green': { color: 'bg-emerald-500', border: 'border-emerald-300' },
+};
+
 const DeliveryPipeline = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
