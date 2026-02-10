@@ -134,12 +134,15 @@ const ProcessPipeline = () => {
                           {/* Header */}
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div className="flex-1 min-w-0">
-                              {initiative.code_red_flag && (
-                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-lato-bold uppercase bg-red-100 text-red-700 mb-1">
-                                  <AlertTriangle className="w-3 h-3 mr-1" />
-                                  Code Red
-                                </span>
-                              )}
+                              <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-xs font-lato-bold uppercase mb-1 ${
+                                initiative.status === 'Implemented' ? 'bg-green-100 text-green-700' :
+                                initiative.status === 'Work In Progress' ? 'bg-yellow-100 text-yellow-700' :
+                                initiative.status === 'Frame' ? 'bg-purple-100 text-purple-700' :
+                                initiative.status === 'Discovery' ? 'bg-blue-100 text-blue-700' :
+                                'bg-gray-100 text-gray-700'
+                              }`}>
+                                {initiative.status}
+                              </span>
                               <h4 className="font-lato-bold text-sm text-gray-900 line-clamp-2">
                                 {initiative.name}
                               </h4>
