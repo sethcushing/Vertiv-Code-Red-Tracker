@@ -27,7 +27,7 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRATION_HOURS = 24
 
 # Create the main app
-app = FastAPI(title="Enterprise Initiative Control Tower")
+app = FastAPI(title="Code Red Initiatives")
 api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 
