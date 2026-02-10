@@ -9,6 +9,8 @@ import {
   ChevronRight,
   BarChart3,
   Gauge,
+  Truck,
+  Settings,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -20,8 +22,13 @@ import {
 const navigation = [
   { name: 'Executive Dashboard', href: '/executive', icon: Gauge },
   { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Delivery Pipeline', href: '/delivery-pipeline', icon: Truck },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
+];
+
+const adminNavigation = [
+  { name: 'User Management', href: '/admin', icon: Settings },
 ];
 
 const Layout = ({ children }) => {
@@ -39,13 +46,17 @@ const Layout = ({ children }) => {
     const path = location.pathname;
     if (path === '/executive') return 'Executive Dashboard';
     if (path === '/' || path === '/dashboard') return 'Code Red Pipeline';
+    if (path === '/delivery-pipeline') return 'Delivery Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
     if (path === '/reporting') return 'Reporting Dashboard';
+    if (path === '/admin') return 'User Management';
     if (path.includes('/projects/')) return 'Project Details';
     if (path.includes('/strategic-initiatives/new')) return 'New Initiative';
     if (path.includes('/strategic-initiatives/')) return 'Initiative Details';
     return 'Code Red Initiatives';
   };
+
+  const isAdmin = user?.role === 'admin';
 
   // Get breadcrumbs
   const getBreadcrumbs = () => {
