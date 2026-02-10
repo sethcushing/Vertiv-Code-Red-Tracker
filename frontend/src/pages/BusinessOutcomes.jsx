@@ -383,12 +383,14 @@ const BusinessOutcomes = () => {
                       return (
                         <div key={subOutcome.id} className="border-t border-gray-100">
                           {/* Sub-Outcome Row */}
-                          <button
-                            onClick={() => toggleSubOutcome(subOutcome.id)}
-                            className="w-full flex items-center justify-between p-2.5 pl-8 hover:bg-gray-50 transition-all"
+                          <div
+                            className="w-full flex items-center justify-between p-2.5 pl-8 hover:bg-gray-50 transition-all cursor-pointer"
                             data-testid={`sub-outcome-${subOutcome.id}`}
                           >
-                            <div className="flex items-center gap-3 flex-1">
+                            <div 
+                              className="flex items-center gap-3 flex-1"
+                              onClick={() => toggleSubOutcome(subOutcome.id)}
+                            >
                               {isSubExpanded ? (
                                 <ChevronDown className="w-3.5 h-3.5 text-[#FE5B1B]" />
                               ) : (
@@ -423,7 +425,7 @@ const BusinessOutcomes = () => {
                                 <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
                               </button>
                             </div>
-                          </button>
+                          </div>
 
                           {/* KPIs */}
                           {isSubExpanded && (
