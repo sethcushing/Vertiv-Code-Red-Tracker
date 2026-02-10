@@ -123,6 +123,35 @@ const Layout = ({ children }) => {
               </Link>
             );
           })}
+          
+          {/* Admin Navigation - Only show for admins */}
+          {isAdmin && (
+            <>
+              <div className="mx-3 my-3 border-t border-gray-800/50" />
+              <p className="px-5 text-[10px] text-gray-500 uppercase tracking-wider mb-2">Admin</p>
+              {adminNavigation.map((item) => {
+                const isActive = location.pathname === item.href;
+                const Icon = item.icon;
+                
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className={`flex items-center gap-2.5 px-3 py-2.5 mx-2 rounded-lg text-sm font-lato-regular transition-all duration-300 ${
+                      isActive
+                        ? 'text-white shadow-lg'
+                        : 'text-gray-400 hover:bg-white/10 hover:text-white'
+                    }`}
+                    style={isActive ? { background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' } : {}}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.name}
+                  </Link>
+                );
+              })}
+            </>
+          )}
         </nav>
 
         {/* User Section */}
