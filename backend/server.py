@@ -880,6 +880,50 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
         escalated_risks=escalated_risks
     )
 
+@api_router.get("/dashboard/risk-heatmap")
+async def get_risk_heatmap(current_user: dict = Depends(get_current_user)):
+    """Get risks grouped by impact and likelihood for heatmap display"""
+    projects = await db.projects.find({}, {"_id": 0}).to_list(500)
+    strategic_initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(100)
+    
+    # Create lookup for initiative names
+    init_map = {init["id"]: init["name"] for init in strategic_initiatives}
+    
+    # Initialize heatmap structure
+    impact_levels = ["High", "Medium", "Low"]
+    likelihood_levels = ["Low", "Medium", "High"]
+    heatmap = {impact: {likelihood: [] for likelihood in likelihood_levels} for impact in impact_levels}
+    
+    # Collect all risks from projects
+    for project in projects:
+        initiative_id = project.get("strategic_initiative_id", "")
+        initiative_name = init_map.get(initiative_id, "Unknown")
+        
+        for risk in project.get("risks", []):
+            impact = risk.get("impact", "Medium")
+            likelihood = risk.get("likelihood", "Medium")
+            
+            # Ensure valid values
+            if impact not in impact_levels:
+                impact = "Medium"
+            if likelihood not in likelihood_levels:
+                likelihood = "Medium"
+            
+            heatmap[impact][likelihood].append({
+                "risk_id": risk.get("id", ""),
+                "risk_description": risk.get("description", ""),
+                "risk_type": risk.get("risk_type", ""),
+                "mitigation_plan": risk.get("mitigation_plan", ""),
+                "risk_owner": risk.get("risk_owner", ""),
+                "escalation": risk.get("escalation_flag", False),
+                "project_id": project.get("id", ""),
+                "project_name": project.get("name", ""),
+                "initiative_id": initiative_id,
+                "initiative_name": initiative_name
+            })
+    
+    return heatmap
+
 @api_router.get("/pipeline")
 async def get_pipeline(current_user: dict = Depends(get_current_user)):
     """Get Code Red Pipeline: Strategic Initiatives grouped by status with their projects"""
