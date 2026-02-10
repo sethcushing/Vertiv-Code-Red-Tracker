@@ -268,9 +268,6 @@ const InitiativesList = () => {
                   >
                     <TableCell className="font-lato-regular">
                       <div className="flex items-center gap-2">
-                        {initiative.code_red_flag && (
-                          <AlertTriangle className="w-4 h-4 text-red-500 animate-pulse flex-shrink-0" />
-                        )}
                         <div>
                           <p className="font-lato-regular text-gray-900 line-clamp-1">{initiative.name}</p>
                           <p className="text-xs text-gray-500 font-lato-light">{initiative.bucket}</p>
