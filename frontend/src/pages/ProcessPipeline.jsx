@@ -98,8 +98,8 @@ const ProcessPipeline = () => {
           return (
             <div key={stage.key} className="space-y-3">
               {/* Stage Header */}
-              <div className={`p-3 rounded-lg ${stage.color} text-white`}>
-                <h3 className="font-heading font-bold text-sm uppercase tracking-wide">
+              <div className={`p-4 rounded-xl ${stage.color} text-white shadow-lg`}>
+                <h3 className="font-heading font-semibold text-sm tracking-wide">
                   {stage.label}
                 </h3>
                 <p className="text-white/80 text-xs mt-1">
@@ -125,10 +125,10 @@ const ProcessPipeline = () => {
                       <Card
                         key={initiative.id}
                         data-testid={`pipeline-card-${initiative.id}`}
-                        className={`border-l-4 rounded-lg cursor-pointer hover:shadow-md transition-all ${getStatusColor(initiative.status)}`}
+                        className={`border-l-4 rounded-xl cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1 ${getStatusColor(initiative.status)}`}
                         onClick={() => navigate(`/initiatives/${initiative.id}`)}
                       >
-                        <CardContent className="p-3">
+                        <CardContent className="p-4">
                           {/* Header */}
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div className="flex-1 min-w-0">
@@ -142,7 +142,7 @@ const ProcessPipeline = () => {
                                 {initiative.name}
                               </h4>
                             </div>
-                            <div className={`w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 ${getConfidenceColor(initiative.confidence_score)}`}>
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
                               <span className="text-white text-xs font-bold">{initiative.confidence_score}</span>
                             </div>
                           </div>
