@@ -475,27 +475,27 @@ const InitiativeDetail = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50">
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Risk</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Type</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase text-center">Impact</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase text-center">Likelihood</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase text-center">Escalated</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase w-24"></TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Risk</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Type</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase text-center">Impact</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase text-center">Likelihood</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase text-center">Escalated</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase w-24"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {risks.map((r) => (
                       <TableRow key={r.id} className={`border-b border-gray-100 ${r.escalation_flag ? 'bg-red-50' : ''}`}>
                         <TableCell>
-                          <p className="font-medium">{r.description}</p>
-                          {r.mitigation_plan && <p className="text-xs text-gray-500 mt-1"><span className="font-medium">Mitigation:</span> {r.mitigation_plan}</p>}
+                          <p className="font-lato-regular">{r.description}</p>
+                          {r.mitigation_plan && <p className="text-xs text-gray-500 mt-1 font-lato-light"><span className="font-lato-regular">Mitigation:</span> {r.mitigation_plan}</p>}
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600">{r.risk_type}</TableCell>
+                        <TableCell className="text-sm text-gray-600 font-lato-light">{r.risk_type}</TableCell>
                         <TableCell className="text-center">
-                          <span className={`text-sm font-medium ${r.impact === 'High' ? 'text-red-600' : r.impact === 'Medium' ? 'text-yellow-600' : 'text-green-600'}`}>{r.impact}</span>
+                          <span className={`text-sm font-lato-bold ${r.impact === 'High' ? 'text-red-600' : r.impact === 'Medium' ? 'text-yellow-600' : 'text-green-600'}`}>{r.impact}</span>
                         </TableCell>
                         <TableCell className="text-center">
-                          <span className={`text-sm font-medium ${r.likelihood === 'High' ? 'text-red-600' : r.likelihood === 'Medium' ? 'text-yellow-600' : 'text-green-600'}`}>{r.likelihood}</span>
+                          <span className={`text-sm font-lato-bold ${r.likelihood === 'High' ? 'text-red-600' : r.likelihood === 'Medium' ? 'text-yellow-600' : 'text-green-600'}`}>{r.likelihood}</span>
                         </TableCell>
                         <TableCell className="text-center">
                           {r.escalation_flag ? <AlertTriangle className="w-5 h-5 text-red-500 mx-auto animate-pulse" /> : <span className="text-gray-400">—</span>}
