@@ -145,11 +145,11 @@ const Layout = ({ children }) => {
                 data-testid="user-menu-trigger"
                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all duration-300"
               >
-                <div className="w-8 h-8 bg-gray-700 rounded-sm flex items-center justify-center">
+                <div className="w-9 h-9 bg-gray-700 rounded-xl flex items-center justify-center">
                   <User className="w-4 h-4 text-gray-400" />
                 </div>
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium text-white truncate">{user?.name}</p>
+                  <p className="text-sm text-white truncate">{user?.name}</p>
                   <p className="text-xs text-gray-500 truncate">{user?.role}</p>
                 </div>
               </button>
