@@ -425,24 +425,24 @@ const InitiativeDetail = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50">
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Milestone</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Owner</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Due Date</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase text-center">Status</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase w-24"></TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Milestone</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Owner</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Due Date</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase text-center">Status</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase w-24"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {milestones.map((m) => (
                       <TableRow key={m.id} className="border-b border-gray-100">
                         <TableCell>
-                          <p className="font-medium">{m.name}</p>
-                          {m.description && <p className="text-xs text-gray-500 line-clamp-1">{m.description}</p>}
+                          <p className="font-lato-regular">{m.name}</p>
+                          {m.description && <p className="text-xs text-gray-500 font-lato-light line-clamp-1">{m.description}</p>}
                         </TableCell>
-                        <TableCell className="text-sm text-gray-600">{m.owner || 'Unassigned'}</TableCell>
-                        <TableCell className="text-sm text-gray-600">{formatDate(m.due_date)}</TableCell>
+                        <TableCell className="text-sm text-gray-600 font-lato-light">{m.owner || 'Unassigned'}</TableCell>
+                        <TableCell className="text-sm text-gray-600 font-lato-light">{formatDate(m.due_date)}</TableCell>
                         <TableCell className="text-center">
-                          <span className={`inline-flex px-2 py-0.5 rounded-md text-xs font-bold uppercase ${getStatusBadge(m.status)}`}>{m.status}</span>
+                          <span className={`inline-flex px-2 py-0.5 rounded-md text-xs font-lato-bold uppercase ${getStatusBadge(m.status)}`}>{m.status}</span>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-1">
