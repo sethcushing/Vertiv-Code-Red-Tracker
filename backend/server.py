@@ -1115,13 +1115,21 @@ async def get_initiative_audit_logs(initiative_id: str, current_user: dict = Dep
 
 @api_router.get("/kpi-tree")
 async def get_kpi_tree(current_user: dict = Depends(get_current_user)):
-    """Get KPI tree view: Core Business Outcomes -> Initiatives -> Milestones & Risks"""
+    """Get KPI tree view: Category (ETO/Quality) -> Outcomes -> Initiatives grouped by Status"""
     metrics = await db.enterprise_metrics.find({}, {"_id": 0}).to_list(100)
     initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
     
-    # Build tree structure
-    tree = []
+    # Define status order for grouping
+    status_order = ["Not Started", "Discovery", "Frame", "Work In Progress", "Implemented"]
+    
+    # Group metrics by category
+    categories_map = {}
     for metric in metrics:
+        category = metric.get("category", "Uncategorized")
+        if category not in categories_map:
+            categories_map[category] = []
+        
+        # Get initiatives for this metric
         metric_initiatives = []
         for init in initiatives:
             if metric["id"] in init.get("metric_ids", []):
@@ -1131,37 +1139,57 @@ async def get_kpi_tree(current_user: dict = Depends(get_current_user)):
                     "status": init.get("status", "Not Started"),
                     "confidence_score": init.get("confidence_score", 0),
                     "owner": init.get("initiative_owner", "Unassigned"),
-                    "milestones": [
-                        {
-                            "id": m.get("id"),
-                            "name": m.get("name"),
-                            "status": m.get("status", "Pending"),
-                            "due_date": m.get("due_date"),
-                            "owner": m.get("owner", "")
-                        } for m in init.get("milestones", [])
-                    ],
-                    "risks": [
-                        {
-                            "id": r.get("id"),
-                            "description": r.get("description"),
-                            "impact": r.get("impact"),
-                            "likelihood": r.get("likelihood"),
-                            "escalation_flag": r.get("escalation_flag", False)
-                        } for r in init.get("risks", [])
-                    ]
+                    "milestones_count": len(init.get("milestones", [])),
+                    "milestones_completed": sum(1 for m in init.get("milestones", []) if m.get("status") == "Completed"),
+                    "risks_count": len(init.get("risks", [])),
+                    "escalated_risks": sum(1 for r in init.get("risks", []) if r.get("escalation_flag"))
                 })
         
-        tree.append({
+        # Group initiatives by status
+        initiatives_by_status = {}
+        for status in status_order:
+            status_inits = [i for i in metric_initiatives if i["status"] == status]
+            if status_inits:
+                initiatives_by_status[status] = status_inits
+        
+        categories_map[category].append({
             "id": metric["id"],
             "name": metric["name"],
             "description": metric.get("description", ""),
-            "category": metric.get("category", ""),
             "current_value": metric.get("current_value"),
             "target_value": metric.get("target_value"),
             "unit": metric.get("unit", ""),
-            "initiatives": metric_initiatives,
-            "initiative_count": len(metric_initiatives)
+            "initiatives_by_status": initiatives_by_status,
+            "total_initiatives": len(metric_initiatives)
         })
+    
+    # Build final tree structure with categories at top level
+    tree = []
+    category_order = ["ETO", "Quality"]  # Define preferred order
+    
+    for category in category_order:
+        if category in categories_map:
+            outcomes = categories_map[category]
+            total_initiatives = sum(o["total_initiatives"] for o in outcomes)
+            tree.append({
+                "category": category,
+                "category_label": "Engineer To Order" if category == "ETO" else category,
+                "outcomes": outcomes,
+                "outcomes_count": len(outcomes),
+                "total_initiatives": total_initiatives
+            })
+    
+    # Add any other categories not in the preferred order
+    for category, outcomes in categories_map.items():
+        if category not in category_order:
+            total_initiatives = sum(o["total_initiatives"] for o in outcomes)
+            tree.append({
+                "category": category,
+                "category_label": category,
+                "outcomes": outcomes,
+                "outcomes_count": len(outcomes),
+                "total_initiatives": total_initiatives
+            })
     
     return tree
 
