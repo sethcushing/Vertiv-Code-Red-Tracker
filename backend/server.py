@@ -1075,6 +1075,125 @@ async def get_all_milestones(current_user: dict = Depends(get_current_user)):
     
     return all_milestones
 
+# ==================== AUDIT LOG ENDPOINTS ====================
+
+@api_router.get("/audit-logs/{entity_type}/{entity_id}")
+async def get_audit_logs(entity_type: str, entity_id: str, current_user: dict = Depends(get_current_user)):
+    """Get audit logs for a specific entity (last 50 entries)"""
+    logs = await db.audit_logs.find(
+        {"entity_type": entity_type, "entity_id": entity_id},
+        {"_id": 0}
+    ).sort("timestamp", -1).limit(50).to_list(50)
+    return logs
+
+@api_router.get("/audit-logs/initiative/{initiative_id}/all")
+async def get_initiative_audit_logs(initiative_id: str, current_user: dict = Depends(get_current_user)):
+    """Get all audit logs for an initiative including its milestones"""
+    initiative = await db.initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    if not initiative:
+        raise HTTPException(status_code=404, detail="Initiative not found")
+    
+    # Get initiative logs
+    initiative_logs = await db.audit_logs.find(
+        {"entity_type": "initiative", "entity_id": initiative_id},
+        {"_id": 0}
+    ).to_list(50)
+    
+    # Get milestone logs for this initiative's milestones
+    milestone_ids = [m.get("id") for m in initiative.get("milestones", [])]
+    milestone_logs = await db.audit_logs.find(
+        {"entity_type": "milestone", "entity_id": {"$in": milestone_ids}},
+        {"_id": 0}
+    ).to_list(100)
+    
+    all_logs = initiative_logs + milestone_logs
+    all_logs.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+    
+    return all_logs[:50]
+
+# ==================== KPI TREE ENDPOINT ====================
+
+@api_router.get("/kpi-tree")
+async def get_kpi_tree(current_user: dict = Depends(get_current_user)):
+    """Get KPI tree view: Core Business Outcomes -> Initiatives -> Milestones & Risks"""
+    metrics = await db.enterprise_metrics.find({}, {"_id": 0}).to_list(100)
+    initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
+    
+    # Build tree structure
+    tree = []
+    for metric in metrics:
+        metric_initiatives = []
+        for init in initiatives:
+            if metric["id"] in init.get("metric_ids", []):
+                metric_initiatives.append({
+                    "id": init["id"],
+                    "name": init["name"],
+                    "status": init.get("status", "Not Started"),
+                    "confidence_score": init.get("confidence_score", 0),
+                    "owner": init.get("initiative_owner", "Unassigned"),
+                    "milestones": [
+                        {
+                            "id": m.get("id"),
+                            "name": m.get("name"),
+                            "status": m.get("status", "Pending"),
+                            "due_date": m.get("due_date"),
+                            "owner": m.get("owner", "")
+                        } for m in init.get("milestones", [])
+                    ],
+                    "risks": [
+                        {
+                            "id": r.get("id"),
+                            "description": r.get("description"),
+                            "impact": r.get("impact"),
+                            "likelihood": r.get("likelihood"),
+                            "escalation_flag": r.get("escalation_flag", False)
+                        } for r in init.get("risks", [])
+                    ]
+                })
+        
+        tree.append({
+            "id": metric["id"],
+            "name": metric["name"],
+            "description": metric.get("description", ""),
+            "category": metric.get("category", ""),
+            "current_value": metric.get("current_value"),
+            "target_value": metric.get("target_value"),
+            "unit": metric.get("unit", ""),
+            "initiatives": metric_initiatives,
+            "initiative_count": len(metric_initiatives)
+        })
+    
+    return tree
+
+# ==================== DASHBOARD INITIATIVES BY STATUS ====================
+
+@api_router.get("/dashboard/initiatives-by-status")
+async def get_initiatives_by_status(current_user: dict = Depends(get_current_user)):
+    """Get initiatives grouped by status for dashboard view"""
+    initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
+    
+    statuses = ["Not Started", "Discovery", "Frame", "Work In Progress", "Implemented"]
+    result = {}
+    
+    for status in statuses:
+        status_initiatives = [
+            {
+                "id": i["id"],
+                "name": i["name"],
+                "owner": i.get("initiative_owner", "Unassigned"),
+                "confidence_score": i.get("confidence_score", 0),
+                "lifecycle_stage": i.get("lifecycle_stage", ""),
+                "milestones_count": len(i.get("milestones", [])),
+                "milestones_completed": sum(1 for m in i.get("milestones", []) if m.get("status") == "Completed"),
+                "risks_count": len(i.get("risks", [])),
+                "metric_ids": i.get("metric_ids", [])
+            }
+            for i in initiatives if i.get("status") == status
+        ]
+        result[status] = status_initiatives
+    
+    return result
+
 # ==================== SEED DATA ENDPOINT ====================
 
 @api_router.post("/seed")
