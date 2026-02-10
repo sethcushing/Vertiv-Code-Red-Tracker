@@ -167,14 +167,14 @@ const InitiativesList = () => {
             </Select>
 
             <Select value={filters.status || "all"} onValueChange={(v) => setFilters({ ...filters, status: v === "all" ? "" : v })}>
-              <SelectTrigger className="w-[130px] rounded-lg" data-testid="filter-status">
+              <SelectTrigger className="w-[160px] rounded-lg" data-testid="filter-status">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="On Track">On Track</SelectItem>
-                <SelectItem value="At Risk">At Risk</SelectItem>
-                <SelectItem value="Off Track">Off Track</SelectItem>
+                {config.statuses.map(s => (
+                  <SelectItem key={s} value={s}>{s}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -187,17 +187,6 @@ const InitiativesList = () => {
                 {config.stages.map(s => (
                   <SelectItem key={s} value={s}>{s}</SelectItem>
                 ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={filters.code_red || "all"} onValueChange={(v) => setFilters({ ...filters, code_red: v === "all" ? "" : v })}>
-              <SelectTrigger className="w-[130px] rounded-lg" data-testid="filter-code-red">
-                <SelectValue placeholder="Code Red" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="true">Code Red Only</SelectItem>
-                <SelectItem value="false">Non-Code Red</SelectItem>
               </SelectContent>
             </Select>
 
