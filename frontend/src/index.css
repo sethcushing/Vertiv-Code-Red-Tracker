@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Barlow+Condensed:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -62,44 +62,44 @@
     }
     body {
         @apply bg-background text-foreground;
-        font-family: 'Lato', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 400;
     }
     h1, h2, h3 {
-        font-family: 'Barlow Condensed', sans-serif;
-        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
     }
     h4, h5, h6 {
-        font-family: 'Lato', sans-serif;
-        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
     }
     strong, b {
-        font-weight: 700;
+        font-weight: 600;
     }
-    /* Lato Weight Utilities */
+    /* Inter Weight Utilities */
     .font-light, .font-lato-light {
-        font-family: 'Lato', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 300;
     }
     .font-normal, .font-lato-regular {
-        font-family: 'Lato', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 400;
     }
     .font-medium {
-        font-family: 'Lato', sans-serif;
-        font-weight: 400;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
     }
     .font-semibold, .font-lato-bold {
-        font-family: 'Lato', sans-serif;
-        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
     }
-    .font-bold {
-        font-family: 'Lato', sans-serif;
+    .font-bold, .font-heading {
+        font-family: 'Inter', sans-serif;
         font-weight: 700;
     }
     .font-black, .font-lato-black {
-        font-family: 'Lato', sans-serif;
-        font-weight: 900;
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
     }
 }
 
