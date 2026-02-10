@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../App';
 import {
   LayoutDashboard,
   TrendingUp,
-  LogOut,
   User,
   ChevronRight,
   BarChart3,
@@ -12,12 +11,6 @@ import {
   Truck,
   Settings,
 } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu';
 
 const navigation = [
   { name: 'Executive Dashboard', href: '/executive', icon: Gauge },
