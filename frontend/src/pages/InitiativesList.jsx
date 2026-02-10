@@ -39,30 +39,32 @@ const InitiativesList = () => {
     domain: '',
     team: '',
     stage: '',
-    code_red: '',
   });
   const [config, setConfig] = useState({
     buckets: [],
     domains: [],
     teams: [],
     stages: [],
+    statuses: [],
   });
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const [buckets, domains, teams, stages] = await Promise.all([
+        const [buckets, domains, teams, stages, statuses] = await Promise.all([
           api.get('/config/buckets'),
           api.get('/config/domains'),
           api.get('/config/teams'),
           api.get('/config/stages'),
+          api.get('/config/statuses'),
         ]);
         setConfig({
           buckets: buckets.data,
           domains: domains.data,
           teams: teams.data,
           stages: stages.data,
+          statuses: statuses.data,
         });
       } catch (error) {
         console.error('Failed to load config:', error);
