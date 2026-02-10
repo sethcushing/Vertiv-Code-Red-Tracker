@@ -582,10 +582,29 @@ async def add_milestone(initiative_id: str, milestone: MilestoneBase, current_us
     score = await calculate_confidence_score(updated)
     await db.initiatives.update_one({"id": initiative_id}, {"$set": {"confidence_score": score}})
     
+    # Audit log for milestone creation
+    await create_audit_log(
+        entity_type="milestone",
+        entity_id=new_milestone.id,
+        entity_name=milestone.name,
+        action="created",
+        user=current_user,
+        changes=[{"field": "initiative", "old_value": None, "new_value": initiative.get("name", "")}]
+    )
+    
     return new_milestone
 
 @api_router.put("/initiatives/{initiative_id}/milestones/{milestone_id}", response_model=Milestone)
 async def update_milestone(initiative_id: str, milestone_id: str, milestone: MilestoneBase, current_user: dict = Depends(get_current_user)):
+    # Get old milestone for audit
+    initiative = await db.initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    old_milestone = None
+    if initiative:
+        for m in initiative.get("milestones", []):
+            if m.get("id") == milestone_id:
+                old_milestone = m
+                break
+    
     result = await db.initiatives.update_one(
         {"id": initiative_id, "milestones.id": milestone_id},
         {"$set": {
@@ -607,16 +626,48 @@ async def update_milestone(initiative_id: str, milestone_id: str, milestone: Mil
     score = await calculate_confidence_score(updated)
     await db.initiatives.update_one({"id": initiative_id}, {"$set": {"confidence_score": score}})
     
+    # Audit log for milestone update
+    if old_milestone:
+        changes = compute_changes(old_milestone, milestone.model_dump(), ["name", "status", "due_date", "owner"])
+        if changes:
+            await create_audit_log(
+                entity_type="milestone",
+                entity_id=milestone_id,
+                entity_name=milestone.name,
+                action="updated",
+                user=current_user,
+                changes=changes
+            )
+    
     return Milestone(id=milestone_id, **milestone.model_dump())
 
 @api_router.delete("/initiatives/{initiative_id}/milestones/{milestone_id}")
 async def delete_milestone(initiative_id: str, milestone_id: str, current_user: dict = Depends(get_current_user)):
+    # Get milestone name for audit
+    initiative = await db.initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    milestone_name = ""
+    if initiative:
+        for m in initiative.get("milestones", []):
+            if m.get("id") == milestone_id:
+                milestone_name = m.get("name", "")
+                break
+    
     result = await db.initiatives.update_one(
         {"id": initiative_id},
         {"$pull": {"milestones": {"id": milestone_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
     )
     if result.modified_count == 0:
         raise HTTPException(status_code=404, detail="Milestone not found")
+    
+    # Audit log for milestone deletion
+    await create_audit_log(
+        entity_type="milestone",
+        entity_id=milestone_id,
+        entity_name=milestone_name,
+        action="deleted",
+        user=current_user
+    )
+    
     return {"message": "Milestone deleted"}
 
 # ==================== RISK ENDPOINTS ====================
