@@ -4,16 +4,12 @@ import { useAuth } from '../App';
 import {
   LayoutDashboard,
   Target,
-  Layers,
-  Calendar,
-  GitBranch,
+  TrendingUp,
   AlertTriangle,
-  Plus,
   LogOut,
   User,
   ChevronRight,
 } from 'lucide-react';
-import { Button } from './ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +19,7 @@ import {
 
 const navigation = [
   { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Core Business Outcomes', href: '/enterprise-metrics', icon: Target },
-  { name: 'Initiatives', href: '/initiatives', icon: Layers },
-  { name: 'Milestones', href: '/milestones', icon: Calendar },
-  { name: 'Pipeline Process', href: '/pipeline', icon: GitBranch },
+  { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
   { name: 'Risk', href: '/risk-heatmap', icon: AlertTriangle },
 ];
 
@@ -44,16 +37,11 @@ const Layout = ({ children }) => {
   const getPageTitle = () => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
-    if (path === '/enterprise-metrics') return 'Core Business Outcomes';
-    if (path.includes('/enterprise-metrics/')) return 'Outcome Details';
+    if (path === '/business-outcomes') return 'Business Outcomes';
     if (path === '/pipeline') return 'Pipeline Process';
-    if (path === '/milestones') return 'All Milestones';
     if (path === '/risk-heatmap') return 'Risk Heatmap';
-    if (path === '/initiatives') return 'All Initiatives';
-    if (path.includes('/initiatives/new')) return 'New Initiative';
-    if (path.includes('/edit')) return 'Edit Initiative';
-    if (path.includes('/initiatives/')) return 'Initiative Details';
-    if (path === '/kpi-tree') return 'KPI Tree';
+    if (path === '/strategic-initiatives') return 'Strategic Initiatives';
+    if (path.includes('/projects/')) return 'Project Details';
     return 'Code Red Initiatives';
   };
 
@@ -62,20 +50,11 @@ const Layout = ({ children }) => {
     const path = location.pathname;
     const crumbs = [{ name: 'Home', href: '/' }];
     
-    if (path.includes('/initiatives')) {
-      crumbs.push({ name: 'Initiatives', href: '/initiatives' });
-      if (path.includes('/new')) {
-        crumbs.push({ name: 'New', href: path });
-      } else if (path.includes('/edit')) {
-        crumbs.push({ name: 'Edit', href: path });
-      } else if (path !== '/initiatives') {
-        crumbs.push({ name: 'Details', href: path });
-      }
-    } else if (path.includes('/enterprise-metrics')) {
-      crumbs.push({ name: 'Core Business Outcomes', href: '/enterprise-metrics' });
-      if (path !== '/enterprise-metrics') {
-        crumbs.push({ name: 'Details', href: path });
-      }
+    if (path.includes('/projects/')) {
+      crumbs.push({ name: 'Dashboard', href: '/dashboard' });
+      crumbs.push({ name: 'Project Details', href: path });
+    } else if (path.includes('/strategic-initiatives')) {
+      crumbs.push({ name: 'Strategic Initiatives', href: '/strategic-initiatives' });
     } else if (path !== '/' && path !== '/dashboard') {
       const nav = navigation.find(n => n.href === path);
       if (nav) {
@@ -110,7 +89,7 @@ const Layout = ({ children }) => {
           {navigation.map((item) => {
             const isActive = location.pathname === item.href || 
               (item.href === '/dashboard' && location.pathname === '/') ||
-              (item.href === '/enterprise-metrics' && location.pathname.startsWith('/enterprise-metrics'));
+              (item.href === '/business-outcomes' && location.pathname.startsWith('/business-outcomes'));
             const Icon = item.icon;
             
             return (
@@ -130,19 +109,6 @@ const Layout = ({ children }) => {
               </Link>
             );
           })}
-
-          {/* Add Initiative Button */}
-          <div className="px-4 mt-6">
-            <Button
-              onClick={() => navigate('/initiatives/new')}
-              data-testid="nav-add-initiative"
-              className="w-full text-white rounded-xl font-lato-bold text-sm py-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Initiative
-            </Button>
-          </div>
         </nav>
 
         {/* User Section */}
