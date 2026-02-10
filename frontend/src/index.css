@@ -120,29 +120,29 @@
     transform: translateY(-1px);
 }
 
-/* Modern Status Badges */
+/* Modern Rounded Status Badges */
 .badge-code-red {
-    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide text-red-700;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-red-700;
     background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-    box-shadow: 0 1px 2px rgba(220, 38, 38, 0.1);
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.15);
 }
 
 .badge-at-risk {
-    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide text-yellow-700;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-yellow-700;
     background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-    box-shadow: 0 1px 2px rgba(245, 158, 11, 0.1);
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.15);
 }
 
 .badge-on-track {
-    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide text-green-700;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-green-700;
     background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
-    box-shadow: 0 1px 2px rgba(16, 185, 129, 0.1);
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.15);
 }
 
 .badge-off-track {
-    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide text-red-700;
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold text-red-700;
     background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-    box-shadow: 0 1px 2px rgba(239, 68, 68, 0.1);
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.15);
 }
 
 /* Code Red Pulse Animation */
