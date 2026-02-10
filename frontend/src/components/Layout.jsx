@@ -8,6 +8,7 @@ import {
   User,
   ChevronRight,
   BarChart3,
+  Gauge,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -17,6 +18,7 @@ import {
 } from './ui/dropdown-menu';
 
 const navigation = [
+  { name: 'Executive Dashboard', href: '/executive', icon: Gauge },
   { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
@@ -35,6 +37,7 @@ const Layout = ({ children }) => {
   // Get page title from path
   const getPageTitle = () => {
     const path = location.pathname;
+    if (path === '/executive') return 'Executive Dashboard';
     if (path === '/' || path === '/dashboard') return 'Code Red Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
     if (path === '/reporting') return 'Reporting Dashboard';
