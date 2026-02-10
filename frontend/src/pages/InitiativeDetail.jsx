@@ -248,10 +248,12 @@ const InitiativeDetail = () => {
 
   const getStatusBadge = (status) => {
     const styles = {
-      'On Track': 'bg-green-100 text-green-800',
-      'At Risk': 'bg-yellow-100 text-yellow-800',
-      'Off Track': 'bg-red-100 text-red-800',
-      'Completed': 'bg-blue-100 text-blue-800',
+      'Not Started': 'bg-gray-100 text-gray-800',
+      'Discovery': 'bg-blue-100 text-blue-800',
+      'Frame': 'bg-purple-100 text-purple-800',
+      'Work In Progress': 'bg-yellow-100 text-yellow-800',
+      'Implemented': 'bg-green-100 text-green-800',
+      'Completed': 'bg-green-100 text-green-800',
       'Pending': 'bg-gray-100 text-gray-800',
       'In Progress': 'bg-blue-100 text-blue-800',
       'Delayed': 'bg-red-100 text-red-800',
