@@ -149,7 +149,6 @@ const InitiativeForm = () => {
           name: formData.name,
           description: formData.description,
           bucket: formData.bucket,
-          code_red_flag: formData.code_red_flag,
           business_domain: formData.business_domain,
           lifecycle_stage: formData.lifecycle_stage,
           executive_sponsor: formData.executive_sponsor,
@@ -159,6 +158,7 @@ const InitiativeForm = () => {
           status: formData.status,
           start_date: formData.start_date,
           target_end_date: formData.target_end_date,
+          metric_ids: formData.metric_ids,
         });
         toast.success('Initiative updated successfully');
       } else {
