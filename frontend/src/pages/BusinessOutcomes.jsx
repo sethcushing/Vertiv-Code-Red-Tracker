@@ -383,29 +383,31 @@ const BusinessOutcomes = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-1 ml-2">
-                    <button
-                      onClick={(e) => handleAddSubOutcome(category.id, e)}
-                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
-                      title="Add Sub-Outcome"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={(e) => handleEditCategory(category, e)}
-                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
-                      title="Edit"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={(e) => handleDeleteCategory(category.id, e)}
-                      className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                  {isAdmin && (
+                    <div className="flex items-center gap-1 ml-2">
+                      <button
+                        onClick={(e) => handleAddSubOutcome(category.id, e)}
+                        className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                        title="Add Sub-Outcome"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => handleEditCategory(category, e)}
+                        className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                        title="Edit"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => handleDeleteCategory(category.id, e)}
+                        className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Progress Ring */}
