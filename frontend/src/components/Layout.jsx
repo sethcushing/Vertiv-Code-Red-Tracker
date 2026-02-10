@@ -156,32 +156,17 @@ const Layout = ({ children }) => {
 
         {/* User Section */}
         <div className="p-3 border-t border-gray-800/50">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button 
-                data-testid="user-menu-trigger"
-                className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300"
-              >
-                <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
-                  <User className="w-3.5 h-3.5 text-gray-400" />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="text-sm text-white truncate font-lato-regular">{user?.name}</p>
-                  <p className="text-[10px] text-gray-500 truncate">{user?.role}</p>
-                </div>
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem 
-                onClick={handleLogout}
-                data-testid="logout-btn"
-                className="text-red-600 cursor-pointer font-lato-regular"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div 
+            className="w-full flex items-center gap-2.5 p-2.5 rounded-lg"
+          >
+            <div className="w-8 h-8 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center">
+              <User className="w-3.5 h-3.5 text-white" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="text-sm text-white truncate font-lato-regular">{user?.name || 'Admin'}</p>
+              <p className="text-[10px] text-gray-500 truncate">{user?.role || 'admin'}</p>
+            </div>
+          </div>
         </div>
       </aside>
 
