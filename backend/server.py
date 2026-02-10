@@ -1232,7 +1232,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
 
 @api_router.get("/")
 async def root():
-    return {"message": "Enterprise Initiative Control Tower API", "version": "1.0.0"}
+    return {"message": "Code Red Initiatives API", "version": "2.0.0"}
 
 # Include router and add middleware
 app.include_router(api_router)
