@@ -413,11 +413,11 @@ async def create_initiative(initiative: InitiativeCreate, current_user: dict = D
 async def get_initiatives(
     bucket: Optional[str] = None,
     status: Optional[str] = None,
-    code_red: Optional[bool] = None,
     owner: Optional[str] = None,
     team: Optional[str] = None,
     domain: Optional[str] = None,
     stage: Optional[str] = None,
+    metric_id: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
     query = {}
@@ -425,8 +425,6 @@ async def get_initiatives(
         query["bucket"] = bucket
     if status:
         query["status"] = status
-    if code_red is not None:
-        query["code_red_flag"] = code_red
     if owner:
         query["initiative_owner"] = {"$regex": owner, "$options": "i"}
     if team:
@@ -435,6 +433,8 @@ async def get_initiatives(
         query["business_domain"] = domain
     if stage:
         query["lifecycle_stage"] = stage
+    if metric_id:
+        query["metric_ids"] = metric_id
     
     initiatives = await db.initiatives.find(query, {"_id": 0}).to_list(1000)
     return [InitiativeResponse(**i) for i in initiatives]
