@@ -136,15 +136,6 @@ const InitiativesList = () => {
     return 'bg-red-500';
   };
 
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      notation: 'compact',
-    }).format(value);
-  };
-
   return (
     <div className="space-y-6 animate-fade-in" data-testid="initiatives-list-page">
       {/* Filters */}
