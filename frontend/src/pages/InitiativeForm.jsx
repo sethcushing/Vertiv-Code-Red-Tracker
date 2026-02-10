@@ -7,7 +7,6 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import { Switch } from '../components/ui/switch';
 import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
 import {
@@ -24,7 +23,6 @@ import {
   CalendarIcon,
   Plus,
   Trash2,
-  AlertTriangle,
 } from 'lucide-react';
 
 const InitiativeForm = () => {
