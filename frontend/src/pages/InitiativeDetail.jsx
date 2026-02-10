@@ -531,20 +531,20 @@ const InitiativeDetail = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50">
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Name</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Role</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase">Team</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase text-center">Allocation</TableHead>
-                      <TableHead className="text-xs font-bold text-gray-600 uppercase w-16"></TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Name</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Role</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase">Team</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase text-center">Allocation</TableHead>
+                      <TableHead className="text-xs font-lato-bold text-gray-600 uppercase w-16"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {teamMembers.map((tm) => (
                       <TableRow key={tm.id} className="border-b border-gray-100">
-                        <TableCell className="font-medium">{tm.name}</TableCell>
-                        <TableCell className="text-sm text-gray-600">{tm.role}</TableCell>
-                        <TableCell className="text-sm text-gray-600">{tm.team}</TableCell>
-                        <TableCell className="text-center"><span className="text-sm font-medium">{tm.allocation_percent}%</span></TableCell>
+                        <TableCell className="font-lato-regular">{tm.name}</TableCell>
+                        <TableCell className="text-sm text-gray-600 font-lato-light">{tm.role}</TableCell>
+                        <TableCell className="text-sm text-gray-600 font-lato-light">{tm.team}</TableCell>
+                        <TableCell className="text-center"><span className="text-sm font-lato-bold">{tm.allocation_percent}%</span></TableCell>
                         <TableCell>
                           <Button size="sm" variant="ghost" onClick={() => deleteTeamMember(tm.id)} className="text-red-500 hover:text-red-700"><Trash2 className="w-4 h-4" /></Button>
                         </TableCell>
