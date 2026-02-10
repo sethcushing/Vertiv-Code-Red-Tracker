@@ -900,26 +900,105 @@ async def get_all_milestones(current_user: dict = Depends(get_current_user)):
 
 @api_router.post("/seed")
 async def seed_data(current_user: dict = Depends(get_current_user)):
-    """Seed database with realistic sample initiatives focused on sales-to-fulfillment processes"""
+    """Seed database with enterprise metrics and realistic sample initiatives"""
     
     # Clear existing data
     await db.initiatives.delete_many({})
+    await db.enterprise_metrics.delete_many({})
+    
+    now = datetime.now(timezone.utc).isoformat()
+    
+    # Seed Enterprise Metrics
+    seed_metrics = [
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Quote-to-Order Cycle Time",
+            "description": "Average time from initial quote to confirmed order",
+            "category": "Sales",
+            "target_value": 5,
+            "current_value": 14,
+            "unit": "days",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Solution Design Accuracy",
+            "description": "Percentage of designs that pass first review without rework",
+            "category": "Quality",
+            "target_value": 95,
+            "current_value": 66,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Order Entry Error Rate",
+            "description": "Percentage of orders requiring correction after submission",
+            "category": "Quality",
+            "target_value": 3,
+            "current_value": 12,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "On-Time Delivery Rate",
+            "description": "Percentage of orders delivered by promised date",
+            "category": "Delivery",
+            "target_value": 98,
+            "current_value": 87,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Customer Satisfaction Score",
+            "description": "Post-delivery NPS score",
+            "category": "Customer Satisfaction",
+            "target_value": 75,
+            "current_value": 62,
+            "unit": "NPS",
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Forecast Accuracy",
+            "description": "Accuracy of demand planning vs actual orders",
+            "category": "Planning",
+            "target_value": 90,
+            "current_value": 78,
+            "unit": "%",
+            "created_at": now,
+            "updated_at": now
+        }
+    ]
+    
+    for metric in seed_metrics:
+        await db.enterprise_metrics.insert_one(metric)
+    
+    # Get metric IDs for linking
+    metrics_map = {m["name"]: m["id"] for m in seed_metrics}
     
     seed_initiatives = [
         {
             "name": "Quote-to-Order Cycle Time Reduction",
             "description": "Critical initiative to reduce quote-to-order cycle time from 14 days to 5 days. Current delays in pricing approvals and solution design handoffs are causing customer frustration and lost deals.",
-            "bucket": "Code Red",
-            "code_red_flag": True,
+            "bucket": "Modernization",
             "business_domain": "Sales",
             "lifecycle_stage": "Quote / Sales Ops / Approval",
             "executive_sponsor": "Michael Chen",
             "initiative_owner": "Sarah Johnson",
             "owning_team": "Sales",
             "supporting_teams": ["IT", "Finance", "Engineering"],
-            "status": "At Risk",
+            "status": "Work In Progress",
             "start_date": "2024-01-15",
             "target_end_date": "2024-06-30",
+            "metric_ids": [metrics_map["Quote-to-Order Cycle Time"], metrics_map["Customer Satisfaction Score"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Process Bottleneck Analysis", "description": "Map current quote workflow and identify top 5 delay points", "owner": "Sarah Johnson", "due_date": "2024-02-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Pricing Matrix Simplification", "description": "Reduce pricing tiers from 47 to 12 standard configurations", "owner": "Tom Wilson", "due_date": "2024-03-30", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
@@ -941,16 +1020,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Customer Request Intake Portal",
             "description": "Unified digital portal for customer solution requests replacing email/phone intake. Will standardize requirements capture and auto-route to appropriate solution design teams.",
             "bucket": "Modernization",
-            "code_red_flag": False,
             "business_domain": "Sales",
             "lifecycle_stage": "Request",
             "executive_sponsor": "Amanda Foster",
             "initiative_owner": "David Kim",
             "owning_team": "IT",
             "supporting_teams": ["Sales", "Engineering"],
-            "status": "On Track",
+            "status": "Work In Progress",
             "start_date": "2024-02-01",
             "target_end_date": "2024-08-31",
+            "metric_ids": [metrics_map["Customer Satisfaction Score"], metrics_map["Quote-to-Order Cycle Time"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Requirements Documentation", "description": "Document intake requirements across all product lines", "owner": "David Kim", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Portal UX Design", "description": "Complete customer-facing portal design and testing", "owner": "Rachel Green", "due_date": "2024-04-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -969,17 +1048,17 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
         {
             "name": "Solution Design Handoff Standardization",
             "description": "Critical fix for breakdowns between Sales and Engineering during solution design. 34% of deals require re-work due to incomplete or misunderstood requirements at handoff.",
-            "bucket": "Code Red",
-            "code_red_flag": True,
+            "bucket": "Stabilization",
             "business_domain": "Engineering",
             "lifecycle_stage": "Solution Design",
             "executive_sponsor": "Robert Hayes",
             "initiative_owner": "Jennifer Martinez",
             "owning_team": "Engineering",
             "supporting_teams": ["Sales", "IT"],
-            "status": "Off Track",
+            "status": "Frame",
             "start_date": "2024-01-10",
             "target_end_date": "2024-05-31",
+            "metric_ids": [metrics_map["Solution Design Accuracy"], metrics_map["Quote-to-Order Cycle Time"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Failure Mode Analysis", "description": "Analyze 100 recent re-work cases to identify root causes", "owner": "Jennifer Martinez", "due_date": "2024-02-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Handoff Checklist Development", "description": "Create standardized requirements checklist for each product family", "owner": "Mark Thompson", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1000,16 +1079,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Commercial Pricing Engine Upgrade",
             "description": "Replace legacy pricing spreadsheets with automated pricing engine that enforces margin floors, applies volume discounts, and generates audit-ready documentation.",
             "bucket": "Modernization",
-            "code_red_flag": False,
             "business_domain": "Finance",
             "lifecycle_stage": "Commercials & Pricing",
             "executive_sponsor": "Patricia Wong",
             "initiative_owner": "Alex Rivera",
             "owning_team": "Finance",
             "supporting_teams": ["IT", "Sales"],
-            "status": "On Track",
+            "status": "Work In Progress",
             "start_date": "2024-02-15",
             "target_end_date": "2024-09-30",
+            "metric_ids": [metrics_map["Quote-to-Order Cycle Time"], metrics_map["Forecast Accuracy"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Pricing Logic Documentation", "description": "Document all pricing rules, exceptions, and approval thresholds", "owner": "Alex Rivera", "due_date": "2024-03-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Vendor Selection", "description": "Select and contract with pricing software vendor", "owner": "IT Procurement", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1028,16 +1107,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Order Capture Error Reduction",
             "description": "Address 12% order entry error rate causing fulfillment delays and customer complaints. Implementing validation rules, guided entry, and real-time inventory checks.",
             "bucket": "Stabilization",
-            "code_red_flag": False,
             "business_domain": "Sales",
             "lifecycle_stage": "Order Capture",
             "executive_sponsor": "William Chang",
             "initiative_owner": "Nicole Brown",
             "owning_team": "Sales",
             "supporting_teams": ["IT", "Operations"],
-            "status": "On Track",
+            "status": "Work In Progress",
             "start_date": "2024-03-01",
             "target_end_date": "2024-07-31",
+            "metric_ids": [metrics_map["Order Entry Error Rate"], metrics_map["On-Time Delivery Rate"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Error Pattern Analysis", "description": "Categorize errors by type, frequency, and root cause", "owner": "Nicole Brown", "due_date": "2024-03-31", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Validation Rule Design", "description": "Design field-level validation rules for top 10 error types", "owner": "IT Team", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1056,16 +1135,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Real-Time Inventory Visibility for Sales",
             "description": "Provide sales team with real-time ATP (Available-to-Promise) data during quoting to eliminate over-commits and improve delivery date accuracy.",
             "bucket": "Stabilization",
-            "code_red_flag": False,
             "business_domain": "Sales",
             "lifecycle_stage": "Availability",
             "executive_sponsor": "Emily Watson",
             "initiative_owner": "Chris Anderson",
             "owning_team": "IT",
             "supporting_teams": ["Sales", "Supply Chain"],
-            "status": "At Risk",
+            "status": "Discovery",
             "start_date": "2024-02-01",
             "target_end_date": "2024-06-30",
+            "metric_ids": [metrics_map["On-Time Delivery Rate"], metrics_map["Customer Satisfaction Score"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Data Source Mapping", "description": "Identify all inventory data sources and refresh frequencies", "owner": "Chris Anderson", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "API Development", "description": "Build real-time inventory API for CPQ integration", "owner": "IT Team", "due_date": "2024-04-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1085,16 +1164,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Order Fulfillment Status Dashboard",
             "description": "Customer-facing and internal dashboard providing real-time order status from capture through delivery. Reduces status inquiry calls by enabling self-service tracking.",
             "bucket": "Growth",
-            "code_red_flag": False,
             "business_domain": "Fulfillment",
             "lifecycle_stage": "Fulfillment",
             "executive_sponsor": "George Liu",
             "initiative_owner": "Maria Santos",
             "owning_team": "Operations",
             "supporting_teams": ["IT", "Sales"],
-            "status": "On Track",
+            "status": "Work In Progress",
             "start_date": "2024-03-01",
             "target_end_date": "2024-10-31",
+            "metric_ids": [metrics_map["Customer Satisfaction Score"], metrics_map["On-Time Delivery Rate"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Status Milestone Definition", "description": "Define standard order milestones across all product lines", "owner": "Maria Santos", "due_date": "2024-04-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Internal Dashboard MVP", "description": "Launch internal dashboard for customer service team", "owner": "IT Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1113,16 +1192,16 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "name": "Post-Delivery Customer Feedback Loop",
             "description": "Systematic capture of customer feedback at delivery completion to identify process improvements and drive continuous improvement in the sales-to-fulfillment journey.",
             "bucket": "Growth",
-            "code_red_flag": False,
             "business_domain": "Sales",
             "lifecycle_stage": "Post-Delivery / Support",
             "executive_sponsor": "Karen Mitchell",
             "initiative_owner": "Steven Lee",
             "owning_team": "Sales",
             "supporting_teams": ["IT", "Operations"],
-            "status": "On Track",
+            "status": "Not Started",
             "start_date": "2024-04-01",
             "target_end_date": "2024-09-30",
+            "metric_ids": [metrics_map["Customer Satisfaction Score"]],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Survey Design", "description": "Design NPS and process satisfaction survey", "owner": "Steven Lee", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
                 {"id": str(uuid.uuid4()), "name": "Automation Setup", "description": "Configure automated survey triggers post-delivery", "owner": "IT Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
@@ -1143,12 +1222,11 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
     for initiative in seed_initiatives:
         initiative["id"] = str(uuid.uuid4())
         initiative["confidence_score"] = await calculate_confidence_score(initiative)
-        now = datetime.now(timezone.utc).isoformat()
         initiative["created_at"] = now
         initiative["updated_at"] = now
         await db.initiatives.insert_one(initiative)
     
-    return {"message": f"Seeded {len(seed_initiatives)} initiatives successfully"}
+    return {"message": f"Seeded {len(seed_metrics)} enterprise metrics and {len(seed_initiatives)} initiatives successfully"}
 
 # ==================== ROOT ENDPOINT ====================
 
