@@ -132,7 +132,7 @@ const EnterpriseMetrics = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-heading font-bold text-gray-900 uppercase tracking-tight">
-            Enterprise Metrics
+            Core Business Outcomes
           </h2>
           <p className="text-sm text-gray-500 font-lato-light mt-1">
             Track key performance indicators aligned to initiatives
@@ -152,13 +152,13 @@ const EnterpriseMetrics = () => {
               style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Metric
+              Add Outcome
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle className="font-heading">
-                {editingMetric ? 'Edit Metric' : 'Create Enterprise Metric'}
+                {editingMetric ? 'Edit Outcome' : 'Create Business Outcome'}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
