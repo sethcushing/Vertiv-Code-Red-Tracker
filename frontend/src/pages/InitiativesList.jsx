@@ -21,7 +21,6 @@ import {
   TableRow,
 } from '../components/ui/table';
 import {
-  AlertTriangle,
   Plus,
   Search,
   ChevronRight,
