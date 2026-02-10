@@ -68,11 +68,11 @@ const BusinessOutcomes = () => {
     try {
       const response = await api.get('/business-outcomes/tree');
       setTree(response.data);
-      // Initialize sub-outcome expansion
+      // Initialize sub-outcome expansion - collapsed by default
       const subExpanded = {};
       response.data.forEach(cat => {
         cat.sub_outcomes.forEach(sub => {
-          subExpanded[sub.id] = true; // Expand all by default in card view
+          subExpanded[sub.id] = false; // Collapsed by default
         });
       });
       setExpandedSubOutcomes(subExpanded);
