@@ -44,9 +44,12 @@ const CATEGORY_COLORS = {
 };
 
 const BusinessOutcomes = () => {
+  const { user } = useContext(AuthContext);
   const [tree, setTree] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedSubOutcomes, setExpandedSubOutcomes] = useState({});
+  
+  const isAdmin = user?.role === 'admin';
   
   // Modal states
   const [showCategoryModal, setShowCategoryModal] = useState(false);
