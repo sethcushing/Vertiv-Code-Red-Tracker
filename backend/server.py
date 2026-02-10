@@ -767,189 +767,190 @@ async def get_risk_types():
 
 @api_router.post("/seed")
 async def seed_data(current_user: dict = Depends(get_current_user)):
-    """Seed database with realistic sample initiatives"""
+    """Seed database with realistic sample initiatives focused on sales-to-fulfillment processes"""
     
     # Clear existing data
     await db.initiatives.delete_many({})
     
     seed_initiatives = [
         {
-            "name": "Thermal Capacity Expansion - EMEA Data Centers",
-            "description": "Critical expansion of thermal management capacity across EMEA data centers to support increased compute density requirements.",
+            "name": "Quote-to-Order Cycle Time Reduction",
+            "description": "Critical initiative to reduce quote-to-order cycle time from 14 days to 5 days. Current delays in pricing approvals and solution design handoffs are causing customer frustration and lost deals.",
             "bucket": "Code Red",
             "code_red_flag": True,
-            "business_domain": "Engineering",
-            "lifecycle_stage": "Fulfillment",
+            "business_domain": "Sales",
+            "lifecycle_stage": "Quote / Sales Ops / Approval",
             "executive_sponsor": "Michael Chen",
             "initiative_owner": "Sarah Johnson",
-            "owning_team": "Engineering",
-            "supporting_teams": ["Supply Chain", "Manufacturing"],
+            "owning_team": "Sales",
+            "supporting_teams": ["IT", "Finance", "Engineering"],
             "status": "At Risk",
             "start_date": "2024-01-15",
             "target_end_date": "2024-06-30",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Site Assessment Complete", "description": "Complete thermal assessments for all 12 EMEA sites", "owner": "Tom Wilson", "due_date": "2024-02-28", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Equipment Procurement", "description": "Secure all cooling units and infrastructure", "owner": "Lisa Park", "due_date": "2024-04-15", "status": "Delayed", "dependency_indicator": "Vendor Dependency", "ai_risk_signal": "High"},
-                {"id": str(uuid.uuid4()), "name": "Installation Phase 1", "description": "Install cooling systems in Tier 1 facilities", "owner": "James Miller", "due_date": "2024-05-30", "status": "Pending", "dependency_indicator": "Equipment Procurement", "ai_risk_signal": "Medium"},
-                {"id": str(uuid.uuid4()), "name": "Full Deployment", "description": "Complete installation and testing across all sites", "owner": "Sarah Johnson", "due_date": "2024-06-30", "status": "Pending", "dependency_indicator": "Installation Phase 1", "ai_risk_signal": "High"}
+                {"id": str(uuid.uuid4()), "name": "Process Bottleneck Analysis", "description": "Map current quote workflow and identify top 5 delay points", "owner": "Sarah Johnson", "due_date": "2024-02-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Pricing Matrix Simplification", "description": "Reduce pricing tiers from 47 to 12 standard configurations", "owner": "Tom Wilson", "due_date": "2024-03-30", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
+                {"id": str(uuid.uuid4()), "name": "Approval Workflow Automation", "description": "Implement auto-approval for quotes under $100K with standard configs", "owner": "Lisa Park", "due_date": "2024-05-15", "status": "Pending", "dependency_indicator": "Pricing Matrix Simplification", "ai_risk_signal": "Medium"},
+                {"id": str(uuid.uuid4()), "name": "Sales Team Enablement", "description": "Train 200+ sales reps on new quoting process", "owner": "James Miller", "due_date": "2024-06-30", "status": "Pending", "dependency_indicator": "Approval Workflow Automation", "ai_risk_signal": "Medium"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "Cooling unit supply chain disruption - lead times extended by 6 weeks", "risk_type": "Vendor", "impact": "High", "likelihood": "High", "mitigation_plan": "Engaging secondary suppliers and exploring expedited shipping options", "risk_owner": "Lisa Park", "escalation_flag": True},
-                {"id": str(uuid.uuid4()), "description": "Installation crew availability during peak season", "risk_type": "Operational", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Pre-booking installation teams and cross-training internal staff", "risk_owner": "James Miller", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Finance team resistance to delegated approval authority - concerns about margin protection", "risk_type": "Operational", "impact": "High", "likelihood": "High", "mitigation_plan": "Executive alignment meeting scheduled; proposing margin guardrails in system", "risk_owner": "Sarah Johnson", "escalation_flag": True},
+                {"id": str(uuid.uuid4()), "description": "Legacy CPQ system cannot support new workflow without major upgrade", "risk_type": "Delivery", "impact": "High", "likelihood": "Medium", "mitigation_plan": "Evaluating interim manual workaround while planning system upgrade", "risk_owner": "Lisa Park", "escalation_flag": True}
             ],
-            "financial": {"approved_budget": 2500000, "forecasted_spend": 2800000, "actual_spend": 1950000, "variance": -850000, "financial_risk_indicator": "High", "roi_hypothesis": "Expected 40% reduction in cooling costs and 99.99% uptime guarantee"},
+            "financial": {"approved_budget": 850000, "forecasted_spend": 920000, "actual_spend": 340000, "variance": -580000, "financial_risk_indicator": "Medium", "roi_hypothesis": "Each day reduced in cycle time = $2.3M additional annual revenue capture"},
             "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Sarah Johnson", "role": "Initiative Owner", "team": "Engineering", "allocation_percent": 100},
-                {"id": str(uuid.uuid4()), "name": "Tom Wilson", "role": "Technical Lead", "team": "Engineering", "allocation_percent": 80},
-                {"id": str(uuid.uuid4()), "name": "Lisa Park", "role": "Procurement Lead", "team": "Supply Chain", "allocation_percent": 60}
+                {"id": str(uuid.uuid4()), "name": "Sarah Johnson", "role": "Initiative Owner", "team": "Sales", "allocation_percent": 100},
+                {"id": str(uuid.uuid4()), "name": "Tom Wilson", "role": "Pricing Lead", "team": "Finance", "allocation_percent": 60},
+                {"id": str(uuid.uuid4()), "name": "Lisa Park", "role": "Systems Lead", "team": "IT", "allocation_percent": 80}
             ]
         },
         {
-            "name": "Order-to-Cash Pipeline Modernization",
-            "description": "End-to-end modernization of order processing, fulfillment tracking, and payment reconciliation systems.",
+            "name": "Customer Request Intake Portal",
+            "description": "Unified digital portal for customer solution requests replacing email/phone intake. Will standardize requirements capture and auto-route to appropriate solution design teams.",
             "bucket": "Modernization",
             "code_red_flag": False,
-            "business_domain": "IT",
-            "lifecycle_stage": "Solution Design",
+            "business_domain": "Sales",
+            "lifecycle_stage": "Request",
             "executive_sponsor": "Amanda Foster",
             "initiative_owner": "David Kim",
             "owning_team": "IT",
-            "supporting_teams": ["Finance", "Sales", "Data"],
+            "supporting_teams": ["Sales", "Engineering"],
             "status": "On Track",
             "start_date": "2024-02-01",
-            "target_end_date": "2024-09-30",
-            "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Requirements Gathering", "description": "Complete stakeholder interviews and document requirements", "owner": "David Kim", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Architecture Design", "description": "Complete technical architecture and integration design", "owner": "Rachel Green", "due_date": "2024-04-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Development Sprint 1", "description": "Core order processing module development", "owner": "Dev Team", "due_date": "2024-06-30", "status": "Pending", "dependency_indicator": "Architecture Design", "ai_risk_signal": "Medium"}
-            ],
-            "risks": [
-                {"id": str(uuid.uuid4()), "description": "Legacy system integration complexity higher than estimated", "risk_type": "Delivery", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Engaged legacy system SMEs and added buffer time", "risk_owner": "Rachel Green", "escalation_flag": False}
-            ],
-            "financial": {"approved_budget": 1800000, "forecasted_spend": 1750000, "actual_spend": 450000, "variance": -1300000, "financial_risk_indicator": "Low", "roi_hypothesis": "30% reduction in order processing time, 15% improvement in cash collection"},
-            "team_members": [
-                {"id": str(uuid.uuid4()), "name": "David Kim", "role": "Initiative Owner", "team": "IT", "allocation_percent": 100},
-                {"id": str(uuid.uuid4()), "name": "Rachel Green", "role": "Solution Architect", "team": "IT", "allocation_percent": 80}
-            ]
-        },
-        {
-            "name": "Power Distribution Unit (PDU) Availability Crisis",
-            "description": "Critical shortage of intelligent PDUs impacting customer deliveries across North America.",
-            "bucket": "Code Red",
-            "code_red_flag": True,
-            "business_domain": "Supply Chain",
-            "lifecycle_stage": "Availability",
-            "executive_sponsor": "Robert Hayes",
-            "initiative_owner": "Jennifer Martinez",
-            "owning_team": "Supply Chain",
-            "supporting_teams": ["Manufacturing", "Sales"],
-            "status": "Off Track",
-            "start_date": "2024-03-01",
-            "target_end_date": "2024-05-15",
-            "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Supply Assessment", "description": "Complete inventory and supplier capacity analysis", "owner": "Jennifer Martinez", "due_date": "2024-03-10", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Alternative Sourcing", "description": "Qualify and onboard secondary suppliers", "owner": "Mark Thompson", "due_date": "2024-04-01", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
-                {"id": str(uuid.uuid4()), "name": "Customer Communication", "description": "Notify affected customers and negotiate new delivery dates", "owner": "Sales Team", "due_date": "2024-03-20", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Medium"},
-                {"id": str(uuid.uuid4()), "name": "Supply Restoration", "description": "Restore normal inventory levels", "owner": "Jennifer Martinez", "due_date": "2024-05-15", "status": "Pending", "dependency_indicator": "Alternative Sourcing", "ai_risk_signal": "High"}
-            ],
-            "risks": [
-                {"id": str(uuid.uuid4()), "description": "Semiconductor shortage affecting PDU controller chips", "risk_type": "Vendor", "impact": "High", "likelihood": "High", "mitigation_plan": "Direct engagement with chip manufacturers, exploring redesign with available components", "risk_owner": "Jennifer Martinez", "escalation_flag": True},
-                {"id": str(uuid.uuid4()), "description": "Customer churn risk due to delayed deliveries", "risk_type": "Financial", "impact": "High", "likelihood": "Medium", "mitigation_plan": "Offering discounts and priority shipping for affected orders", "risk_owner": "Sales Team", "escalation_flag": True},
-                {"id": str(uuid.uuid4()), "description": "Quality concerns with alternative suppliers", "risk_type": "Delivery", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Implementing enhanced QA protocols for new supplier products", "risk_owner": "Mark Thompson", "escalation_flag": False}
-            ],
-            "financial": {"approved_budget": 500000, "forecasted_spend": 750000, "actual_spend": 620000, "variance": -130000, "financial_risk_indicator": "High", "roi_hypothesis": "Preventing $5M in potential lost revenue from customer churn"},
-            "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Jennifer Martinez", "role": "Initiative Owner", "team": "Supply Chain", "allocation_percent": 100},
-                {"id": str(uuid.uuid4()), "name": "Mark Thompson", "role": "Sourcing Manager", "team": "Supply Chain", "allocation_percent": 100}
-            ]
-        },
-        {
-            "name": "Data Pipeline Infrastructure Upgrade",
-            "description": "Modernize data ingestion and analytics pipeline to support real-time operational intelligence.",
-            "bucket": "Modernization",
-            "code_red_flag": False,
-            "business_domain": "Data",
-            "lifecycle_stage": "Order Capture",
-            "executive_sponsor": "Patricia Wong",
-            "initiative_owner": "Alex Rivera",
-            "owning_team": "Data",
-            "supporting_teams": ["IT", "Engineering"],
-            "status": "On Track",
-            "start_date": "2024-01-01",
             "target_end_date": "2024-08-31",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Data Audit", "description": "Complete audit of existing data sources and quality", "owner": "Alex Rivera", "due_date": "2024-02-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Architecture Approval", "description": "Finalize and get approval for new data architecture", "owner": "Alex Rivera", "due_date": "2024-03-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Pipeline Development", "description": "Build new ETL pipelines and data warehouse", "owner": "Data Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Medium"},
-                {"id": str(uuid.uuid4()), "name": "Dashboard Deployment", "description": "Deploy executive dashboards and reporting tools", "owner": "Analytics Team", "due_date": "2024-08-31", "status": "Pending", "dependency_indicator": "Pipeline Development", "ai_risk_signal": "Low"}
+                {"id": str(uuid.uuid4()), "name": "Requirements Documentation", "description": "Document intake requirements across all product lines", "owner": "David Kim", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Portal UX Design", "description": "Complete customer-facing portal design and testing", "owner": "Rachel Green", "due_date": "2024-04-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Integration Development", "description": "Connect portal to CRM and solution design workflow", "owner": "Dev Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Medium"},
+                {"id": str(uuid.uuid4()), "name": "Customer Pilot Launch", "description": "Launch with 20 strategic accounts for feedback", "owner": "David Kim", "due_date": "2024-08-31", "status": "Pending", "dependency_indicator": "Integration Development", "ai_risk_signal": "Low"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "Data quality issues in legacy systems", "risk_type": "Data", "impact": "Medium", "likelihood": "High", "mitigation_plan": "Implementing data cleansing workflows and validation rules", "risk_owner": "Alex Rivera", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Customer adoption may be slow - some prefer existing relationship-based intake", "risk_type": "Operational", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Designing hybrid model that preserves rep relationships while adding digital option", "risk_owner": "David Kim", "escalation_flag": False}
             ],
-            "financial": {"approved_budget": 1200000, "forecasted_spend": 1150000, "actual_spend": 580000, "variance": -570000, "financial_risk_indicator": "Low", "roi_hypothesis": "Enable $3M in operational savings through predictive analytics"},
+            "financial": {"approved_budget": 620000, "forecasted_spend": 590000, "actual_spend": 280000, "variance": -310000, "financial_risk_indicator": "Low", "roi_hypothesis": "40% reduction in request-to-acknowledgment time; improved requirements accuracy"},
             "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Alex Rivera", "role": "Initiative Owner", "team": "Data", "allocation_percent": 100}
+                {"id": str(uuid.uuid4()), "name": "David Kim", "role": "Initiative Owner", "team": "IT", "allocation_percent": 100},
+                {"id": str(uuid.uuid4()), "name": "Rachel Green", "role": "UX Lead", "team": "IT", "allocation_percent": 70}
             ]
         },
         {
-            "name": "Manufacturing Quality Control Enhancement",
-            "description": "Implement AI-powered quality inspection and defect detection across manufacturing lines.",
-            "bucket": "Growth",
-            "code_red_flag": False,
-            "business_domain": "Manufacturing",
+            "name": "Solution Design Handoff Standardization",
+            "description": "Critical fix for breakdowns between Sales and Engineering during solution design. 34% of deals require re-work due to incomplete or misunderstood requirements at handoff.",
+            "bucket": "Code Red",
+            "code_red_flag": True,
+            "business_domain": "Engineering",
             "lifecycle_stage": "Solution Design",
-            "executive_sponsor": "William Chang",
-            "initiative_owner": "Nicole Brown",
-            "owning_team": "Manufacturing",
-            "supporting_teams": ["Engineering", "IT", "Data"],
+            "executive_sponsor": "Robert Hayes",
+            "initiative_owner": "Jennifer Martinez",
+            "owning_team": "Engineering",
+            "supporting_teams": ["Sales", "IT"],
+            "status": "Off Track",
+            "start_date": "2024-01-10",
+            "target_end_date": "2024-05-31",
+            "milestones": [
+                {"id": str(uuid.uuid4()), "name": "Failure Mode Analysis", "description": "Analyze 100 recent re-work cases to identify root causes", "owner": "Jennifer Martinez", "due_date": "2024-02-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Handoff Checklist Development", "description": "Create standardized requirements checklist for each product family", "owner": "Mark Thompson", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Sales-Engineering Alignment Sessions", "description": "Conduct joint training sessions in all regions", "owner": "Sales Ops", "due_date": "2024-04-30", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
+                {"id": str(uuid.uuid4()), "name": "Process Compliance Tracking", "description": "Implement tracking dashboard for handoff quality metrics", "owner": "Jennifer Martinez", "due_date": "2024-05-31", "status": "Pending", "dependency_indicator": "Sales-Engineering Alignment Sessions", "ai_risk_signal": "High"}
+            ],
+            "risks": [
+                {"id": str(uuid.uuid4()), "description": "Sales leadership not prioritizing training attendance - quota pressures", "risk_type": "Operational", "impact": "High", "likelihood": "High", "mitigation_plan": "Escalating to CRO for mandate; proposing quota relief during training", "risk_owner": "Jennifer Martinez", "escalation_flag": True},
+                {"id": str(uuid.uuid4()), "description": "Regional variations in solution complexity making single checklist insufficient", "risk_type": "Delivery", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Creating region-specific addendums to core checklist", "risk_owner": "Mark Thompson", "escalation_flag": False}
+            ],
+            "financial": {"approved_budget": 380000, "forecasted_spend": 450000, "actual_spend": 290000, "variance": -160000, "financial_risk_indicator": "Medium", "roi_hypothesis": "Eliminating re-work saves $4.2M annually in engineering hours and accelerates delivery by 8 days"},
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "Jennifer Martinez", "role": "Initiative Owner", "team": "Engineering", "allocation_percent": 100},
+                {"id": str(uuid.uuid4()), "name": "Mark Thompson", "role": "Process Lead", "team": "Engineering", "allocation_percent": 80}
+            ]
+        },
+        {
+            "name": "Commercial Pricing Engine Upgrade",
+            "description": "Replace legacy pricing spreadsheets with automated pricing engine that enforces margin floors, applies volume discounts, and generates audit-ready documentation.",
+            "bucket": "Modernization",
+            "code_red_flag": False,
+            "business_domain": "Finance",
+            "lifecycle_stage": "Commercials & Pricing",
+            "executive_sponsor": "Patricia Wong",
+            "initiative_owner": "Alex Rivera",
+            "owning_team": "Finance",
+            "supporting_teams": ["IT", "Sales"],
             "status": "On Track",
             "start_date": "2024-02-15",
-            "target_end_date": "2024-10-31",
+            "target_end_date": "2024-09-30",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Pilot Site Selection", "description": "Select manufacturing lines for pilot deployment", "owner": "Nicole Brown", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "AI Model Training", "description": "Train defect detection models on historical data", "owner": "Data Team", "due_date": "2024-05-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Medium"},
-                {"id": str(uuid.uuid4()), "name": "Pilot Deployment", "description": "Deploy and test at pilot sites", "owner": "Nicole Brown", "due_date": "2024-07-31", "status": "Pending", "dependency_indicator": "AI Model Training", "ai_risk_signal": "Medium"}
+                {"id": str(uuid.uuid4()), "name": "Pricing Logic Documentation", "description": "Document all pricing rules, exceptions, and approval thresholds", "owner": "Alex Rivera", "due_date": "2024-03-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Vendor Selection", "description": "Select and contract with pricing software vendor", "owner": "IT Procurement", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "System Configuration", "description": "Configure pricing rules and integrate with CRM/ERP", "owner": "Alex Rivera", "due_date": "2024-07-31", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Medium"},
+                {"id": str(uuid.uuid4()), "name": "Parallel Run & Validation", "description": "Run parallel with legacy system for 60 days", "owner": "Finance Team", "due_date": "2024-09-30", "status": "Pending", "dependency_indicator": "System Configuration", "ai_risk_signal": "Low"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "AI model accuracy may not meet production requirements", "risk_type": "Delivery", "impact": "Medium", "likelihood": "Low", "mitigation_plan": "Iterative model improvement and human-in-the-loop validation", "risk_owner": "Data Team", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Complex regional pricing variations may require extensive customization", "risk_type": "Delivery", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Phasing rollout by region; starting with North America", "risk_owner": "Alex Rivera", "escalation_flag": False}
             ],
-            "financial": {"approved_budget": 900000, "forecasted_spend": 850000, "actual_spend": 280000, "variance": -570000, "financial_risk_indicator": "Low", "roi_hypothesis": "25% reduction in defect rates, $2M annual savings in rework costs"},
+            "financial": {"approved_budget": 1100000, "forecasted_spend": 1050000, "actual_spend": 420000, "variance": -630000, "financial_risk_indicator": "Low", "roi_hypothesis": "2% margin improvement from consistent pricing discipline = $8M annual impact"},
             "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Nicole Brown", "role": "Initiative Owner", "team": "Manufacturing", "allocation_percent": 80}
+                {"id": str(uuid.uuid4()), "name": "Alex Rivera", "role": "Initiative Owner", "team": "Finance", "allocation_percent": 100}
             ]
         },
         {
-            "name": "Sales Quote Automation Platform",
-            "description": "Automate quote generation and approval workflows to reduce sales cycle time.",
+            "name": "Order Capture Error Reduction",
+            "description": "Address 12% order entry error rate causing fulfillment delays and customer complaints. Implementing validation rules, guided entry, and real-time inventory checks.",
             "bucket": "Stabilization",
             "code_red_flag": False,
             "business_domain": "Sales",
-            "lifecycle_stage": "Quote / Sales Ops / Approval",
-            "executive_sponsor": "Emily Watson",
-            "initiative_owner": "Chris Anderson",
+            "lifecycle_stage": "Order Capture",
+            "executive_sponsor": "William Chang",
+            "initiative_owner": "Nicole Brown",
             "owning_team": "Sales",
-            "supporting_teams": ["IT", "Finance"],
-            "status": "At Risk",
-            "start_date": "2024-01-20",
-            "target_end_date": "2024-06-30",
+            "supporting_teams": ["IT", "Operations"],
+            "status": "On Track",
+            "start_date": "2024-03-01",
+            "target_end_date": "2024-07-31",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Process Mapping", "description": "Document current quote-to-order processes", "owner": "Chris Anderson", "due_date": "2024-02-28", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Tool Selection", "description": "Evaluate and select CPQ platform", "owner": "IT Team", "due_date": "2024-03-31", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Configuration", "description": "Configure pricing rules and approval workflows", "owner": "Chris Anderson", "due_date": "2024-05-15", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
-                {"id": str(uuid.uuid4()), "name": "User Training", "description": "Train sales team on new platform", "owner": "Sales Ops", "due_date": "2024-06-15", "status": "Pending", "dependency_indicator": "Configuration", "ai_risk_signal": "Medium"}
+                {"id": str(uuid.uuid4()), "name": "Error Pattern Analysis", "description": "Categorize errors by type, frequency, and root cause", "owner": "Nicole Brown", "due_date": "2024-03-31", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Validation Rule Design", "description": "Design field-level validation rules for top 10 error types", "owner": "IT Team", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "System Implementation", "description": "Deploy validation rules to order entry system", "owner": "IT Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Medium"},
+                {"id": str(uuid.uuid4()), "name": "Training & Go-Live", "description": "Train order entry team and monitor error rates", "owner": "Nicole Brown", "due_date": "2024-07-31", "status": "Pending", "dependency_indicator": "System Implementation", "ai_risk_signal": "Low"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "Complex pricing rules delaying configuration", "risk_type": "Delivery", "impact": "Medium", "likelihood": "High", "mitigation_plan": "Engaged vendor professional services for accelerated configuration", "risk_owner": "Chris Anderson", "escalation_flag": False},
-                {"id": str(uuid.uuid4()), "description": "Sales team resistance to new tool adoption", "risk_type": "Operational", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Change management program and early adopter champions", "risk_owner": "Sales Ops", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Validation rules may slow order entry, impacting throughput", "risk_type": "Operational", "impact": "Medium", "likelihood": "Low", "mitigation_plan": "Implementing smart defaults and auto-fill to offset validation time", "risk_owner": "Nicole Brown", "escalation_flag": False}
             ],
-            "financial": {"approved_budget": 650000, "forecasted_spend": 720000, "actual_spend": 480000, "variance": -240000, "financial_risk_indicator": "Medium", "roi_hypothesis": "50% reduction in quote turnaround time, 10% increase in win rate"},
+            "financial": {"approved_budget": 420000, "forecasted_spend": 400000, "actual_spend": 185000, "variance": -215000, "financial_risk_indicator": "Low", "roi_hypothesis": "Reducing errors from 12% to 3% saves $1.8M in re-work and expedite costs"},
             "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Chris Anderson", "role": "Initiative Owner", "team": "Sales", "allocation_percent": 80}
+                {"id": str(uuid.uuid4()), "name": "Nicole Brown", "role": "Initiative Owner", "team": "Sales", "allocation_percent": 80}
             ]
         },
         {
-            "name": "Global Fulfillment Network Optimization",
-            "description": "Optimize distribution center locations and inventory positioning to reduce delivery times.",
+            "name": "Real-Time Inventory Visibility for Sales",
+            "description": "Provide sales team with real-time ATP (Available-to-Promise) data during quoting to eliminate over-commits and improve delivery date accuracy.",
+            "bucket": "Stabilization",
+            "code_red_flag": False,
+            "business_domain": "Sales",
+            "lifecycle_stage": "Availability",
+            "executive_sponsor": "Emily Watson",
+            "initiative_owner": "Chris Anderson",
+            "owning_team": "IT",
+            "supporting_teams": ["Sales", "Supply Chain"],
+            "status": "At Risk",
+            "start_date": "2024-02-01",
+            "target_end_date": "2024-06-30",
+            "milestones": [
+                {"id": str(uuid.uuid4()), "name": "Data Source Mapping", "description": "Identify all inventory data sources and refresh frequencies", "owner": "Chris Anderson", "due_date": "2024-03-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "API Development", "description": "Build real-time inventory API for CPQ integration", "owner": "IT Team", "due_date": "2024-04-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "CPQ Integration", "description": "Integrate ATP data into quoting workflow", "owner": "Chris Anderson", "due_date": "2024-05-31", "status": "Delayed", "dependency_indicator": "", "ai_risk_signal": "High"},
+                {"id": str(uuid.uuid4()), "name": "Sales Enablement", "description": "Train sales on using ATP data in customer conversations", "owner": "Sales Ops", "due_date": "2024-06-30", "status": "Pending", "dependency_indicator": "CPQ Integration", "ai_risk_signal": "Medium"}
+            ],
+            "risks": [
+                {"id": str(uuid.uuid4()), "description": "Legacy ERP refresh latency causing stale inventory data in CPQ", "risk_type": "Data", "impact": "High", "likelihood": "Medium", "mitigation_plan": "Implementing change data capture for near-real-time sync", "risk_owner": "Chris Anderson", "escalation_flag": False},
+                {"id": str(uuid.uuid4()), "description": "Multiple warehouse systems with inconsistent data formats", "risk_type": "Data", "impact": "Medium", "likelihood": "High", "mitigation_plan": "Building normalization layer in integration middleware", "risk_owner": "IT Team", "escalation_flag": False}
+            ],
+            "financial": {"approved_budget": 580000, "forecasted_spend": 650000, "actual_spend": 380000, "variance": -270000, "financial_risk_indicator": "Medium", "roi_hypothesis": "Accurate ATP reduces expedite costs by $2.1M and improves customer satisfaction scores"},
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "Chris Anderson", "role": "Initiative Owner", "team": "IT", "allocation_percent": 100}
+            ]
+        },
+        {
+            "name": "Order Fulfillment Status Dashboard",
+            "description": "Customer-facing and internal dashboard providing real-time order status from capture through delivery. Reduces status inquiry calls by enabling self-service tracking.",
             "bucket": "Growth",
             "code_red_flag": False,
             "business_domain": "Fulfillment",
@@ -957,47 +958,50 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "executive_sponsor": "George Liu",
             "initiative_owner": "Maria Santos",
             "owning_team": "Operations",
-            "supporting_teams": ["Supply Chain", "IT", "Finance"],
+            "supporting_teams": ["IT", "Sales"],
             "status": "On Track",
             "start_date": "2024-03-01",
-            "target_end_date": "2024-12-31",
+            "target_end_date": "2024-10-31",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "Network Analysis", "description": "Complete analysis of current fulfillment network", "owner": "Maria Santos", "due_date": "2024-04-30", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Optimization Model", "description": "Develop network optimization model", "owner": "Data Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Pilot Implementation", "description": "Implement changes in pilot region", "owner": "Maria Santos", "due_date": "2024-09-30", "status": "Pending", "dependency_indicator": "Optimization Model", "ai_risk_signal": "Medium"}
+                {"id": str(uuid.uuid4()), "name": "Status Milestone Definition", "description": "Define standard order milestones across all product lines", "owner": "Maria Santos", "due_date": "2024-04-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Internal Dashboard MVP", "description": "Launch internal dashboard for customer service team", "owner": "IT Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Customer Portal Development", "description": "Build customer-facing order tracking portal", "owner": "IT Team", "due_date": "2024-08-31", "status": "Pending", "dependency_indicator": "Internal Dashboard MVP", "ai_risk_signal": "Medium"},
+                {"id": str(uuid.uuid4()), "name": "Customer Launch", "description": "Roll out portal to all customers with training", "owner": "Maria Santos", "due_date": "2024-10-31", "status": "Pending", "dependency_indicator": "Customer Portal Development", "ai_risk_signal": "Low"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "Regional regulatory requirements may impact DC locations", "risk_type": "Operational", "impact": "Low", "likelihood": "Low", "mitigation_plan": "Legal team reviewing all target locations", "risk_owner": "Legal Team", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Third-party logistics providers may not support real-time data feeds", "risk_type": "Vendor", "impact": "Medium", "likelihood": "Medium", "mitigation_plan": "Negotiating API access requirements in carrier contracts", "risk_owner": "Maria Santos", "escalation_flag": False}
             ],
-            "financial": {"approved_budget": 3500000, "forecasted_spend": 3400000, "actual_spend": 850000, "variance": -2550000, "financial_risk_indicator": "Low", "roi_hypothesis": "20% reduction in shipping costs, 2-day improvement in average delivery time"},
+            "financial": {"approved_budget": 720000, "forecasted_spend": 680000, "actual_spend": 190000, "variance": -490000, "financial_risk_indicator": "Low", "roi_hypothesis": "30% reduction in status inquiry calls saves $1.2M in support costs; improved NPS"},
             "team_members": [
                 {"id": str(uuid.uuid4()), "name": "Maria Santos", "role": "Initiative Owner", "team": "Operations", "allocation_percent": 100}
             ]
         },
         {
-            "name": "Finance Systems Consolidation",
-            "description": "Consolidate multiple finance systems into unified ERP platform for improved reporting and compliance.",
-            "bucket": "Stabilization",
+            "name": "Post-Delivery Customer Feedback Loop",
+            "description": "Systematic capture of customer feedback at delivery completion to identify process improvements and drive continuous improvement in the sales-to-fulfillment journey.",
+            "bucket": "Growth",
             "code_red_flag": False,
-            "business_domain": "Finance",
-            "lifecycle_stage": "Request",
+            "business_domain": "Sales",
+            "lifecycle_stage": "Post-Delivery / Support",
             "executive_sponsor": "Karen Mitchell",
             "initiative_owner": "Steven Lee",
-            "owning_team": "Finance",
-            "supporting_teams": ["IT"],
+            "owning_team": "Sales",
+            "supporting_teams": ["IT", "Operations"],
             "status": "On Track",
             "start_date": "2024-04-01",
-            "target_end_date": "2025-03-31",
+            "target_end_date": "2024-09-30",
             "milestones": [
-                {"id": str(uuid.uuid4()), "name": "System Inventory", "description": "Complete inventory of all finance systems", "owner": "Steven Lee", "due_date": "2024-05-15", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
-                {"id": str(uuid.uuid4()), "name": "Vendor Selection", "description": "Select ERP platform vendor", "owner": "Steven Lee", "due_date": "2024-07-31", "status": "Pending", "dependency_indicator": "System Inventory", "ai_risk_signal": "Medium"}
+                {"id": str(uuid.uuid4()), "name": "Survey Design", "description": "Design NPS and process satisfaction survey", "owner": "Steven Lee", "due_date": "2024-05-15", "status": "Completed", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Automation Setup", "description": "Configure automated survey triggers post-delivery", "owner": "IT Team", "due_date": "2024-06-30", "status": "In Progress", "dependency_indicator": "", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Feedback Dashboard", "description": "Build executive dashboard for feedback insights", "owner": "Data Team", "due_date": "2024-08-15", "status": "Pending", "dependency_indicator": "Automation Setup", "ai_risk_signal": "Low"},
+                {"id": str(uuid.uuid4()), "name": "Closed-Loop Process", "description": "Implement process for acting on negative feedback", "owner": "Steven Lee", "due_date": "2024-09-30", "status": "Pending", "dependency_indicator": "Feedback Dashboard", "ai_risk_signal": "Medium"}
             ],
             "risks": [
-                {"id": str(uuid.uuid4()), "description": "Data migration complexity from legacy systems", "risk_type": "Data", "impact": "High", "likelihood": "Medium", "mitigation_plan": "Engaging data migration specialists and planning phased approach", "risk_owner": "Steven Lee", "escalation_flag": False}
+                {"id": str(uuid.uuid4()), "description": "Low customer response rates may limit data value", "risk_type": "Operational", "impact": "Low", "likelihood": "Medium", "mitigation_plan": "Designing brief survey with incentive program for completion", "risk_owner": "Steven Lee", "escalation_flag": False}
             ],
-            "financial": {"approved_budget": 4200000, "forecasted_spend": 4000000, "actual_spend": 120000, "variance": -3880000, "financial_risk_indicator": "Low", "roi_hypothesis": "30% reduction in month-end close time, improved audit compliance"},
+            "financial": {"approved_budget": 280000, "forecasted_spend": 260000, "actual_spend": 85000, "variance": -175000, "financial_risk_indicator": "Low", "roi_hypothesis": "Data-driven process improvements projected to increase repeat purchase rate by 5%"},
             "team_members": [
-                {"id": str(uuid.uuid4()), "name": "Steven Lee", "role": "Initiative Owner", "team": "Finance", "allocation_percent": 100}
+                {"id": str(uuid.uuid4()), "name": "Steven Lee", "role": "Initiative Owner", "team": "Sales", "allocation_percent": 100}
             ]
         }
     ]
