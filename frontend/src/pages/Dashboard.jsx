@@ -250,11 +250,11 @@ const Dashboard = () => {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     {blocker.code_red && (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide bg-gradient-to-r from-red-100 to-red-50 text-red-800 shadow-sm animate-pulse-code-red">
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-red-100 to-red-50 text-red-700 animate-pulse-code-red">
                         Code Red
                       </span>
                     )}
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide shadow-sm ${getStatusColor(blocker.status)}`}>
+                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${getStatusColor(blocker.status)}`}>
                       {blocker.status}
                     </span>
                   </div>
