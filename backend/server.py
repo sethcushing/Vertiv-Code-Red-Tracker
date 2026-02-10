@@ -668,6 +668,8 @@ async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
 @api_router.get("/dashboard/four-blockers", response_model=List[FourBlocker])
 async def get_four_blockers(current_user: dict = Depends(get_current_user)):
     initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
+    metrics = await db.enterprise_metrics.find({}, {"_id": 0}).to_list(100)
+    metrics_map = {m["id"]: m["name"] for m in metrics}
     
     blockers = []
     for i in initiatives:
@@ -677,22 +679,19 @@ async def get_four_blockers(current_user: dict = Depends(get_current_user)):
         risks = i.get("risks", [])
         top_risks = sorted(risks, key=lambda r: (r.get("escalation_flag", False), r.get("impact") == "High"), reverse=True)[:3]
         
-        financial = i.get("financial", {})
+        metric_names = [metrics_map.get(mid, "") for mid in i.get("metric_ids", []) if mid in metrics_map]
         
         blockers.append(FourBlocker(
             initiative_id=i["id"],
             name=i["name"],
             owner=i.get("initiative_owner", "Unassigned"),
-            code_red=i.get("code_red_flag", False),
             lifecycle_stage=i.get("lifecycle_stage", ""),
-            status=i.get("status", "On Track"),
+            status=i.get("status", "Not Started"),
             milestones_completed=completed,
             milestones_total=len(milestones),
             confidence_score=i.get("confidence_score", 75),
             top_risks=[{"description": r.get("description", ""), "impact": r.get("impact", ""), "escalation": r.get("escalation_flag", False)} for r in top_risks],
-            budget=financial.get("approved_budget", 0),
-            actual_spend=financial.get("actual_spend", 0),
-            variance=financial.get("variance", 0)
+            metric_names=metric_names
         ))
     
     return blockers
