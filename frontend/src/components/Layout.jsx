@@ -3,10 +3,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import {
   LayoutDashboard,
-  AlertTriangle,
+  Target,
+  Layers,
+  Calendar,
   GitBranch,
-  Grid3X3,
-  List,
+  AlertTriangle,
   Plus,
   LogOut,
   User,
@@ -22,10 +23,11 @@ import {
 
 const navigation = [
   { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Code Red', href: '/code-red', icon: AlertTriangle },
-  { name: 'Process Pipeline', href: '/pipeline', icon: GitBranch },
-  { name: 'Risk Heatmap', href: '/risk-heatmap', icon: Grid3X3 },
-  { name: 'All Initiatives', href: '/initiatives', icon: List },
+  { name: 'Enterprise Metrics', href: '/enterprise-metrics', icon: Target },
+  { name: 'Initiatives', href: '/initiatives', icon: Layers },
+  { name: 'Milestones', href: '/milestones', icon: Calendar },
+  { name: 'Pipeline Process', href: '/pipeline', icon: GitBranch },
+  { name: 'Risk', href: '/risk-heatmap', icon: AlertTriangle },
 ];
 
 const Layout = ({ children }) => {
