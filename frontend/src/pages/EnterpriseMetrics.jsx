@@ -243,6 +243,7 @@ const EnterpriseMetrics = () => {
             </form>
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* Summary Stats */}
