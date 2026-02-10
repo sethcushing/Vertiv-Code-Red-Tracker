@@ -522,19 +522,45 @@ async def update_initiative(initiative_id: str, update: InitiativeUpdate, curren
     update_data = {k: v for k, v in update.model_dump().items() if v is not None}
     update_data["updated_at"] = datetime.now(timezone.utc).isoformat()
     
+    # Track changes for audit
+    tracked_fields = ["name", "description", "status", "bucket", "lifecycle_stage", "initiative_owner", "metric_ids"]
+    changes = compute_changes(initiative, update_data, tracked_fields)
+    
     await db.initiatives.update_one({"id": initiative_id}, {"$set": update_data})
     
     updated = await db.initiatives.find_one({"id": initiative_id}, {"_id": 0})
     updated["confidence_score"] = await calculate_confidence_score(updated)
     await db.initiatives.update_one({"id": initiative_id}, {"$set": {"confidence_score": updated["confidence_score"]}})
     
+    # Create audit log if there were changes
+    if changes:
+        await create_audit_log(
+            entity_type="initiative",
+            entity_id=initiative_id,
+            entity_name=updated.get("name", ""),
+            action="updated",
+            user=current_user,
+            changes=changes
+        )
+    
     return InitiativeResponse(**updated)
 
 @api_router.delete("/initiatives/{initiative_id}")
 async def delete_initiative(initiative_id: str, current_user: dict = Depends(get_current_user)):
-    result = await db.initiatives.delete_one({"id": initiative_id})
-    if result.deleted_count == 0:
+    initiative = await db.initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    if not initiative:
         raise HTTPException(status_code=404, detail="Initiative not found")
+    
+    # Create audit log before deletion
+    await create_audit_log(
+        entity_type="initiative",
+        entity_id=initiative_id,
+        entity_name=initiative.get("name", ""),
+        action="deleted",
+        user=current_user
+    )
+    
+    result = await db.initiatives.delete_one({"id": initiative_id})
     return {"message": "Initiative deleted"}
 
 # ==================== MILESTONE ENDPOINTS ====================
