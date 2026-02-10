@@ -162,48 +162,48 @@ const InitiativesList = () => {
               />
             </div>
 
-            <Select value={filters.bucket} onValueChange={(v) => setFilters({ ...filters, bucket: v })}>
+            <Select value={filters.bucket || "all"} onValueChange={(v) => setFilters({ ...filters, bucket: v === "all" ? "" : v })}>
               <SelectTrigger className="w-[150px] rounded-sm" data-testid="filter-bucket">
                 <SelectValue placeholder="Bucket" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Buckets</SelectItem>
+                <SelectItem value="all">All Buckets</SelectItem>
                 {config.buckets.map(b => (
                   <SelectItem key={b} value={b}>{b}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={filters.status} onValueChange={(v) => setFilters({ ...filters, status: v })}>
+            <Select value={filters.status || "all"} onValueChange={(v) => setFilters({ ...filters, status: v === "all" ? "" : v })}>
               <SelectTrigger className="w-[140px] rounded-sm" data-testid="filter-status">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Status</SelectItem>
+                <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="On Track">On Track</SelectItem>
                 <SelectItem value="At Risk">At Risk</SelectItem>
                 <SelectItem value="Off Track">Off Track</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={filters.domain} onValueChange={(v) => setFilters({ ...filters, domain: v })}>
+            <Select value={filters.domain || "all"} onValueChange={(v) => setFilters({ ...filters, domain: v === "all" ? "" : v })}>
               <SelectTrigger className="w-[150px] rounded-sm" data-testid="filter-domain">
                 <SelectValue placeholder="Domain" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Domains</SelectItem>
+                <SelectItem value="all">All Domains</SelectItem>
                 {config.domains.map(d => (
                   <SelectItem key={d} value={d}>{d}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={filters.code_red} onValueChange={(v) => setFilters({ ...filters, code_red: v })}>
+            <Select value={filters.code_red || "all"} onValueChange={(v) => setFilters({ ...filters, code_red: v === "all" ? "" : v })}>
               <SelectTrigger className="w-[140px] rounded-sm" data-testid="filter-code-red">
                 <SelectValue placeholder="Code Red" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 <SelectItem value="true">Code Red Only</SelectItem>
                 <SelectItem value="false">Non-Code Red</SelectItem>
               </SelectContent>
