@@ -9,10 +9,10 @@ Executive-grade initiative tracking and reporting tool to manage critical enterp
 ## Core Features
 
 ### 1. Core Business Outcomes (KPIs)
-- Create and manage business outcomes (Planning, Sales, Quality, Delivery, Customer Satisfaction, Engineering)
+- **Two Categories Only**: ETO (Engineer To Order) and Quality
 - Each outcome has: Name, Description, Category, Target Value, Current Value, Unit
 - Many-to-many relationship with initiatives
-- **KPI Tree View**: Hierarchical view showing Outcome → Initiatives → Milestones & Risks
+- **KPI Tree View**: Hierarchical view showing Category → Outcomes → Initiatives by Status
 
 ### 2. Initiative Management
 - **Status Lifecycle**: Not Started → Discovery → Frame → Work In Progress → Implemented
@@ -20,43 +20,54 @@ Executive-grade initiative tracking and reporting tool to manage critical enterp
 - Track milestones, risks, and team members per initiative
 - Confidence scoring (rule-based, AI-ready)
 
-### 3. Audit Trails (NEW - December 2025)
+### 3. Audit Trails
 - Track all changes to initiatives, milestones, and metrics
 - Captures: Who, When, What changed (field, old value → new value)
 - Last 50 entries per entity (configurable)
 - History tab on Initiative Detail page
 
 ### 4. Dashboard Views
-- **Executive Dashboard**: Initiatives grouped by status (collapsible buckets)
-- **Core Business Outcomes**: Metrics by category with KPI Tree view
+- **Executive Dashboard**: 
+  - KPI Tree (embedded) showing Category → Outcomes → Initiatives
+  - Code Red Pipeline: 4 columns (Not Started, Discovery, Frame, Work In Progress)
+  - Summary stats: Business Outcomes, Milestones, Risks, Escalated
+- **Core Business Outcomes**: Metrics by category (ETO, Quality)
+- **KPI Tree Page**: Full hierarchical view
 - **Milestones**: Cross-initiative milestone view
 - **Pipeline Process**: Kanban-style by lifecycle stage
 - **Risk Heatmap**: 3x3 impact/likelihood matrix
 
 ## What's Been Implemented (December 2025)
 
+### Recent Updates (December 12, 2025)
+- [x] Simplified categories to only ETO and Quality
+- [x] Redesigned KPI Tree: Category → Outcomes → Initiatives by Status
+- [x] Dashboard Code Red Pipeline: 4-column side-by-side layout
+- [x] Embedded KPI Tree in Dashboard
+- [x] Updated seed data with 8 metrics (4 ETO, 4 Quality)
+
 ### Backend (FastAPI + MongoDB)
 - [x] JWT Authentication
-- [x] Core Business Outcomes CRUD (7 seeded including "Engineer To Order")
+- [x] Core Business Outcomes CRUD (8 seeded: 4 ETO, 4 Quality)
 - [x] Initiative CRUD with metric alignment
 - [x] Milestone CRUD with audit logging
 - [x] Risk CRUD per initiative
 - [x] Team member management
-- [x] **Audit Log System** - tracks changes with last 50 entries limit
-- [x] KPI Tree endpoint - hierarchical data structure
+- [x] Audit Log System - tracks changes with last 50 entries limit
+- [x] KPI Tree endpoint - Category → Outcomes → Initiatives by Status
 - [x] Dashboard initiatives-by-status endpoint
 - [x] All configuration endpoints
 
 ### Frontend (React + Tailwind + Shadcn/UI)
-- [x] Executive Dashboard with status-based initiative grouping
-- [x] Core Business Outcomes page with KPI Tree View button
+- [x] Executive Dashboard with embedded KPI Tree and Code Red Pipeline
+- [x] Core Business Outcomes page with ETO and Quality categories
 - [x] KPI Tree page - hierarchical expandable view
 - [x] Initiative Detail with History tab (audit trails)
 - [x] All other pages updated with new terminology
 
 ### Database Schema
 
-**audit_logs** (NEW)
+**audit_logs**
 ```
 {
   id: string,
@@ -74,7 +85,9 @@ Executive-grade initiative tracking and reporting tool to manage critical enterp
 **enterprise_metrics** (Core Business Outcomes)
 ```
 {
-  id, name, description, category, target_value, current_value, unit,
+  id, name, description, 
+  category: "ETO" | "Quality",
+  target_value, current_value, unit,
   created_at, updated_at
 }
 ```
@@ -92,36 +105,41 @@ Executive-grade initiative tracking and reporting tool to manage critical enterp
 
 ## API Endpoints
 
+### KPI Tree
+- `GET /api/kpi-tree` - Full hierarchical tree: Category → Outcomes → Initiatives by Status
+
+### Dashboard
+- `GET /api/dashboard/stats` - Summary statistics
+- `GET /api/dashboard/initiatives-by-status` - Initiatives grouped by status
+
 ### Audit Logs
 - `GET /api/audit-logs/{entity_type}/{entity_id}` - Get entity audit history
 - `GET /api/audit-logs/initiative/{id}/all` - Get initiative + milestone history
 
-### KPI Tree
-- `GET /api/kpi-tree` - Full hierarchical tree data
-
-### Dashboard
-- `GET /api/dashboard/initiatives-by-status` - Initiatives grouped by status
+### Config
+- `GET /api/config/metric-categories` - Returns ["ETO", "Quality"]
 
 ## Test Credentials
 - Email: demo@vertiv.com
 - Password: Demo2024!
 
 ## Seeded Data
-- 7 Core Business Outcomes (including new "Engineer To Order Cycle Time")
-- 8 Initiatives with realistic data
+- **ETO Metrics (4)**: Engineer To Order Cycle Time, Quote-to-Order Cycle Time, Configuration Accuracy, Engineering Change Order Rate
+- **Quality Metrics (4)**: Solution Design Accuracy, Order Entry Error Rate, On-Time Delivery Rate, Customer Satisfaction Score
+- **8 Initiatives** with realistic data, milestones, and risks
 
 ## Prioritized Backlog
 
 ### P0 (Complete)
+- [x] Simplified categories to ETO and Quality
+- [x] Redesigned KPI Tree hierarchy
+- [x] Dashboard Code Red Pipeline (4 columns)
+- [x] Embedded KPI Tree in Dashboard
 - [x] Audit trails for initiatives, milestones, metrics
-- [x] Dashboard redesign with status buckets
-- [x] Rename to "Core Business Outcomes"
-- [x] Add "Engineer To Order" metric
-- [x] KPI Tree view
 
 ### P1 (High Priority)
+- [ ] Audit trail UI for Metrics and Milestones (backend exists, UI missing)
 - [ ] Real AI confidence scoring
-- [ ] Audit trail for risks
 - [ ] Bulk operations
 - [ ] Export to PDF/CSV
 
