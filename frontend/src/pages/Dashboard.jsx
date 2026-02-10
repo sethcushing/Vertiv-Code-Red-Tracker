@@ -7,9 +7,6 @@ import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import {
   AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  DollarSign,
   Target,
   Clock,
   ChevronRight,
@@ -17,6 +14,7 @@ import {
   AlertCircle,
   CheckCircle,
   Loader2,
+  Users,
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -179,31 +177,16 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-financial">
+        <Card className="border-gray-200/80 shadow-sm rounded-lg hover:shadow-md transition-all duration-200" data-testid="stat-at-risk">
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Budget</p>
-                <p className="text-2xl font-heading font-bold text-gray-900 mt-1">{formatCurrency(stats.total_budget)}</p>
+                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">At Risk</p>
+                <p className="text-3xl font-heading font-bold text-yellow-600 mt-1">{stats.at_risk_count}</p>
               </div>
-              <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center shadow-inner">
-                <DollarSign className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center shadow-inner">
+                <Clock className="w-6 h-6 text-yellow-600" />
               </div>
-            </div>
-            <div className="mt-3 flex items-center gap-2 text-sm">
-              <span className="text-gray-500">Spent:</span>
-              <span className="font-semibold">{formatCurrency(stats.total_actual_spend)}</span>
-              {stats.total_variance < 0 ? (
-                <span className="text-green-600 flex items-center bg-green-50 px-2 py-0.5 rounded-full text-xs font-medium">
-                  <TrendingDown className="w-3 h-3 mr-1" />
-                  Under
-                </span>
-              ) : (
-                <span className="text-red-600 flex items-center bg-red-50 px-2 py-0.5 rounded-full text-xs font-medium">
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                  Over
-                </span>
-              )}
             </div>
           </CardContent>
         </Card>
