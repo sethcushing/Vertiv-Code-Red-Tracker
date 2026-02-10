@@ -108,11 +108,96 @@ async def seed_data():
     
     # ========== SEED STRATEGIC INITIATIVES (Big Bets) ==========
     strategic_initiatives = [
-        {"id": str(uuid.uuid4()), "name": "ETO", "description": "Engineer To Order transformation - reducing cycle times and improving configuration accuracy", "status": "Work In Progress", "rag_status": "Amber", "executive_sponsor": "Michael Chen", "business_outcome_ids": [cat_map["ETO"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Quality", "description": "Enterprise-wide quality improvement initiative", "status": "Discovery", "rag_status": "Green", "executive_sponsor": "Sarah Johnson", "business_outcome_ids": [cat_map["Quality"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Planning", "description": "Planning stability and forecast accuracy improvement", "status": "Not Started", "rag_status": "Green", "executive_sponsor": "David Kim", "business_outcome_ids": [cat_map["PDSL"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Manufacturing Visibility", "description": "Real-time visibility into manufacturing operations", "status": "Not Started", "rag_status": "Red", "executive_sponsor": "Lisa Park", "business_outcome_ids": [], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Intercompany", "description": "Intercompany process optimization", "status": "Not Started", "rag_status": "Green", "executive_sponsor": "Tom Wilson", "business_outcome_ids": [], "created_at": now, "updated_at": now},
+        {
+            "id": str(uuid.uuid4()), 
+            "name": "ETO", 
+            "description": "Engineer To Order transformation - reducing cycle times and improving configuration accuracy", 
+            "status": "Work In Progress", 
+            "rag_status": "Amber", 
+            "executive_sponsor": "Michael Chen", 
+            "business_outcome_ids": [cat_map["ETO"]], 
+            "business_unit": "Engineering",
+            "delivery_stages_impacted": ["Request", "Solution Design", "Order Capture"],
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "Michael Chen", "role": "Executive Sponsor", "responsibility": "Strategic oversight and funding"},
+                {"id": str(uuid.uuid4()), "name": "Jennifer Martinez", "role": "Program Lead", "responsibility": "Day-to-day program management"},
+            ],
+            "status_history": [
+                {"id": str(uuid.uuid4()), "old_status": "Not Started", "new_status": "Discovery", "changed_at": (datetime.now(timezone.utc) - timedelta(days=30)).isoformat(), "changed_by": "Admin", "notes": "Kickoff meeting completed"},
+                {"id": str(uuid.uuid4()), "old_status": "Discovery", "new_status": "Work In Progress", "changed_at": (datetime.now(timezone.utc) - timedelta(days=14)).isoformat(), "changed_by": "Admin", "notes": "Moving to implementation"},
+            ],
+            "created_at": now, 
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()), 
+            "name": "Quality", 
+            "description": "Enterprise-wide quality improvement initiative", 
+            "status": "Discovery", 
+            "rag_status": "Green", 
+            "executive_sponsor": "Sarah Johnson", 
+            "business_outcome_ids": [cat_map["Quality"]],
+            "business_unit": "Manufacturing",
+            "delivery_stages_impacted": ["Availability", "Fulfillment"],
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "Sarah Johnson", "role": "Executive Sponsor", "responsibility": "Quality strategy"},
+                {"id": str(uuid.uuid4()), "name": "Nicole Brown", "role": "Quality Lead", "responsibility": "Process implementation"},
+            ],
+            "status_history": [
+                {"id": str(uuid.uuid4()), "old_status": "Not Started", "new_status": "Discovery", "changed_at": (datetime.now(timezone.utc) - timedelta(days=7)).isoformat(), "changed_by": "Admin", "notes": "Started discovery phase"},
+            ],
+            "created_at": now, 
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()), 
+            "name": "Planning", 
+            "description": "Planning stability and forecast accuracy improvement", 
+            "status": "Not Started", 
+            "rag_status": "Green", 
+            "executive_sponsor": "David Kim", 
+            "business_outcome_ids": [cat_map["PDSL"]],
+            "business_unit": "Operations",
+            "delivery_stages_impacted": ["Quote and Approval", "Fulfillment"],
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "David Kim", "role": "Executive Sponsor", "responsibility": "Planning oversight"},
+            ],
+            "status_history": [],
+            "created_at": now, 
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()), 
+            "name": "Manufacturing Visibility", 
+            "description": "Real-time visibility into manufacturing operations", 
+            "status": "Not Started", 
+            "rag_status": "Red", 
+            "executive_sponsor": "Lisa Park", 
+            "business_outcome_ids": [],
+            "business_unit": "Manufacturing",
+            "delivery_stages_impacted": ["Availability", "Fulfillment", "Post-Delivery"],
+            "team_members": [
+                {"id": str(uuid.uuid4()), "name": "Lisa Park", "role": "Executive Sponsor", "responsibility": "Manufacturing strategy"},
+            ],
+            "status_history": [],
+            "created_at": now, 
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()), 
+            "name": "Intercompany", 
+            "description": "Intercompany process optimization", 
+            "status": "Not Started", 
+            "rag_status": "Green", 
+            "executive_sponsor": "Tom Wilson", 
+            "business_outcome_ids": [],
+            "business_unit": "Finance",
+            "delivery_stages_impacted": ["Commercials", "Order Capture"],
+            "team_members": [],
+            "status_history": [],
+            "created_at": now, 
+            "updated_at": now
+        },
     ]
     for init in strategic_initiatives:
         await db.strategic_initiatives.insert_one(init)
