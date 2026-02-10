@@ -294,18 +294,18 @@ const InitiativeDetail = () => {
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             {initiative.code_red_flag && (
-              <span className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-bold uppercase tracking-wide bg-red-600 text-white animate-pulse">
+              <span className="inline-flex items-center px-3 py-1 rounded-lg text-sm font-lato-bold uppercase tracking-wide bg-red-600 text-white animate-pulse">
                 <AlertTriangle className="w-4 h-4 mr-2" />
                 Code Red
               </span>
             )}
-            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
+            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-lato-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
               {initiative.status}
             </span>
-            <span className="text-sm text-gray-500 uppercase tracking-wider">{initiative.bucket}</span>
+            <span className="text-sm text-gray-500 uppercase tracking-wider font-lato-light">{initiative.bucket}</span>
           </div>
           <h1 className="text-3xl font-heading font-bold text-gray-900 uppercase tracking-tight">{initiative.name}</h1>
-          <p className="text-gray-600 mt-2">{initiative.description}</p>
+          <p className="text-gray-600 mt-2 font-lato-light">{initiative.description}</p>
         </div>
         
         <div className="flex items-center gap-3">
