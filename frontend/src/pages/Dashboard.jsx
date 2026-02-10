@@ -376,6 +376,11 @@ const Dashboard = () => {
                                             <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" /> : 
                                             <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                           }
+                                          {/* RAG Status Indicator */}
+                                          <div 
+                                            className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${RAG_CONFIG[initiative.rag_status || 'Green']?.color}`}
+                                            title={`RAG: ${initiative.rag_status || 'Green'}`}
+                                          />
                                           <h4 
                                             className="font-lato-bold text-sm text-gray-900 truncate hover:text-[#FE5B1B] cursor-pointer"
                                             onClick={(e) => { e.stopPropagation(); navigate(`/strategic-initiatives/${initiative.id}`); }}
