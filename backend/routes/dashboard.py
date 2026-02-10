@@ -63,6 +63,7 @@ async def get_pipeline():
             "id": p["id"],
             "name": p["name"],
             "status": p.get("status", "Not Started"),
+            "rag_status": p.get("rag_status", "Green"),
             "owner": p.get("owner", ""),
             "milestones_count": len(p.get("milestones", [])),
             "milestones_completed": sum(1 for m in p.get("milestones", []) if m.get("status") == "Completed"),
@@ -81,6 +82,7 @@ async def get_pipeline():
                     "id": init["id"],
                     "name": init["name"],
                     "description": init.get("description", ""),
+                    "rag_status": init.get("rag_status", "Green"),
                     "executive_sponsor": init.get("executive_sponsor", ""),
                     "business_outcome_ids": init.get("business_outcome_ids", []),
                     "projects": projects_by_initiative.get(init["id"], [])
