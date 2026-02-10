@@ -12,7 +12,7 @@ from typing import Dict, Any, Optional
 
 
 class EnterpriseAPITester:
-    def __init__(self, base_url: str = "https://code-red-pipe.preview.emergentagent.com"):
+    def __init__(self, base_url: str = "https://initiative-details.preview.emergentagent.com"):
         self.base_url = f"{base_url}/api"
         self.token = None
         self.test_user_id = None
