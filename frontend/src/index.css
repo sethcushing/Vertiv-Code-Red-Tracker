@@ -199,7 +199,7 @@
 
 /* Modern Rounded Table Styles */
 .table-header {
-    @apply bg-gradient-to-b from-gray-50 to-gray-100/80 text-gray-500 text-xs font-semibold tracking-wider h-12;
+    @apply bg-gradient-to-b from-gray-50 to-gray-100/80 text-gray-600 text-xs font-normal tracking-wider h-12;
 }
 
 .table-row {
@@ -212,7 +212,7 @@
 }
 
 .table-cell {
-    @apply text-sm text-gray-600 px-4;
+    @apply text-sm text-gray-600 px-4 font-light;
 }
 
 /* Modern Rounded Sidebar Styles */
