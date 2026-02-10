@@ -8,7 +8,7 @@ from models.schemas import (
     ProjectCreate, ProjectUpdate, ProjectResponse,
     MilestoneBase, Milestone, IssueBase, Issue
 )
-from utils.auth import get_current_user
+# from utils.auth import get_current_user
 
 router = APIRouter(tags=["Strategic Initiatives & Projects"])
 
@@ -25,7 +25,7 @@ def set_database(database):
 # ==================== STRATEGIC INITIATIVE ENDPOINTS ====================
 
 @router.post("/strategic-initiatives", response_model=StrategicInitiativeResponse)
-async def create_strategic_initiative(initiative: StrategicInitiativeCreate, current_user: dict = Depends(get_current_user)):
+async def create_strategic_initiative(initiative: StrategicInitiativeCreate):
     initiative_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
     
@@ -41,7 +41,7 @@ async def create_strategic_initiative(initiative: StrategicInitiativeCreate, cur
 
 
 @router.get("/strategic-initiatives", response_model=List[StrategicInitiativeResponse])
-async def get_strategic_initiatives(status: Optional[str] = None, current_user: dict = Depends(get_current_user)):
+async def get_strategic_initiatives(status: Optional[str] = None):
     query = {}
     if status:
         query["status"] = status
@@ -58,7 +58,7 @@ async def get_strategic_initiatives(status: Optional[str] = None, current_user: 
 
 
 @router.get("/strategic-initiatives/{initiative_id}", response_model=StrategicInitiativeResponse)
-async def get_strategic_initiative(initiative_id: str, current_user: dict = Depends(get_current_user)):
+async def get_strategic_initiative(initiative_id: str):
     initiative = await db.strategic_initiatives.find_one({"id": initiative_id}, {"_id": 0})
     if not initiative:
         raise HTTPException(status_code=404, detail="Strategic Initiative not found")
@@ -68,7 +68,7 @@ async def get_strategic_initiative(initiative_id: str, current_user: dict = Depe
 
 
 @router.put("/strategic-initiatives/{initiative_id}", response_model=StrategicInitiativeResponse)
-async def update_strategic_initiative(initiative_id: str, update: StrategicInitiativeUpdate, current_user: dict = Depends(get_current_user)):
+async def update_strategic_initiative(initiative_id: str, update: StrategicInitiativeUpdate):
     existing = await db.strategic_initiatives.find_one({"id": initiative_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Strategic Initiative not found")
@@ -84,7 +84,7 @@ async def update_strategic_initiative(initiative_id: str, update: StrategicIniti
 
 
 @router.delete("/strategic-initiatives/{initiative_id}")
-async def delete_strategic_initiative(initiative_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_strategic_initiative(initiative_id: str):
     existing = await db.strategic_initiatives.find_one({"id": initiative_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Strategic Initiative not found")
@@ -99,7 +99,7 @@ async def delete_strategic_initiative(initiative_id: str, current_user: dict = D
 # ==================== PROJECT ENDPOINTS ====================
 
 @router.post("/projects", response_model=ProjectResponse)
-async def create_project(project: ProjectCreate, current_user: dict = Depends(get_current_user)):
+async def create_project(project: ProjectCreate):
     # Verify parent initiative exists
     initiative = await db.strategic_initiatives.find_one({"id": project.strategic_initiative_id})
     if not initiative:
@@ -129,7 +129,7 @@ async def create_project(project: ProjectCreate, current_user: dict = Depends(ge
 async def get_projects(
     strategic_initiative_id: Optional[str] = None,
     status: Optional[str] = None,
-    current_user: dict = Depends(get_current_user)
+    
 ):
     query = {}
     if strategic_initiative_id:
@@ -142,7 +142,7 @@ async def get_projects(
 
 
 @router.get("/projects/{project_id}", response_model=ProjectResponse)
-async def get_project(project_id: str, current_user: dict = Depends(get_current_user)):
+async def get_project(project_id: str):
     project = await db.projects.find_one({"id": project_id}, {"_id": 0})
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -150,7 +150,7 @@ async def get_project(project_id: str, current_user: dict = Depends(get_current_
 
 
 @router.put("/projects/{project_id}", response_model=ProjectResponse)
-async def update_project(project_id: str, update: ProjectUpdate, current_user: dict = Depends(get_current_user)):
+async def update_project(project_id: str, update: ProjectUpdate):
     existing = await db.projects.find_one({"id": project_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -165,7 +165,7 @@ async def update_project(project_id: str, update: ProjectUpdate, current_user: d
 
 
 @router.delete("/projects/{project_id}")
-async def delete_project(project_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_project(project_id: str):
     existing = await db.projects.find_one({"id": project_id}, {"_id": 0})
     if not existing:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -177,7 +177,7 @@ async def delete_project(project_id: str, current_user: dict = Depends(get_curre
 
 # Project Milestones
 @router.post("/projects/{project_id}/milestones", response_model=Milestone)
-async def add_project_milestone(project_id: str, milestone: MilestoneBase, current_user: dict = Depends(get_current_user)):
+async def add_project_milestone(project_id: str, milestone: MilestoneBase):
     project = await db.projects.find_one({"id": project_id})
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -192,7 +192,7 @@ async def add_project_milestone(project_id: str, milestone: MilestoneBase, curre
 
 
 @router.put("/projects/{project_id}/milestones/{milestone_id}", response_model=Milestone)
-async def update_project_milestone(project_id: str, milestone_id: str, milestone: MilestoneBase, current_user: dict = Depends(get_current_user)):
+async def update_project_milestone(project_id: str, milestone_id: str, milestone: MilestoneBase):
     result = await db.projects.update_one(
         {"id": project_id, "milestones.id": milestone_id},
         {"$set": {
@@ -211,7 +211,7 @@ async def update_project_milestone(project_id: str, milestone_id: str, milestone
 
 
 @router.delete("/projects/{project_id}/milestones/{milestone_id}")
-async def delete_project_milestone(project_id: str, milestone_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_project_milestone(project_id: str, milestone_id: str):
     result = await db.projects.update_one(
         {"id": project_id},
         {"$pull": {"milestones": {"id": milestone_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
@@ -224,7 +224,7 @@ async def delete_project_milestone(project_id: str, milestone_id: str, current_u
 
 # Project Issues
 @router.post("/projects/{project_id}/issues", response_model=Issue)
-async def add_project_issue(project_id: str, issue: IssueBase, current_user: dict = Depends(get_current_user)):
+async def add_project_issue(project_id: str, issue: IssueBase):
     project = await db.projects.find_one({"id": project_id})
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -238,7 +238,7 @@ async def add_project_issue(project_id: str, issue: IssueBase, current_user: dic
 
 
 @router.put("/projects/{project_id}/issues/{issue_id}", response_model=Issue)
-async def update_project_issue(project_id: str, issue_id: str, issue: IssueBase, current_user: dict = Depends(get_current_user)):
+async def update_project_issue(project_id: str, issue_id: str, issue: IssueBase):
     result = await db.projects.update_one(
         {"id": project_id, "issues.id": issue_id},
         {"$set": {
@@ -257,7 +257,7 @@ async def update_project_issue(project_id: str, issue_id: str, issue: IssueBase,
 
 
 @router.delete("/projects/{project_id}/issues/{issue_id}")
-async def delete_project_issue(project_id: str, issue_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_project_issue(project_id: str, issue_id: str):
     result = await db.projects.update_one(
         {"id": project_id},
         {"$pull": {"issues": {"id": issue_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
