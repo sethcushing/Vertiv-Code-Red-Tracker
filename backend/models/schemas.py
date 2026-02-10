@@ -65,6 +65,7 @@ class ProjectBase(BaseModel):
     description: Optional[str] = ""
     strategic_initiative_id: str  # Parent Strategic Initiative
     status: str = "Not Started"  # Not Started, In Progress, Completed, On Hold
+    delivery_stage: str = "Request"  # Request, Solution Design, Commercials, Quote and Approval, Order Capture, Availability, Fulfillment, Post-Delivery
     owner: Optional[str] = ""
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
@@ -80,6 +81,7 @@ class ProjectUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+    delivery_stage: Optional[str] = None
     owner: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
