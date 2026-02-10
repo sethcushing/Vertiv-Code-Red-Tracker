@@ -403,10 +403,11 @@ const InitiativeDetail = () => {
 
       {/* Tabs */}
       <Tabs defaultValue="milestones" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-gray-100 rounded-lg p-1">
+        <TabsList className="grid w-full grid-cols-4 bg-gray-100 rounded-lg p-1">
           <TabsTrigger value="milestones" className="rounded-md data-[state=active]:bg-white">Milestones ({milestones.length})</TabsTrigger>
           <TabsTrigger value="risks" className="rounded-md data-[state=active]:bg-white">Risks ({risks.length})</TabsTrigger>
           <TabsTrigger value="team" className="rounded-md data-[state=active]:bg-white">Team ({teamMembers.length})</TabsTrigger>
+          <TabsTrigger value="history" className="rounded-md data-[state=active]:bg-white">History ({auditLogs.length})</TabsTrigger>
         </TabsList>
 
         {/* Milestones Tab */}
