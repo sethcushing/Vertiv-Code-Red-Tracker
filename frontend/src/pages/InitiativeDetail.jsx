@@ -59,6 +59,7 @@ import {
   Flag,
   Plus,
   Loader2,
+  History,
 } from 'lucide-react';
 
 const InitiativeDetail = () => {
@@ -68,6 +69,7 @@ const InitiativeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [config, setConfig] = useState({ teams: [], riskTypes: [] });
+  const [auditLogs, setAuditLogs] = useState([]);
   
   // Dialog states
   const [milestoneDialogOpen, setMilestoneDialogOpen] = useState(false);
@@ -91,13 +93,15 @@ const InitiativeDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [initRes, teamsRes, riskTypesRes] = await Promise.all([
+        const [initRes, teamsRes, riskTypesRes, auditRes] = await Promise.all([
           api.get(`/initiatives/${id}`),
           api.get('/config/teams'),
-          api.get('/config/risk-types')
+          api.get('/config/risk-types'),
+          api.get(`/audit-logs/initiative/${id}/all`).catch(() => ({ data: [] }))
         ]);
         setInitiative(initRes.data);
         setConfig({ teams: teamsRes.data, riskTypes: riskTypesRes.data });
+        setAuditLogs(auditRes.data || []);
       } catch (error) {
         toast.error('Failed to load initiative');
         navigate('/initiatives');
