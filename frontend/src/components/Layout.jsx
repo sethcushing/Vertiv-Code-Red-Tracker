@@ -19,10 +19,6 @@ const navigation = [
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
 ];
 
-const adminNavigation = [
-  { name: 'User Management', href: '/admin', icon: Settings },
-];
-
 const Layout = ({ children }) => {
   const location = useLocation();
   const { user } = useAuth();
