@@ -172,28 +172,27 @@ class InitiativeResponse(InitiativeBase):
 # Dashboard Models
 class DashboardStats(BaseModel):
     total_initiatives: int
-    code_red_count: int
-    at_risk_count: int
-    on_track_count: int
-    off_track_count: int
-    total_budget: float
-    total_actual_spend: float
-    total_variance: float
+    not_started_count: int
+    discovery_count: int
+    frame_count: int
+    wip_count: int
+    implemented_count: int
+    total_metrics: int
+    total_milestones: int
+    total_risks: int
+    escalated_risks: int
 
 class FourBlocker(BaseModel):
     initiative_id: str
     name: str
     owner: str
-    code_red: bool
     lifecycle_stage: str
     status: str
     milestones_completed: int
     milestones_total: int
     confidence_score: int
     top_risks: List[Dict[str, Any]]
-    budget: float
-    actual_spend: float
-    variance: float
+    metric_names: List[str] = []
 
 # ==================== AUTH HELPERS ====================
 
