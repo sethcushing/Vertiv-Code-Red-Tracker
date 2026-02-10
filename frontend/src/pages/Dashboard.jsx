@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { api } from '../App';
 import { toast } from 'sonner';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import {
-  AlertTriangle,
   Target,
   ChevronRight,
   ChevronDown,
   RefreshCw,
-  AlertCircle,
   Loader2,
   TrendingUp,
   Clock,
@@ -19,19 +18,20 @@ import {
   Users,
   Layers,
   FolderKanban,
-  Boxes,
   Search,
+  GripVertical,
+  Plus,
 } from 'lucide-react';
 
 const STATUS_CONFIG = {
-  'Not Started': { icon: Pause, color: 'bg-gray-100', textColor: 'text-gray-700', borderColor: 'border-gray-400', headerBg: 'bg-gray-200' },
-  'Discovery': { icon: Search, color: 'bg-blue-100', textColor: 'text-blue-700', borderColor: 'border-blue-400', headerBg: 'bg-blue-200' },
-  'Frame': { icon: Boxes, color: 'bg-purple-100', textColor: 'text-purple-700', borderColor: 'border-purple-400', headerBg: 'bg-purple-200' },
-  'Work In Progress': { icon: PlayCircle, color: 'bg-yellow-100', textColor: 'text-yellow-700', borderColor: 'border-yellow-400', headerBg: 'bg-yellow-200' },
+  'Not Started': { icon: Pause, color: 'bg-slate-50', textColor: 'text-slate-700', borderColor: 'border-slate-300', headerBg: 'bg-slate-100' },
+  'Discovery': { icon: Search, color: 'bg-blue-50', textColor: 'text-blue-700', borderColor: 'border-blue-300', headerBg: 'bg-blue-100' },
+  'Frame': { icon: Clock, color: 'bg-violet-50', textColor: 'text-violet-700', borderColor: 'border-violet-300', headerBg: 'bg-violet-100' },
+  'Work In Progress': { icon: PlayCircle, color: 'bg-amber-50', textColor: 'text-amber-700', borderColor: 'border-amber-300', headerBg: 'bg-amber-100' },
 };
 
 const PROJECT_STATUS_COLORS = {
-  'Not Started': 'bg-gray-100 text-gray-600',
+  'Not Started': 'bg-slate-100 text-slate-600',
   'In Progress': 'bg-blue-100 text-blue-600',
   'Completed': 'bg-green-100 text-green-600',
   'On Hold': 'bg-orange-100 text-orange-600',
@@ -79,8 +79,38 @@ const Dashboard = () => {
     }
   };
 
-  const toggleInitiative = (id) => {
+  const toggleInitiative = (id, e) => {
+    e.stopPropagation();
     setExpandedInitiatives(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleDragEnd = async (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+    const newStatus = destination.droppableId;
+    const oldStatus = source.droppableId;
+
+    // Optimistic update
+    const newPipeline = { ...pipeline };
+    const initiative = newPipeline[oldStatus].find(i => i.id === draggableId);
+    
+    if (initiative) {
+      newPipeline[oldStatus] = newPipeline[oldStatus].filter(i => i.id !== draggableId);
+      newPipeline[newStatus] = [...(newPipeline[newStatus] || [])];
+      newPipeline[newStatus].splice(destination.index, 0, initiative);
+      setPipeline(newPipeline);
+
+      try {
+        await api.put(`/pipeline/move/${draggableId}?new_status=${encodeURIComponent(newStatus)}`);
+        toast.success(`Moved to ${newStatus}`);
+      } catch (error) {
+        toast.error('Failed to update status');
+        fetchData(); // Revert on error
+      }
+    }
   };
 
   if (loading) {
@@ -94,7 +124,6 @@ const Dashboard = () => {
     );
   }
 
-  // Show empty state if no data
   if (!stats || stats.total_strategic_initiatives === 0) {
     return (
       <div className="max-w-2xl mx-auto mt-12">
@@ -107,29 +136,27 @@ const Dashboard = () => {
               No Strategic Initiatives Found
             </h2>
             <p className="text-gray-600 mb-6 font-lato-light">
-              Get started by creating your first strategic initiative or loading sample data.
+              Get started by loading sample data.
             </p>
-            <div className="flex justify-center gap-4">
-              <Button
-                onClick={handleSeedData}
-                data-testid="seed-data-btn"
-                disabled={seeding}
-                className="text-white rounded-xl font-lato-bold uppercase tracking-wide"
-                style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
-              >
-                {seeding ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Load Sample Data
-                  </>
-                )}
-              </Button>
-            </div>
+            <Button
+              onClick={handleSeedData}
+              data-testid="seed-data-btn"
+              disabled={seeding}
+              className="text-white rounded-xl font-lato-bold uppercase tracking-wide"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+            >
+              {seeding ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Load Sample Data
+                </>
+              )}
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -139,142 +166,168 @@ const Dashboard = () => {
   const pipelineStatuses = ['Not Started', 'Discovery', 'Frame', 'Work In Progress'];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Code Red Pipeline - 4 Column Layout */}
+    <div className="space-y-6 animate-fade-in">
+      {/* Code Red Pipeline - Drag & Drop */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-heading font-bold text-gray-900 uppercase tracking-tight">
             Code Red Pipeline
           </h2>
-          <Link 
-            to="/strategic-initiatives"
-            data-testid="view-all-initiatives-link"
-            className="text-sm text-[#FE5B1B] hover:text-[#E0480E] font-lato-regular flex items-center"
-          >
-            View All Initiatives
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </Link>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-400 font-lato-light">Drag to move</span>
+            <Button
+              onClick={() => navigate('/strategic-initiatives/new')}
+              data-testid="add-initiative-btn"
+              size="sm"
+              className="text-white rounded-lg font-lato-bold text-xs"
+              style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
+            >
+              <Plus className="w-3 h-3 mr-1" />
+              Add Initiative
+            </Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {pipelineStatuses.map(status => {
-            const config = STATUS_CONFIG[status];
-            const StatusIcon = config.icon;
-            const statusInitiatives = pipeline[status] || [];
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {pipelineStatuses.map(status => {
+              const config = STATUS_CONFIG[status];
+              const StatusIcon = config.icon;
+              const statusInitiatives = pipeline[status] || [];
 
-            return (
-              <Card key={status} className="border-0 shadow-md rounded-xl overflow-hidden h-fit">
-                {/* Status Header */}
-                <div className={`flex items-center justify-between p-3 ${config.headerBg} border-b-2 ${config.borderColor}`}>
-                  <div className="flex items-center gap-2">
-                    <StatusIcon className={`w-4 h-4 ${config.textColor}`} />
-                    <span className={`font-heading font-bold text-sm uppercase tracking-tight ${config.textColor}`}>
-                      {status}
-                    </span>
-                  </div>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-lato-bold bg-white/50 ${config.textColor}`}>
-                    {statusInitiatives.length}
-                  </span>
-                </div>
+              return (
+                <Droppable key={status} droppableId={status}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={`rounded-xl overflow-hidden border ${config.borderColor} transition-all ${
+                        snapshot.isDraggingOver ? 'ring-2 ring-[#FE5B1B] ring-opacity-50' : ''
+                      }`}
+                    >
+                      {/* Status Header */}
+                      <div className={`flex items-center justify-between px-3 py-2.5 ${config.headerBg} border-b ${config.borderColor}`}>
+                        <div className="flex items-center gap-2">
+                          <StatusIcon className={`w-4 h-4 ${config.textColor}`} />
+                          <span className={`font-lato-bold text-sm ${config.textColor}`}>
+                            {status}
+                          </span>
+                        </div>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-lato-bold bg-white/80 ${config.textColor}`}>
+                          {statusInitiatives.length}
+                        </span>
+                      </div>
 
-                {/* Strategic Initiatives List */}
-                <div className="max-h-[500px] overflow-y-auto">
-                  {statusInitiatives.length > 0 ? (
-                    <div className="divide-y divide-gray-100">
-                      {statusInitiatives.map(initiative => {
-                        const isExpanded = expandedInitiatives[initiative.id];
-                        const hasProjects = initiative.projects && initiative.projects.length > 0;
+                      {/* Initiatives List */}
+                      <div className={`min-h-[200px] max-h-[500px] overflow-y-auto ${config.color}`}>
+                        {statusInitiatives.length > 0 ? (
+                          <div className="p-2 space-y-2">
+                            {statusInitiatives.map((initiative, index) => {
+                              const isExpanded = expandedInitiatives[initiative.id];
+                              const hasProjects = initiative.projects && initiative.projects.length > 0;
 
-                        return (
-                          <div key={initiative.id} className="bg-white">
-                            {/* Initiative Card */}
-                            <div
-                              className={`p-3 hover:bg-gray-50 cursor-pointer transition-all ${hasProjects ? '' : ''}`}
-                              onClick={() => hasProjects && toggleInitiative(initiative.id)}
-                              data-testid={`pipeline-initiative-${initiative.id}`}
-                            >
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2">
-                                    {hasProjects && (
-                                      isExpanded ? 
-                                        <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" /> : 
-                                        <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                    )}
-                                    <h4 className="font-lato-bold text-sm text-gray-900">
-                                      {initiative.name}
-                                    </h4>
-                                  </div>
-                                  {initiative.executive_sponsor && (
-                                    <div className="flex items-center gap-1 text-xs text-gray-500 font-lato-light mt-1 ml-6">
-                                      <Users className="w-3 h-3" />
-                                      <span>{initiative.executive_sponsor}</span>
-                                    </div>
-                                  )}
-                                </div>
-                                {hasProjects && (
-                                  <span className="text-xs text-gray-400 font-lato-light">
-                                    {initiative.projects.length} project{initiative.projects.length !== 1 ? 's' : ''}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Projects (Expanded) */}
-                            {isExpanded && hasProjects && (
-                              <div className="bg-gray-50 border-t border-gray-100">
-                                {initiative.projects.map(project => (
-                                  <div
-                                    key={project.id}
-                                    onClick={() => navigate(`/projects/${project.id}`)}
-                                    className="p-3 pl-8 hover:bg-gray-100 cursor-pointer transition-all border-b border-gray-100 last:border-b-0"
-                                    data-testid={`project-${project.id}`}
-                                  >
-                                    <div className="flex items-start justify-between">
-                                      <div className="flex-1">
-                                        <div className="flex items-center gap-2">
-                                          <FolderKanban className="w-4 h-4 text-gray-400" />
-                                          <span className="font-lato-regular text-sm text-gray-700">{project.name}</span>
+                              return (
+                                <Draggable key={initiative.id} draggableId={initiative.id} index={index}>
+                                  {(provided, snapshot) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      className={`bg-white rounded-lg border border-gray-100 shadow-sm transition-all ${
+                                        snapshot.isDragging ? 'shadow-lg ring-2 ring-[#FE5B1B]' : 'hover:shadow-md'
+                                      }`}
+                                      data-testid={`pipeline-initiative-${initiative.id}`}
+                                    >
+                                      {/* Initiative Header */}
+                                      <div className="p-3 flex items-start gap-2">
+                                        <div
+                                          {...provided.dragHandleProps}
+                                          className="mt-0.5 cursor-grab active:cursor-grabbing"
+                                        >
+                                          <GripVertical className="w-4 h-4 text-gray-300" />
                                         </div>
-                                        <div className="flex items-center gap-3 mt-1 ml-6 text-xs text-gray-500 font-lato-light">
-                                          {project.owner && <span>{project.owner}</span>}
-                                          <span>{project.milestones_completed}/{project.milestones_count} milestones</span>
-                                          {project.risks_count > 0 && (
-                                            <span className="flex items-center gap-0.5 text-amber-500">
-                                              <AlertCircle className="w-3 h-3" />
-                                              {project.risks_count}
-                                            </span>
-                                          )}
+                                        <div className="flex-1 min-w-0">
+                                          <div 
+                                            className="flex items-center gap-2 cursor-pointer"
+                                            onClick={(e) => hasProjects && toggleInitiative(initiative.id, e)}
+                                          >
+                                            {hasProjects && (
+                                              isExpanded ? 
+                                                <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" /> : 
+                                                <ChevronRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                            )}
+                                            <h4 className="font-lato-bold text-sm text-gray-900 truncate">
+                                              {initiative.name}
+                                            </h4>
+                                          </div>
+                                          <div className="flex items-center gap-2 mt-1">
+                                            {initiative.executive_sponsor && (
+                                              <span className="text-xs text-gray-500 font-lato-light flex items-center gap-1">
+                                                <Users className="w-3 h-3" />
+                                                {initiative.executive_sponsor}
+                                              </span>
+                                            )}
+                                            {hasProjects && (
+                                              <span className="text-xs text-gray-400 font-lato-light">
+                                                {initiative.projects.length} project{initiative.projects.length !== 1 ? 's' : ''}
+                                              </span>
+                                            )}
+                                          </div>
                                         </div>
                                       </div>
-                                      <span className={`px-2 py-0.5 rounded text-xs font-lato-bold ${PROJECT_STATUS_COLORS[project.status] || 'bg-gray-100 text-gray-600'}`}>
-                                        {project.status}
-                                      </span>
+
+                                      {/* Projects (Expanded) */}
+                                      {isExpanded && hasProjects && (
+                                        <div className="border-t border-gray-100 bg-gray-50/50">
+                                          {initiative.projects.map(project => (
+                                            <div
+                                              key={project.id}
+                                              onClick={() => navigate(`/projects/${project.id}`)}
+                                              className="px-3 py-2 hover:bg-gray-100 cursor-pointer transition-all border-b border-gray-100 last:border-b-0"
+                                              data-testid={`project-${project.id}`}
+                                            >
+                                              <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2 flex-1 min-w-0">
+                                                  <FolderKanban className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                                                  <span className="text-xs text-gray-700 truncate">{project.name}</span>
+                                                </div>
+                                                <span className={`px-1.5 py-0.5 rounded text-[10px] font-lato-bold ${PROJECT_STATUS_COLORS[project.status] || 'bg-gray-100 text-gray-600'}`}>
+                                                  {project.status}
+                                                </span>
+                                              </div>
+                                              <div className="flex items-center gap-2 mt-1 ml-5 text-[10px] text-gray-400 font-lato-light">
+                                                <span>{project.milestones_completed}/{project.milestones_count} done</span>
+                                              </div>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      )}
                                     </div>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
+                                  )}
+                                </Draggable>
+                              );
+                            })}
+                            {provided.placeholder}
                           </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="p-6 text-center">
-                      <Layers className="w-8 h-8 text-gray-200 mx-auto mb-2" />
-                      <p className="text-gray-400 font-lato-light text-xs">No initiatives</p>
+                        ) : (
+                          <div className="p-6 text-center">
+                            <Layers className="w-8 h-8 text-gray-200 mx-auto mb-2" />
+                            <p className="text-gray-400 font-lato-light text-xs">Drop here</p>
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
-                </div>
-              </Card>
-            );
-          })}
-        </div>
+                </Droppable>
+              );
+            })}
+          </div>
+        </DragDropContext>
       </div>
 
       {/* Summary Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card className="border-0 shadow-md rounded-xl cursor-pointer hover:shadow-lg transition-all" onClick={() => navigate('/strategic-initiatives')} data-testid="stat-initiatives">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/strategic-initiatives')} data-testid="stat-initiatives">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center">
@@ -288,7 +341,7 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md rounded-xl cursor-pointer hover:shadow-lg transition-all" onClick={() => navigate('/projects')} data-testid="stat-projects">
+        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/projects')} data-testid="stat-projects">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
@@ -302,10 +355,10 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md rounded-xl cursor-pointer hover:shadow-lg transition-all" onClick={() => navigate('/business-outcomes')} data-testid="stat-outcomes">
+        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/business-outcomes')} data-testid="stat-outcomes">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -316,29 +369,15 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-md rounded-xl cursor-pointer hover:shadow-lg transition-all" onClick={() => navigate('/projects')} data-testid="stat-risks">
+        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/business-outcomes')} data-testid="stat-kpis">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center">
-                <AlertCircle className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-violet-600 rounded-lg flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 font-lato-regular uppercase">Risks</p>
-                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_risks}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-md rounded-xl bg-red-50 cursor-pointer hover:shadow-lg transition-all" onClick={() => navigate('/projects')} data-testid="stat-escalated">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center animate-pulse">
-                <AlertTriangle className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-red-500 font-lato-regular uppercase">Escalated</p>
-                <p className="text-xl font-heading font-bold text-red-600">{stats.escalated_risks}</p>
+                <p className="text-xs text-gray-400 font-lato-regular uppercase">KPIs</p>
+                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_kpis}</p>
               </div>
             </div>
           </CardContent>
@@ -346,23 +385,24 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end">
         <Button
           onClick={handleSeedData}
           data-testid="refresh-seed-btn"
           disabled={seeding}
           variant="outline"
-          className="rounded-xl"
+          size="sm"
+          className="rounded-lg text-xs"
         >
           {seeding ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
               Seeding...
             </>
           ) : (
             <>
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Reset Sample Data
+              <RefreshCw className="w-3 h-3 mr-1.5" />
+              Reset Data
             </>
           )}
         </Button>
