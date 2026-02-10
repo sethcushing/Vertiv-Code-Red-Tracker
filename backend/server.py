@@ -241,6 +241,56 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+# ==================== AUDIT LOG HELPER ====================
+
+async def create_audit_log(
+    entity_type: str,
+    entity_id: str,
+    entity_name: str,
+    action: str,
+    user: dict,
+    changes: List[dict] = None
+):
+    """Create an audit log entry"""
+    audit_entry = {
+        "id": str(uuid.uuid4()),
+        "entity_type": entity_type,
+        "entity_id": entity_id,
+        "entity_name": entity_name,
+        "action": action,
+        "user_email": user.get("email", "unknown"),
+        "user_name": user.get("name", "Unknown User"),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "changes": changes or []
+    }
+    await db.audit_logs.insert_one(audit_entry)
+    
+    # Keep only last 50 entries per entity
+    count = await db.audit_logs.count_documents({"entity_type": entity_type, "entity_id": entity_id})
+    if count > 50:
+        # Delete oldest entries beyond 50
+        oldest_entries = await db.audit_logs.find(
+            {"entity_type": entity_type, "entity_id": entity_id}
+        ).sort("timestamp", 1).limit(count - 50).to_list(count - 50)
+        
+        if oldest_entries:
+            ids_to_delete = [e["id"] for e in oldest_entries]
+            await db.audit_logs.delete_many({"id": {"$in": ids_to_delete}})
+
+def compute_changes(old_data: dict, new_data: dict, fields_to_track: List[str]) -> List[dict]:
+    """Compute changes between old and new data for specified fields"""
+    changes = []
+    for field in fields_to_track:
+        old_val = old_data.get(field)
+        new_val = new_data.get(field)
+        if old_val != new_val:
+            changes.append({
+                "field": field,
+                "old_value": str(old_val) if old_val is not None else None,
+                "new_value": str(new_val) if new_val is not None else None
+            })
+    return changes
+
 # ==================== AI CONFIDENCE SCORING ====================
 
 async def calculate_confidence_score(initiative: dict) -> int:
