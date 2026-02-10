@@ -338,9 +338,9 @@ const EnterpriseMetrics = () => {
         <Card className="border-2 border-dashed border-gray-200 rounded-xl">
           <CardContent className="p-12 text-center">
             <Target className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="font-lato-bold text-gray-600 mb-2">No Enterprise Metrics Yet</h3>
+            <h3 className="font-lato-bold text-gray-600 mb-2">No Business Outcomes Yet</h3>
             <p className="text-sm text-gray-400 font-lato-light mb-4">
-              Create metrics to track key performance indicators across your initiatives
+              Create outcomes to track key performance indicators across your initiatives
             </p>
             <Button 
               onClick={() => setIsDialogOpen(true)}
@@ -348,7 +348,7 @@ const EnterpriseMetrics = () => {
               style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Create First Metric
+              Create First Outcome
             </Button>
           </CardContent>
         </Card>
