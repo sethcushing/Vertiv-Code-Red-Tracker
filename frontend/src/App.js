@@ -119,7 +119,6 @@ function App() {
                   <Route path="/reporting" element={<Reporting />} />
                   <Route path="/executive" element={<ExecutiveDashboard />} />
                   <Route path="/delivery-pipeline" element={<DeliveryPipeline />} />
-                  <Route path="/admin" element={<Admin />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Layout>
