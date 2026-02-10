@@ -7,6 +7,7 @@ import {
   LogOut,
   User,
   ChevronRight,
+  BarChart3,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ import {
 const navigation = [
   { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
+  { name: 'Reporting', href: '/reporting', icon: BarChart3 },
 ];
 
 const Layout = ({ children }) => {
@@ -35,6 +37,7 @@ const Layout = ({ children }) => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Code Red Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
+    if (path === '/reporting') return 'Reporting Dashboard';
     if (path.includes('/projects/')) return 'Project Details';
     if (path.includes('/strategic-initiatives/new')) return 'New Initiative';
     if (path.includes('/strategic-initiatives/')) return 'Initiative Details';
