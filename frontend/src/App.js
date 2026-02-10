@@ -158,6 +158,7 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/enterprise-metrics" element={<EnterpriseMetrics />} />
                     <Route path="/enterprise-metrics/:id" element={<MetricDetail />} />
+                    <Route path="/kpi-tree" element={<KPITree />} />
                     <Route path="/milestones" element={<MilestonesView />} />
                     <Route path="/pipeline" element={<ProcessPipeline />} />
                     <Route path="/risk-heatmap" element={<RiskHeatmap />} />
