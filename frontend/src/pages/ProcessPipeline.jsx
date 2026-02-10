@@ -47,9 +47,11 @@ const ProcessPipeline = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'On Track': return 'border-l-green-500 bg-green-50/50';
-      case 'At Risk': return 'border-l-yellow-500 bg-yellow-50/50';
-      case 'Off Track': return 'border-l-red-500 bg-red-50/50';
+      case 'Not Started': return 'border-l-gray-400 bg-gray-50/50';
+      case 'Discovery': return 'border-l-blue-500 bg-blue-50/50';
+      case 'Frame': return 'border-l-purple-500 bg-purple-50/50';
+      case 'Work In Progress': return 'border-l-yellow-500 bg-yellow-50/50';
+      case 'Implemented': return 'border-l-green-500 bg-green-50/50';
       default: return 'border-l-gray-300 bg-gray-50/50';
     }
   };
