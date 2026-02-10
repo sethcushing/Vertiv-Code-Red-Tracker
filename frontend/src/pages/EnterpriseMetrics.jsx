@@ -227,7 +227,7 @@ const EnterpriseMetrics = () => {
               </div>
               <DialogFooter>
                 <Button type="submit" className="w-full text-white rounded-lg font-lato-bold" style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}>
-                  {editingMetric ? 'Update Metric' : 'Create Metric'}
+                  {editingMetric ? 'Update Outcome' : 'Create Outcome'}
                 </Button>
               </DialogFooter>
             </form>
