@@ -23,7 +23,7 @@ import {
 
 const navigation = [
   { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Enterprise Metrics', href: '/enterprise-metrics', icon: Target },
+  { name: 'Core Business Outcomes', href: '/enterprise-metrics', icon: Target },
   { name: 'Initiatives', href: '/initiatives', icon: Layers },
   { name: 'Milestones', href: '/milestones', icon: Calendar },
   { name: 'Pipeline Process', href: '/pipeline', icon: GitBranch },
