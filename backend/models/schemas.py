@@ -119,10 +119,13 @@ class ProjectUpdate(BaseModel):
     status: Optional[str] = None
     rag_status: Optional[str] = None
     delivery_stage: Optional[str] = None
+    delivery_stages_impacted: Optional[List[str]] = None
+    business_unit: Optional[str] = None
     owner: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
     business_outcome_ids: Optional[List[str]] = None
+    team_members: Optional[List[dict]] = None
 
 
 class ProjectResponse(ProjectBase):
