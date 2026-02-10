@@ -925,7 +925,7 @@ async def get_risk_types():
 
 @api_router.get("/config/metric-categories")
 async def get_metric_categories():
-    return ["Planning", "Sales", "Quality", "Delivery", "Customer Satisfaction", "Engineering"]
+    return ["ETO", "Quality"]
 
 # ==================== CORE BUSINESS OUTCOMES ENDPOINTS (formerly Enterprise Metrics) ====================
 
