@@ -12,7 +12,6 @@ import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Reporting from './pages/Reporting';
 import ExecutiveDashboard from './pages/ExecutiveDashboard';
 import DeliveryPipeline from './pages/DeliveryPipeline';
-import Admin from './pages/Admin';
 import Layout from './components/Layout';
 
 import './App.css';
