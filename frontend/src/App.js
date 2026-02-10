@@ -15,6 +15,7 @@ import RiskHeatmap from './pages/RiskHeatmap';
 import InitiativesList from './pages/InitiativesList';
 import InitiativeDetail from './pages/InitiativeDetail';
 import InitiativeForm from './pages/InitiativeForm';
+import KPITree from './pages/KPITree';
 import Layout from './components/Layout';
 
 import './App.css';
