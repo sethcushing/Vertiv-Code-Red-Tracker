@@ -8,6 +8,7 @@ class StrategicInitiativeBase(BaseModel):
     name: str
     description: Optional[str] = ""
     status: str = "Not Started"  # Not Started, Discovery, Frame, Work In Progress
+    rag_status: str = "Green"  # Red, Amber, Green
     executive_sponsor: Optional[str] = ""
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
@@ -22,6 +23,7 @@ class StrategicInitiativeUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+    rag_status: Optional[str] = None
     executive_sponsor: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
@@ -65,6 +67,7 @@ class ProjectBase(BaseModel):
     description: Optional[str] = ""
     strategic_initiative_id: str  # Parent Strategic Initiative
     status: str = "Not Started"  # Not Started, In Progress, Completed, On Hold
+    rag_status: str = "Green"  # Red, Amber, Green
     delivery_stage: str = "Request"  # Request, Solution Design, Commercials, Quote and Approval, Order Capture, Availability, Fulfillment, Post-Delivery
     owner: Optional[str] = ""
     start_date: Optional[str] = None
@@ -81,6 +84,7 @@ class ProjectUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
     status: Optional[str] = None
+    rag_status: Optional[str] = None
     delivery_stage: Optional[str] = None
     owner: Optional[str] = None
     start_date: Optional[str] = None
