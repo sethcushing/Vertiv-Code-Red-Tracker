@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { Toaster } from './components/ui/sonner';
-import { toast } from 'sonner';
 
 // Pages
-import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import BusinessOutcomes from './pages/BusinessOutcomes';
 import ProjectDetail from './pages/ProjectDetail';
@@ -22,7 +20,7 @@ import './App.css';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-// Auth Context
+// Auth Context - Default admin user (no login required)
 export const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
@@ -34,110 +32,72 @@ export const api = axios.create({
   },
 });
 
+// Store token for API calls
+let authToken = null;
+
 // Add auth token to requests
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (authToken) {
+    config.headers.Authorization = `Bearer ${authToken}`;
   }
   return config;
 });
 
-// Handle auth errors
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
-    }
-    return Promise.reject(error);
-  }
-);
-
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Default admin user - no login required
+  const [user, setUser] = useState({
+    id: 'default-admin',
+    name: 'Admin',
+    email: 'admin@coderedinitiatives.com',
+    role: 'admin'
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    if (token && savedUser) {
-      setUser(JSON.parse(savedUser));
-      // Verify token is still valid
-      api.get('/auth/me')
-        .then(res => setUser(res.data))
-        .catch(() => {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
+    // Auto-login as admin on app load
+    const autoLogin = async () => {
+      try {
+        // Try to login with default admin credentials
+        const res = await axios.post(`${API}/auth/login`, {
+          email: 'admin@test.com',
+          password: 'password123'
+        });
+        authToken = res.data.token;
+        setUser(res.data.user);
+      } catch (error) {
+        // If login fails, try to register and login
+        try {
+          await axios.post(`${API}/auth/register`, {
+            name: 'Admin',
+            email: 'admin@test.com',
+            password: 'password123',
+            role: 'admin'
+          });
+          const res = await axios.post(`${API}/auth/login`, {
+            email: 'admin@test.com',
+            password: 'password123'
+          });
+          authToken = res.data.token;
+          setUser(res.data.user);
+        } catch (e) {
+          console.log('Auto-login failed, using default user context');
+        }
+      }
       setLoading(false);
-    }
+    };
+    
+    autoLogin();
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      const res = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      setUser(res.data.user);
-      toast.success('Login successful');
-      return true;
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Login failed');
-      return false;
-    }
-  };
-
-  const register = async (name, email, password) => {
-    try {
-      await api.post('/auth/register', { name, email, password });
-      toast.success('Registration successful. Please login.');
-      return true;
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Registration failed');
-      return false;
-    }
-  };
-
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setUser(null);
-    toast.success('Logged out successfully');
+    // No-op since we don't have login
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  const location = useLocation();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F4F5F7]">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#FE5B1B] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  return children;
 };
 
 function App() {
@@ -146,27 +106,24 @@ function App() {
       <AuthProvider>
         <Toaster position="top-right" richColors />
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route
             path="/*"
             element={
-              <ProtectedRoute>
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/business-outcomes" element={<BusinessOutcomes />} />
-                    <Route path="/projects/:id" element={<ProjectDetail />} />
-                    <Route path="/strategic-initiatives/new" element={<StrategicInitiativeForm />} />
-                    <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
-                    <Route path="/reporting" element={<Reporting />} />
-                    <Route path="/executive" element={<ExecutiveDashboard />} />
-                    <Route path="/delivery-pipeline" element={<DeliveryPipeline />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </Layout>
-              </ProtectedRoute>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/business-outcomes" element={<BusinessOutcomes />} />
+                  <Route path="/projects/:id" element={<ProjectDetail />} />
+                  <Route path="/strategic-initiatives/new" element={<StrategicInitiativeForm />} />
+                  <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
+                  <Route path="/reporting" element={<Reporting />} />
+                  <Route path="/executive" element={<ExecutiveDashboard />} />
+                  <Route path="/delivery-pipeline" element={<DeliveryPipeline />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Layout>
             }
           />
         </Routes>
