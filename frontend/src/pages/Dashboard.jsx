@@ -427,6 +427,11 @@ const Dashboard = () => {
                                             >
                                               <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-2 flex-1 min-w-0">
+                                                  {/* Project RAG Status */}
+                                                  <div 
+                                                    className={`w-2 h-2 rounded-full flex-shrink-0 ${RAG_CONFIG[project.rag_status || 'Green']?.color}`}
+                                                    title={`RAG: ${project.rag_status || 'Green'}`}
+                                                  />
                                                   <FolderKanban className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                                                   <span className="text-xs text-gray-700 truncate">{project.name}</span>
                                                 </div>
