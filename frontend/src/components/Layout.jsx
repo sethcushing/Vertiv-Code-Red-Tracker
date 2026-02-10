@@ -3,9 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import {
   LayoutDashboard,
-  Target,
   TrendingUp,
-  AlertTriangle,
   LogOut,
   User,
   ChevronRight,
@@ -20,7 +18,6 @@ import {
 const navigation = [
   { name: 'Executive Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
-  { name: 'Risk', href: '/risk-heatmap', icon: AlertTriangle },
 ];
 
 const Layout = ({ children }) => {
@@ -38,10 +35,9 @@ const Layout = ({ children }) => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
     if (path === '/business-outcomes') return 'Business Outcomes';
-    if (path === '/pipeline') return 'Pipeline Process';
-    if (path === '/risk-heatmap') return 'Risk Heatmap';
-    if (path === '/strategic-initiatives') return 'Strategic Initiatives';
     if (path.includes('/projects/')) return 'Project Details';
+    if (path.includes('/strategic-initiatives/new')) return 'New Initiative';
+    if (path.includes('/strategic-initiatives/')) return 'Initiative Details';
     return 'Code Red Initiatives';
   };
 
@@ -51,10 +47,11 @@ const Layout = ({ children }) => {
     const crumbs = [{ name: 'Home', href: '/' }];
     
     if (path.includes('/projects/')) {
-      crumbs.push({ name: 'Dashboard', href: '/dashboard' });
-      crumbs.push({ name: 'Project Details', href: path });
-    } else if (path.includes('/strategic-initiatives')) {
-      crumbs.push({ name: 'Strategic Initiatives', href: '/strategic-initiatives' });
+      crumbs.push({ name: 'Project', href: path });
+    } else if (path.includes('/strategic-initiatives/new')) {
+      crumbs.push({ name: 'New Initiative', href: path });
+    } else if (path.includes('/strategic-initiatives/')) {
+      crumbs.push({ name: 'Initiative', href: path });
     } else if (path !== '/' && path !== '/dashboard') {
       const nav = navigation.find(n => n.href === path);
       if (nav) {
@@ -68,24 +65,24 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-[#F4F5F7]">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-64 text-gray-300 z-50 flex flex-col" style={{ background: 'linear-gradient(180deg, #1F1F1F 0%, #171717 100%)' }}>
+      <aside className="fixed left-0 top-0 h-screen w-56 text-gray-300 z-50 flex flex-col" style={{ background: 'linear-gradient(180deg, #1F1F1F 0%, #171717 100%)' }}>
         {/* Logo */}
-        <div className="p-6 border-b border-gray-800/50">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl font-heading">CR</span>
+        <div className="p-5 border-b border-gray-800/50">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-sm font-heading">CR</span>
             </div>
             <div>
-              <h1 className="text-white font-heading font-bold text-lg tracking-tight">
+              <h1 className="text-white font-heading font-bold text-sm tracking-tight">
                 CODE RED
               </h1>
-              <p className="text-xs text-gray-500">Initiatives</p>
+              <p className="text-[10px] text-gray-500">Initiatives</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 overflow-y-auto">
+        <nav className="flex-1 py-3 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href || 
               (item.href === '/dashboard' && location.pathname === '/') ||
@@ -97,14 +94,14 @@ const Layout = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className={`flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm font-lato-regular transition-all duration-300 ${
+                className={`flex items-center gap-2.5 px-3 py-2.5 mx-2 rounded-lg text-sm font-lato-regular transition-all duration-300 ${
                   isActive
                     ? 'text-white shadow-lg'
                     : 'text-gray-400 hover:bg-white/10 hover:text-white'
                 }`}
                 style={isActive ? { background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' } : {}}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
                 {item.name}
               </Link>
             );
@@ -112,19 +109,19 @@ const Layout = ({ children }) => {
         </nav>
 
         {/* User Section */}
-        <div className="p-4 border-t border-gray-800/50">
+        <div className="p-3 border-t border-gray-800/50">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button 
                 data-testid="user-menu-trigger"
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition-all duration-300"
+                className="w-full flex items-center gap-2.5 p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300"
               >
-                <div className="w-9 h-9 bg-gray-700 rounded-xl flex items-center justify-center">
-                  <User className="w-4 h-4 text-gray-400" />
+                <div className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center">
+                  <User className="w-3.5 h-3.5 text-gray-400" />
                 </div>
                 <div className="flex-1 text-left">
                   <p className="text-sm text-white truncate font-lato-regular">{user?.name}</p>
-                  <p className="text-xs text-gray-500 truncate font-lato-light">{user?.role}</p>
+                  <p className="text-[10px] text-gray-500 truncate">{user?.role}</p>
                 </div>
               </button>
             </DropdownMenuTrigger>
@@ -143,13 +140,13 @@ const Layout = ({ children }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 min-h-screen">
+      <main className="ml-56 min-h-screen">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-6 py-4">
+        <header className="bg-white border-b border-gray-200 px-5 py-3">
           <div className="flex items-center justify-between">
             <div>
               {/* Breadcrumbs */}
-              <nav className="flex items-center gap-1 text-sm text-gray-500 mb-1 font-lato-light">
+              <nav className="flex items-center gap-1 text-xs text-gray-500 mb-0.5 font-lato-light">
                 {getBreadcrumbs().map((crumb, index, arr) => (
                   <React.Fragment key={crumb.href}>
                     <Link 
@@ -159,25 +156,20 @@ const Layout = ({ children }) => {
                       {crumb.name}
                     </Link>
                     {index < arr.length - 1 && (
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
+                      <ChevronRight className="w-3 h-3 text-gray-400" />
                     )}
                   </React.Fragment>
                 ))}
               </nav>
-              <h1 className="text-2xl font-heading font-bold text-gray-900 uppercase tracking-tight">
+              <h1 className="text-xl font-heading font-bold text-gray-900 uppercase tracking-tight">
                 {getPageTitle()}
               </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">
-                Code Red Initiatives
-              </span>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <div className="p-6">
+        <div className="p-5">
           {children}
         </div>
       </main>
