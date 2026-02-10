@@ -175,12 +175,12 @@ const Layout = ({ children }) => {
           <div className="flex items-center justify-between">
             <div>
               {/* Breadcrumbs */}
-              <nav className="flex items-center gap-1 text-sm text-gray-500 mb-1">
+              <nav className="flex items-center gap-1 text-sm text-gray-500 mb-1 font-lato-light">
                 {getBreadcrumbs().map((crumb, index, arr) => (
                   <React.Fragment key={crumb.href}>
                     <Link 
                       to={crumb.href}
-                      className={index === arr.length - 1 ? 'text-gray-900 font-medium' : 'hover:text-gray-700'}
+                      className={index === arr.length - 1 ? 'text-gray-900 font-lato-regular' : 'hover:text-gray-700'}
                     >
                       {crumb.name}
                     </Link>
@@ -195,7 +195,7 @@ const Layout = ({ children }) => {
               </h1>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-xs text-gray-500 uppercase tracking-wider">
+              <span className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">
                 Enterprise Initiative Control Tower
               </span>
             </div>
