@@ -3,6 +3,28 @@ from typing import List, Optional
 import uuid
 
 
+# ========== STATUS UPDATE HISTORY ==========
+class StatusUpdate(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    old_status: str
+    new_status: str
+    changed_at: str
+    changed_by: Optional[str] = ""
+    notes: Optional[str] = ""
+
+
+# ========== TEAM MEMBER ==========
+class TeamMember(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    role: str  # e.g., Project Lead, Developer, Analyst
+    responsibility: Optional[str] = ""  # Area of responsibility
+
+
+# ========== BUSINESS UNITS ==========
+BUSINESS_UNITS = ["IT", "Sales", "Manufacturing", "Fulfillment", "Engineering", "Finance", "Operations", "HR", "Marketing"]
+
+
 # ========== STRATEGIC INITIATIVE (Big Bets) MODELS ==========
 class StrategicInitiativeBase(BaseModel):
     name: str
@@ -13,6 +35,10 @@ class StrategicInitiativeBase(BaseModel):
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
     business_outcome_ids: List[str] = []  # Links to Business Outcome Categories
+    business_unit: Optional[str] = ""  # IT, Sales, Manufacturing, etc.
+    delivery_stages_impacted: List[str] = []  # Which delivery stages this impacts
+    team_members: List[TeamMember] = []
+    status_history: List[StatusUpdate] = []
 
 
 class StrategicInitiativeCreate(StrategicInitiativeBase):
