@@ -390,11 +390,11 @@ const InitiativeDetail = () => {
       <Card className="border-gray-200/80 rounded-lg">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-gray-700">Milestone Progress</span>
-            <span className="text-sm font-medium">{completedMilestones} / {milestones.length} completed</span>
+            <span className="text-sm font-lato-bold text-gray-700">Milestone Progress</span>
+            <span className="text-sm font-lato-regular">{completedMilestones} / {milestones.length} completed</span>
           </div>
           <Progress value={milestones.length > 0 ? (completedMilestones / milestones.length) * 100 : 0} className="h-3 bg-gray-200" />
-          <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
+          <div className="flex items-center justify-between mt-3 text-xs text-gray-500 font-lato-light">
             <span><Calendar className="w-3 h-3 inline mr-1" />{formatDate(initiative.start_date)}</span>
             <span>{formatDate(initiative.target_end_date)}<Calendar className="w-3 h-3 inline ml-1" /></span>
           </div>
