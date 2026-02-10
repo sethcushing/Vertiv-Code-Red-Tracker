@@ -7,15 +7,9 @@ import { toast } from 'sonner';
 // Pages
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import EnterpriseMetrics from './pages/EnterpriseMetrics';
-import MetricDetail from './pages/MetricDetail';
-import MilestonesView from './pages/MilestonesView';
+import BusinessOutcomes from './pages/BusinessOutcomes';
 import ProcessPipeline from './pages/ProcessPipeline';
 import RiskHeatmap from './pages/RiskHeatmap';
-import InitiativesList from './pages/InitiativesList';
-import InitiativeDetail from './pages/InitiativeDetail';
-import InitiativeForm from './pages/InitiativeForm';
-import KPITree from './pages/KPITree';
 import Layout from './components/Layout';
 
 import './App.css';
@@ -156,16 +150,9 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/enterprise-metrics" element={<EnterpriseMetrics />} />
-                    <Route path="/enterprise-metrics/:id" element={<MetricDetail />} />
-                    <Route path="/kpi-tree" element={<KPITree />} />
-                    <Route path="/milestones" element={<MilestonesView />} />
+                    <Route path="/business-outcomes" element={<BusinessOutcomes />} />
                     <Route path="/pipeline" element={<ProcessPipeline />} />
                     <Route path="/risk-heatmap" element={<RiskHeatmap />} />
-                    <Route path="/initiatives" element={<InitiativesList />} />
-                    <Route path="/initiatives/new" element={<InitiativeForm />} />
-                    <Route path="/initiatives/:id" element={<InitiativeDetail />} />
-                    <Route path="/initiatives/:id/edit" element={<InitiativeForm />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </Layout>
