@@ -53,10 +53,10 @@ const Login = () => {
               <h1 className="text-2xl font-heading font-bold text-gray-900 uppercase tracking-tight">
                 Vertiv
               </h1>
-              <p className="text-xs text-gray-500 uppercase tracking-wider">Control Tower</p>
+              <p className="text-xs text-gray-500 uppercase tracking-wider font-lato-light">Control Tower</p>
             </div>
           </div>
-          <p className="text-gray-600 text-sm">Enterprise Initiative Management</p>
+          <p className="text-gray-600 text-sm font-lato-light">Enterprise Initiative Management</p>
         </div>
 
         <Card className="border-gray-200/80 shadow-xl rounded-xl overflow-hidden">
