@@ -1,189 +1,125 @@
-# Code Red Initiatives - Product Requirements Document
+# Code Red Initiatives - PRD
 
-## Overview
-A comprehensive project portfolio management tool for tracking strategic initiatives, projects, and business outcomes with KPI monitoring.
+## Original Problem Statement
+Build a project portfolio management application (Code Red Initiatives) with:
+- Executive Dashboard consolidating key views
+- Code Red Pipeline (Kanban-style initiative tracking)
+- Business Outcomes page with card-based layout
+- Delivery Pipeline view
+- Reporting dashboard with charts
+- RAG status indicators on Initiatives and Projects
+- Detailed tracking for Initiatives and Projects:
+  - Status history (running tally of updates)
+  - Team members with roles and responsibilities
+  - Business unit alignment
+  - Delivery pipeline stages impacted
+  - Editable detail pages
+- MongoDB persistence for data storage
 
-## Core Features
+## Architecture
 
-### 1. Executive Dashboard (NEW - Dec 2025)
-- Scrollable single-page view combining all key metrics
-- **Code Red Pipeline** - Initiative status summary (Not Started, Discovery, Frame, Work In Progress)
-- **Business Outcomes** - Expandable category cards with KPI progress
-- **Delivery Lifecycle Pipeline** - 8-stage project flow (Request → Solution Design → Commercials → Quote and Approval → Order Capture → Availability → Fulfillment → Post-Delivery)
-- **KPI Trends** - Split view showing "Trending in Right Direction" vs "Needs Attention" with mini charts
-
-### 2. Code Red Pipeline (Dashboard)
-- Four-column Kanban board: Not Started, Discovery, Frame, Work In Progress
-- Drag-and-drop functionality for moving initiatives between stages
-- Expandable initiative cards showing underlying projects
-- Add/edit/delete initiatives and projects
-- Summary statistics (Initiatives, Projects, Outcomes, KPIs)
-
-### 3. Business Outcomes (Card-Based Layout - Dec 2025)
-- **Card-based side-by-side layout** for categories
-- Three-level hierarchy: Category → Sub-Outcome → KPI
-- Categories: ETO, Quality, PDSL (seeded)
-- Each card features:
-  - Colorful gradient header (orange, blue, green, violet, amber)
-  - Circular progress ring showing overall category progress
-  - On Track / At Risk / Off Track KPI counts
-  - Expandable sub-outcomes with progress bars
-  - KPI cards with current value, target, and visual progress
-- KPI history tracking with trend charts
-- CRUD operations for categories, sub-outcomes, and KPIs
-
-### 4. Reporting Dashboard (Dec 2025)
-- **Initiative Status Distribution**: Pie chart showing initiatives by status
-- **Project Status Distribution**: Horizontal bar chart
-- **KPI Performance Overview**: Pie chart (On Track, At Risk, Off Track)
-- **Progress by Business Outcome Category**: Bar chart
-- **KPI Trends Over Time**: Line charts for top KPIs with historical data
-- **Business Outcome Summary Table**: Detailed metrics per category
-
-### 5. User Management (NEW - Dec 2025)
-- **Admin Page** for user CRUD operations
-- View all users with name, email, role, created date
-- Add new users with name, email, password, role
-- Edit users (name, role)
-- Reset user passwords
-- Delete users (cannot delete yourself)
-- **Two Roles:**
-  - Admin: Full access to everything
-  - Project Manager: View-only access, can only edit assigned projects
-- **Role-based UI Controls:**
-  - Hide "Add Initiative" button for Project Managers
-  - Hide "Add Category" and edit buttons on Business Outcomes for PMs
-  - Hide Admin navigation section for non-admins
-  - Drag-and-drop disabled for Project Managers on pipelines
-
-### 6. Authentication
-- JWT-based authentication
-- User registration and login
-- Role-based access (admin, initiative_lead, project_manager)
-
-## Technical Architecture
-
-### Backend (FastAPI - Modular Structure)
+### Backend (FastAPI + MongoDB)
 ```
 /app/backend/
-├── server.py          # Main app orchestrator
+├── server.py           # Main FastAPI app with CORS, routers
 ├── models/
-│   ├── __init__.py
-│   └── schemas.py     # All Pydantic models
+│   └── schemas.py      # Pydantic models
 ├── routes/
-│   ├── __init__.py
-│   ├── auth.py        # Authentication endpoints
-│   ├── admin.py       # Admin user management
-│   ├── initiatives.py # Strategic initiatives & projects
-│   ├── business_outcomes.py # Categories, sub-outcomes, KPIs
-│   ├── dashboard.py   # Stats, pipeline, reporting
-│   └── seed.py        # Test data seeding
+│   ├── auth.py         # Auth routes (currently unused)
+│   ├── initiatives.py  # Strategic Initiatives & Projects CRUD
+│   ├── business_outcomes.py  # Business outcomes hierarchy
+│   ├── dashboard.py    # Dashboard data endpoints
+│   ├── admin.py        # Admin endpoints
+│   └── seed.py         # Data seeding endpoint
 └── utils/
-    ├── __init__.py
-    ├── auth.py        # Auth helpers (JWT, password hashing)
-    └── helpers.py     # KPI progress calculation
+    └── auth.py         # Auth helpers (currently unused)
 ```
 
-### Frontend (React)
+### Frontend (React + Tailwind + Shadcn)
 ```
 /app/frontend/src/
-├── App.js             # Routes and auth context
+├── App.js              # Main router, AuthContext (default admin)
 ├── components/
-│   ├── Layout.jsx     # Navigation sidebar
-│   └── ui/            # Shadcn UI components
+│   ├── Layout.jsx      # Sidebar navigation
+│   └── ui/             # Shadcn components
 └── pages/
-    ├── Login.jsx
-    ├── Dashboard.jsx       # Code Red Pipeline
-    ├── DeliveryPipeline.jsx # NEW - Delivery Lifecycle
-    ├── BusinessOutcomes.jsx
-    ├── Reporting.jsx       # Reporting Dashboard
     ├── ExecutiveDashboard.jsx
-    ├── Admin.jsx           # NEW - User Management
-    ├── ProjectDetail.jsx
+    ├── Dashboard.jsx (Code Red Pipeline)
+    ├── BusinessOutcomes.jsx
+    ├── DeliveryPipeline.jsx
+    ├── Reporting.jsx
     ├── StrategicInitiativeDetail.jsx
-    └── StrategicInitiativeForm.jsx
+    ├── ProjectDetail.jsx
+    └── Admin.jsx (unused)
 ```
 
-### Database
-- MongoDB with Motor async driver
-- Collections: users, strategic_initiatives, projects, business_outcome_categories, sub_outcomes, kpis, kpi_history
+### Key Data Models
+- **StrategicInitiative**: id, name, description, status, rag_status, executive_sponsor, business_unit, delivery_stages_impacted, team_members, status_history, business_outcome_ids
+- **Project**: id, name, description, status, rag_status, owner, business_unit, delivery_stages_impacted, team_members, status_history, milestones, issues
+- **TeamMember**: id, name, role, responsibility
+- **StatusUpdate**: id, old_status, new_status, changed_at, changed_by, notes
+
+## Completed Features (as of Feb 10, 2026)
+
+### Phase 1: Core Infrastructure
+- [x] Backend refactoring to modular structure
+- [x] MongoDB integration with Motor async driver
+- [x] FastAPI routes for initiatives, projects, business outcomes
+- [x] React frontend with Tailwind + Shadcn UI
+
+### Phase 2: Dashboard Views
+- [x] Executive Dashboard (consolidated view)
+- [x] Code Red Pipeline (Kanban-style, drag-drop)
+- [x] Business Outcomes page (card-based layout)
+- [x] Delivery Pipeline view
+- [x] Reporting dashboard with charts
+
+### Phase 3: RAG Status & Detail Pages
+- [x] RAG status indicators on initiative/project cards
+- [x] Initiative Detail Page with full edit capabilities
+- [x] Project Detail Page with full edit capabilities
+
+### Phase 4: Rich Tracking Features (JUST COMPLETED)
+- [x] Status history tracking (auto-logged on status change)
+- [x] Team members with roles and responsibilities
+- [x] Business unit alignment field
+- [x] Delivery stages impacted (multi-select)
+- [x] Editable detail pages for all fields
+
+### Phase 5: MongoDB Persistence
+- [x] MongoDB already configured and working
+- [x] All data persists across sessions
+- [x] Seed endpoint to populate sample data
 
 ## API Endpoints
 
-### Authentication
-- POST /api/auth/register
-- POST /api/auth/login
-- GET /api/auth/me
-
-### Dashboard & Pipeline
-- GET /api/dashboard/stats
-- GET /api/pipeline
-- PUT /api/pipeline/move/{initiative_id}
-
-### Reporting
-- GET /api/reports/pipeline
-- GET /api/reports/business-outcomes
-- GET /api/reports/trends
-
 ### Strategic Initiatives
-- GET/POST /api/strategic-initiatives
-- GET/PUT/DELETE /api/strategic-initiatives/{id}
+- `GET /api/strategic-initiatives` - List all
+- `GET /api/strategic-initiatives/{id}` - Get one with all fields
+- `POST /api/strategic-initiatives` - Create
+- `PUT /api/strategic-initiatives/{id}` - Update (auto-tracks status history)
+- `DELETE /api/strategic-initiatives/{id}` - Delete (cascades to projects)
 
 ### Projects
-- GET/POST /api/projects
-- GET/PUT/DELETE /api/projects/{id}
-- POST/PUT/DELETE /api/projects/{id}/milestones/{id}
-- POST/PUT/DELETE /api/projects/{id}/issues/{id}
+- `GET /api/projects` - List all
+- `GET /api/projects/{id}` - Get one with all fields
+- `POST /api/projects` - Create
+- `PUT /api/projects/{id}` - Update (auto-tracks status history)
+- `DELETE /api/projects/{id}` - Delete
+- `POST /api/projects/{id}/milestones` - Add milestone
+- `PUT /api/projects/{id}/milestones/{mid}` - Update milestone
+- `DELETE /api/projects/{id}/milestones/{mid}` - Delete milestone
+- `POST /api/projects/{id}/issues` - Add issue
+- `PUT /api/projects/{id}/issues/{iid}` - Update issue
+- `DELETE /api/projects/{id}/issues/{iid}` - Delete issue
 
-### Business Outcomes
-- GET/POST /api/business-outcomes/categories
-- GET/PUT/DELETE /api/business-outcomes/categories/{id}
-- GET/POST /api/business-outcomes/sub-outcomes
-- GET/PUT/DELETE /api/business-outcomes/sub-outcomes/{id}
-- GET/POST /api/business-outcomes/kpis
-- GET/PUT/DELETE /api/business-outcomes/kpis/{id}
-- GET/POST /api/business-outcomes/kpis/{id}/history
-- GET /api/business-outcomes/tree
+## Test Results
+- Backend: 21/21 tests passed (100%)
+- Frontend: All features verified via Playwright
+- Test report: `/app/test_reports/iteration_9.json`
 
-### Seed Data
-- POST /api/seed
-
-## What's Been Implemented
-
-### December 2025 - Backend Refactoring & Reporting Dashboard
-1. **Backend Modularization** (COMPLETED)
-   - Broke down 1400+ line monolithic server.py
-   - Created models/schemas.py for all Pydantic models
-   - Created routes/ directory with separate files for auth, admin, initiatives, business_outcomes, dashboard, seed
-   - Created utils/ directory for auth helpers and KPI calculations
-
-2. **Reporting Dashboard** (COMPLETED)
-   - New /reporting route and page
-   - 6 chart types using recharts library
-   - Summary statistics at top
-   - Business outcome summary table
-
-3. **Testing** (PASSED 100%)
-   - Backend: 18/18 tests passed
-   - Frontend: All features verified
-
-## Pending/Backlog
-
-### P1 - High Priority
-- (All P1 items completed)
-
-### P2 - Medium Priority
-- (All P2 items completed)
-
-### Future Enhancements
-- Export reports to PDF/Excel
-- Email notifications
-- Dashboard customization
-
-## Test Credentials
-- Email: admin@test.com
-- Password: password123
-
-## Libraries Used
-- **Backend**: FastAPI, Motor (MongoDB), PyJWT, bcrypt
-- **Frontend**: React, react-router-dom, @hello-pangea/dnd, recharts, lucide-react, Shadcn/UI
+## Future/Backlog Tasks
+1. Re-implement user authentication (if requested)
+2. Extract shared components from detail pages
+3. Add data export functionality
+4. Add dashboard customization options
