@@ -193,13 +193,21 @@ class KPIHistoryEntry(BaseModel):
     recorded_by: Optional[str] = None
 
 # ========== USER MODELS ==========
+# Roles: admin (full access), initiative_lead (manage initiatives, projects, KPIs), project_manager (manage assigned projects only)
+VALID_ROLES = ["admin", "initiative_lead", "project_manager"]
+
 class UserBase(BaseModel):
     email: str
     name: str
-    role: str = "viewer"
+    role: str = "project_manager"  # Default role
 
 class UserCreate(UserBase):
     password: str
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    role: Optional[str] = None
+    password: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: str
