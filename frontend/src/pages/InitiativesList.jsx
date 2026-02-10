@@ -228,8 +228,8 @@ const InitiativesList = () => {
 
       {/* Results Count */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
-          Showing <span className="font-semibold text-gray-900">{filteredInitiatives.length}</span> initiative{filteredInitiatives.length !== 1 ? 's' : ''}
+        <p className="text-sm text-gray-500 font-lato-light">
+          Showing <span className="font-lato-bold text-gray-900">{filteredInitiatives.length}</span> initiative{filteredInitiatives.length !== 1 ? 's' : ''}
         </p>
       </div>
 
