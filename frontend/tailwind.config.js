@@ -8,14 +8,17 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['IBM Plex Sans', 'sans-serif'],
+                sans: ['Lato', 'sans-serif'],
                 heading: ['Barlow Condensed', 'sans-serif'],
-                mono: ['JetBrains Mono', 'monospace'],
+                light: ['Lato', 'sans-serif'],
             },
             borderRadius: {
-                lg: 'var(--radius)',
-                md: 'calc(var(--radius) - 2px)',
-                sm: 'calc(var(--radius) - 4px)'
+                lg: '1rem',
+                md: '0.75rem',
+                sm: '0.5rem',
+                xl: '1.25rem',
+                '2xl': '1.5rem',
+                '3xl': '2rem',
             },
             colors: {
                 background: 'hsl(var(--background))',
