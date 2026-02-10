@@ -276,39 +276,39 @@ const InitiativesList = () => {
                     className="hover:bg-gray-50 border-b border-gray-100 cursor-pointer"
                     onClick={() => navigate(`/initiatives/${initiative.id}`)}
                   >
-                    <TableCell className="font-medium">
+                    <TableCell className="font-lato-regular">
                       <div className="flex items-center gap-2">
                         {initiative.code_red_flag && (
                           <AlertTriangle className="w-4 h-4 text-red-500 animate-pulse flex-shrink-0" />
                         )}
                         <div>
-                          <p className="font-medium text-gray-900 line-clamp-1">{initiative.name}</p>
-                          <p className="text-xs text-gray-500">{initiative.bucket}</p>
+                          <p className="font-lato-regular text-gray-900 line-clamp-1">{initiative.name}</p>
+                          <p className="text-xs text-gray-500 font-lato-light">{initiative.bucket}</p>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm text-gray-600">
+                    <TableCell className="text-sm text-gray-600 font-lato-light">
                       {initiative.initiative_owner || 'Unassigned'}
                     </TableCell>
-                    <TableCell className="text-sm text-gray-600">
+                    <TableCell className="text-sm text-gray-600 font-lato-light">
                       <span className="line-clamp-1 text-xs">{initiative.lifecycle_stage}</span>
                     </TableCell>
                     <TableCell className="text-center text-sm">
-                      <span className="font-medium">{completed}</span>
-                      <span className="text-gray-400">/{milestones.length}</span>
+                      <span className="font-lato-bold">{completed}</span>
+                      <span className="text-gray-400 font-lato-light">/{milestones.length}</span>
                     </TableCell>
                     <TableCell className="text-center text-sm">
-                      <span className="font-medium">{risks.length}</span>
-                      {escalated > 0 && <span className="text-red-500 ml-1">({escalated})</span>}
+                      <span className="font-lato-bold">{risks.length}</span>
+                      {escalated > 0 && <span className="text-red-500 ml-1 font-lato-regular">({escalated})</span>}
                     </TableCell>
                     <TableCell className="text-center">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-lato-bold uppercase tracking-wide ${getStatusBadge(initiative.status)}`}>
                         {initiative.status}
                       </span>
                     </TableCell>
                     <TableCell className="text-center">
                       <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg shadow-md ${getConfidenceColor(initiative.confidence_score)}`}>
-                        <span className="text-white font-bold text-sm">{initiative.confidence_score}</span>
+                        <span className="text-white font-lato-bold text-sm">{initiative.confidence_score}</span>
                       </div>
                     </TableCell>
                     <TableCell>
