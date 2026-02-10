@@ -59,8 +59,8 @@ const Login = () => {
           <p className="text-gray-600 text-sm">Enterprise Initiative Management</p>
         </div>
 
-        <Card className="border-gray-200 shadow-sm rounded-sm">
-          <CardHeader className="space-y-1 pb-4">
+        <Card className="border-gray-200/80 shadow-xl rounded-xl overflow-hidden">
+          <CardHeader className="space-y-1 pb-4 bg-gradient-to-b from-white to-gray-50/50">
             <CardTitle className="text-xl font-heading uppercase tracking-tight">
               Access Control Tower
             </CardTitle>
@@ -68,20 +68,20 @@ const Login = () => {
               Sign in or create an account to manage initiatives
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-2">
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-gray-100 p-1 rounded-lg">
                 <TabsTrigger 
                   value="login" 
                   data-testid="login-tab"
-                  className="rounded-sm data-[state=active]:bg-[#FE5B1B] data-[state=active]:text-white"
+                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-semibold transition-all"
                 >
                   Sign In
                 </TabsTrigger>
                 <TabsTrigger 
                   value="register" 
                   data-testid="register-tab"
-                  className="rounded-sm data-[state=active]:bg-[#FE5B1B] data-[state=active]:text-white"
+                  className="rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#FE5B1B] font-semibold transition-all"
                 >
                   Register
                 </TabsTrigger>
@@ -133,7 +133,8 @@ const Login = () => {
                     type="submit"
                     data-testid="login-submit-btn"
                     disabled={isLoading}
-                    className="w-full bg-[#FE5B1B] hover:bg-[#E0480E] text-white rounded-sm font-semibold uppercase tracking-wide"
+                    className="w-full text-white rounded-lg font-semibold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
+                    style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                   >
                     {isLoading ? (
                       <>
@@ -209,7 +210,8 @@ const Login = () => {
                     type="submit"
                     data-testid="register-submit-btn"
                     disabled={isLoading}
-                    className="w-full bg-[#FE5B1B] hover:bg-[#E0480E] text-white rounded-sm font-semibold uppercase tracking-wide"
+                    className="w-full text-white rounded-lg font-semibold uppercase tracking-wide shadow-lg hover:shadow-xl transition-all duration-200"
+                    style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                   >
                     {isLoading ? (
                       <>
