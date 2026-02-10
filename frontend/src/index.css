@@ -63,17 +63,40 @@
     body {
         @apply bg-background text-foreground;
         font-family: 'Lato', sans-serif;
-        font-weight: 300;
+        font-weight: 400;
     }
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3 {
         font-family: 'Barlow Condensed', sans-serif;
         font-weight: 600;
     }
-    p, span, div, td, th, label {
+    h4, h5, h6 {
+        font-family: 'Lato', sans-serif;
+        font-weight: 700;
+    }
+    p, span {
         font-family: 'Lato', sans-serif;
         font-weight: 300;
     }
+    label, th {
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+    }
     strong, b {
+        font-weight: 700;
+    }
+    .font-light {
+        font-weight: 300;
+    }
+    .font-normal {
+        font-weight: 400;
+    }
+    .font-medium {
+        font-weight: 400;
+    }
+    .font-semibold {
+        font-weight: 700;
+    }
+    .font-bold {
         font-weight: 700;
     }
 }
