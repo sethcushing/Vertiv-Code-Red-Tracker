@@ -261,6 +261,25 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+# Role-based access control helpers
+def require_role(allowed_roles: List[str]):
+    """Dependency that checks if user has required role"""
+    async def role_checker(current_user: dict = Depends(get_current_user)):
+        if current_user.get("role") not in allowed_roles:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return current_user
+    return role_checker
+
+def require_admin(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return current_user
+
+def require_initiative_lead_or_admin(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") not in ["admin", "initiative_lead"]:
+        raise HTTPException(status_code=403, detail="Initiative Lead or Admin access required")
+    return current_user
+
 # ==================== HELPER FUNCTIONS ====================
 
 def calculate_kpi_progress(kpi: dict) -> float:
