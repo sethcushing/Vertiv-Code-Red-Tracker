@@ -94,8 +94,11 @@ A comprehensive project portfolio management tool for tracking strategic initiat
 └── pages/
     ├── Login.jsx
     ├── Dashboard.jsx       # Code Red Pipeline
+    ├── DeliveryPipeline.jsx # NEW - Delivery Lifecycle
     ├── BusinessOutcomes.jsx
-    ├── Reporting.jsx       # NEW - Reporting Dashboard
+    ├── Reporting.jsx       # Reporting Dashboard
+    ├── ExecutiveDashboard.jsx
+    ├── Admin.jsx           # NEW - User Management
     ├── ProjectDetail.jsx
     ├── StrategicInitiativeDetail.jsx
     └── StrategicInitiativeForm.jsx
