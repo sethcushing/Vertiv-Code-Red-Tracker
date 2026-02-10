@@ -44,14 +44,16 @@ const Layout = ({ children }) => {
   const getPageTitle = () => {
     const path = location.pathname;
     if (path === '/' || path === '/dashboard') return 'Executive Dashboard';
-    if (path === '/code-red') return 'Code Red Initiatives';
-    if (path === '/pipeline') return 'Process Pipeline';
+    if (path === '/enterprise-metrics') return 'Enterprise Metrics';
+    if (path.includes('/enterprise-metrics/')) return 'Metric Details';
+    if (path === '/pipeline') return 'Pipeline Process';
+    if (path === '/milestones') return 'All Milestones';
     if (path === '/risk-heatmap') return 'Risk Heatmap';
     if (path === '/initiatives') return 'All Initiatives';
     if (path.includes('/initiatives/new')) return 'New Initiative';
     if (path.includes('/edit')) return 'Edit Initiative';
     if (path.includes('/initiatives/')) return 'Initiative Details';
-    return 'Control Tower';
+    return 'Code Red Initiatives';
   };
 
   // Get breadcrumbs
@@ -66,6 +68,11 @@ const Layout = ({ children }) => {
       } else if (path.includes('/edit')) {
         crumbs.push({ name: 'Edit', href: path });
       } else if (path !== '/initiatives') {
+        crumbs.push({ name: 'Details', href: path });
+      }
+    } else if (path.includes('/enterprise-metrics')) {
+      crumbs.push({ name: 'Enterprise Metrics', href: '/enterprise-metrics' });
+      if (path !== '/enterprise-metrics') {
         crumbs.push({ name: 'Details', href: path });
       }
     } else if (path !== '/' && path !== '/dashboard') {
