@@ -252,14 +252,14 @@ const InitiativesList = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100 hover:bg-gray-100">
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Initiative</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Owner</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider">Stage</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Milestones</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Risks</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Status</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center">Confidence</TableHead>
-                  <TableHead className="text-xs font-bold text-gray-600 uppercase tracking-wider"></TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider">Initiative</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider">Owner</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider">Stage</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider text-center">Milestones</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider text-center">Risks</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider text-center">Status</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider text-center">Confidence</TableHead>
+                  <TableHead className="text-xs font-lato-bold text-gray-600 uppercase tracking-wider"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
