@@ -182,7 +182,7 @@ const Login = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="register-password" className="text-sm font-medium">
+                    <Label htmlFor="register-password" className="text-sm font-lato-regular">
                       Password
                     </Label>
                     <div className="relative">
