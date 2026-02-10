@@ -108,11 +108,11 @@ async def seed_data():
     
     # ========== SEED STRATEGIC INITIATIVES (Big Bets) ==========
     strategic_initiatives = [
-        {"id": str(uuid.uuid4()), "name": "ETO", "description": "Engineer To Order transformation - reducing cycle times and improving configuration accuracy", "status": "Work In Progress", "executive_sponsor": "Michael Chen", "business_outcome_ids": [cat_map["ETO"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Quality", "description": "Enterprise-wide quality improvement initiative", "status": "Discovery", "executive_sponsor": "Sarah Johnson", "business_outcome_ids": [cat_map["Quality"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Planning", "description": "Planning stability and forecast accuracy improvement", "status": "Not Started", "executive_sponsor": "David Kim", "business_outcome_ids": [cat_map["PDSL"]], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Manufacturing Visibility", "description": "Real-time visibility into manufacturing operations", "status": "Not Started", "executive_sponsor": "Lisa Park", "business_outcome_ids": [], "created_at": now, "updated_at": now},
-        {"id": str(uuid.uuid4()), "name": "Intercompany", "description": "Intercompany process optimization", "status": "Not Started", "executive_sponsor": "Tom Wilson", "business_outcome_ids": [], "created_at": now, "updated_at": now},
+        {"id": str(uuid.uuid4()), "name": "ETO", "description": "Engineer To Order transformation - reducing cycle times and improving configuration accuracy", "status": "Work In Progress", "rag_status": "Amber", "executive_sponsor": "Michael Chen", "business_outcome_ids": [cat_map["ETO"]], "created_at": now, "updated_at": now},
+        {"id": str(uuid.uuid4()), "name": "Quality", "description": "Enterprise-wide quality improvement initiative", "status": "Discovery", "rag_status": "Green", "executive_sponsor": "Sarah Johnson", "business_outcome_ids": [cat_map["Quality"]], "created_at": now, "updated_at": now},
+        {"id": str(uuid.uuid4()), "name": "Planning", "description": "Planning stability and forecast accuracy improvement", "status": "Not Started", "rag_status": "Green", "executive_sponsor": "David Kim", "business_outcome_ids": [cat_map["PDSL"]], "created_at": now, "updated_at": now},
+        {"id": str(uuid.uuid4()), "name": "Manufacturing Visibility", "description": "Real-time visibility into manufacturing operations", "status": "Not Started", "rag_status": "Red", "executive_sponsor": "Lisa Park", "business_outcome_ids": [], "created_at": now, "updated_at": now},
+        {"id": str(uuid.uuid4()), "name": "Intercompany", "description": "Intercompany process optimization", "status": "Not Started", "rag_status": "Green", "executive_sponsor": "Tom Wilson", "business_outcome_ids": [], "created_at": now, "updated_at": now},
     ]
     for init in strategic_initiatives:
         await db.strategic_initiatives.insert_one(init)
