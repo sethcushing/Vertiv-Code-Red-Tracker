@@ -252,6 +252,7 @@ async def seed_data():
             "description": "Enhanced customer self-service portal",
             "strategic_initiative_id": init_map["Manufacturing Visibility"],
             "status": "Completed",
+            "rag_status": "Green",
             "delivery_stage": "Post-Delivery",
             "owner": "Emily Davis",
             "business_outcome_ids": [],
