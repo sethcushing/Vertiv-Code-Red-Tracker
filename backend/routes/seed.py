@@ -128,6 +128,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "description": "Improve BOM configuration grid for faster and more accurate product specification",
             "strategic_initiative_id": init_map["ETO"],
             "status": "In Progress",
+            "delivery_stage": "Order Capture",
             "owner": "Jennifer Martinez",
             "business_outcome_ids": [],
             "milestones": [
@@ -148,6 +149,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "description": "Standardize engineering processes across plant teams",
             "strategic_initiative_id": init_map["ETO"],
             "status": "In Progress",
+            "delivery_stage": "Commercials",
             "owner": "Alex Rivera",
             "business_outcome_ids": [],
             "milestones": [
@@ -165,6 +167,7 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "description": "End-to-end visibility platform for ETO process",
             "strategic_initiative_id": init_map["ETO"],
             "status": "Not Started",
+            "delivery_stage": "Request",
             "owner": "Chris Anderson",
             "business_outcome_ids": [],
             "milestones": [
@@ -175,19 +178,77 @@ async def seed_data(current_user: dict = Depends(get_current_user)):
             "created_at": now,
             "updated_at": now
         },
-        # Quality Project
+        # Quality Projects
         {
             "id": str(uuid.uuid4()),
             "name": "Design Review Process",
             "description": "Implement structured design review checkpoints",
             "strategic_initiative_id": init_map["Quality"],
             "status": "In Progress",
+            "delivery_stage": "Solution Design",
             "owner": "Nicole Brown",
             "business_outcome_ids": [],
             "milestones": [
                 {"id": str(uuid.uuid4()), "name": "Review Gate Definition", "description": "", "owner": "Nicole Brown", "due_date": "2024-02-28", "status": "Completed"},
                 {"id": str(uuid.uuid4()), "name": "Checklist Development", "description": "", "owner": "Quality Team", "due_date": "2024-04-15", "status": "In Progress"},
             ],
+            "issues": [],
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Quality Metrics Dashboard",
+            "description": "Real-time quality metrics visualization",
+            "strategic_initiative_id": init_map["Quality"],
+            "status": "In Progress",
+            "delivery_stage": "Availability",
+            "owner": "Sam Chen",
+            "business_outcome_ids": [],
+            "milestones": [],
+            "issues": [],
+            "created_at": now,
+            "updated_at": now
+        },
+        # Planning Projects
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Demand Forecasting Tool",
+            "description": "ML-based demand forecasting system",
+            "strategic_initiative_id": init_map["Planning"],
+            "status": "Not Started",
+            "delivery_stage": "Quote and Approval",
+            "owner": "Maria Garcia",
+            "business_outcome_ids": [],
+            "milestones": [],
+            "issues": [],
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Supply Chain Visibility",
+            "description": "End-to-end supply chain tracking",
+            "strategic_initiative_id": init_map["Planning"],
+            "status": "In Progress",
+            "delivery_stage": "Fulfillment",
+            "owner": "James Wilson",
+            "business_outcome_ids": [],
+            "milestones": [],
+            "issues": [],
+            "created_at": now,
+            "updated_at": now
+        },
+        {
+            "id": str(uuid.uuid4()),
+            "name": "Customer Portal Upgrade",
+            "description": "Enhanced customer self-service portal",
+            "strategic_initiative_id": init_map["Manufacturing Visibility"],
+            "status": "Completed",
+            "delivery_stage": "Post-Delivery",
+            "owner": "Emily Davis",
+            "business_outcome_ids": [],
+            "milestones": [],
             "issues": [],
             "created_at": now,
             "updated_at": now
