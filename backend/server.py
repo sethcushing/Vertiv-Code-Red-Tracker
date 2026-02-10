@@ -636,26 +636,33 @@ async def delete_team_member(initiative_id: str, member_id: str, current_user: d
 @api_router.get("/dashboard/stats", response_model=DashboardStats)
 async def get_dashboard_stats(current_user: dict = Depends(get_current_user)):
     initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(1000)
+    metrics = await db.enterprise_metrics.find({}, {"_id": 0}).to_list(100)
     
     total = len(initiatives)
-    code_red = sum(1 for i in initiatives if i.get("code_red_flag"))
-    at_risk = sum(1 for i in initiatives if i.get("status") == "At Risk")
-    on_track = sum(1 for i in initiatives if i.get("status") == "On Track")
-    off_track = sum(1 for i in initiatives if i.get("status") == "Off Track")
+    not_started = sum(1 for i in initiatives if i.get("status") == "Not Started")
+    discovery = sum(1 for i in initiatives if i.get("status") == "Discovery")
+    frame = sum(1 for i in initiatives if i.get("status") == "Frame")
+    wip = sum(1 for i in initiatives if i.get("status") == "Work In Progress")
+    implemented = sum(1 for i in initiatives if i.get("status") == "Implemented")
     
-    total_budget = sum(i.get("financial", {}).get("approved_budget", 0) for i in initiatives)
-    total_spend = sum(i.get("financial", {}).get("actual_spend", 0) for i in initiatives)
-    total_variance = sum(i.get("financial", {}).get("variance", 0) for i in initiatives)
+    total_milestones = sum(len(i.get("milestones", [])) for i in initiatives)
+    total_risks = sum(len(i.get("risks", [])) for i in initiatives)
+    escalated_risks = sum(
+        sum(1 for r in i.get("risks", []) if r.get("escalation_flag"))
+        for i in initiatives
+    )
     
     return DashboardStats(
         total_initiatives=total,
-        code_red_count=code_red,
-        at_risk_count=at_risk,
-        on_track_count=on_track,
-        off_track_count=off_track,
-        total_budget=total_budget,
-        total_actual_spend=total_spend,
-        total_variance=total_variance
+        not_started_count=not_started,
+        discovery_count=discovery,
+        frame_count=frame,
+        wip_count=wip,
+        implemented_count=implemented,
+        total_metrics=len(metrics),
+        total_milestones=total_milestones,
+        total_risks=total_risks,
+        escalated_risks=escalated_risks
     )
 
 @api_router.get("/dashboard/four-blockers", response_model=List[FourBlocker])
