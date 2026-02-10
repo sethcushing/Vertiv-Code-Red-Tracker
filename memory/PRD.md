@@ -1,149 +1,158 @@
-# Code Red Initiatives - PRD
+# Code Red Initiatives - Product Requirements Document
 
 ## Overview
-Executive-grade initiative tracking and reporting tool with two parallel hierarchies:
-1. **Code Red Pipeline**: Strategic Initiatives → Projects (work execution tracking)
-2. **Business Outcomes**: Categories → Sub-Outcomes → KPIs (measurement tracking with trend visualization)
+A comprehensive project portfolio management tool for tracking strategic initiatives, projects, and business outcomes with KPI monitoring.
 
-## App Name
-**Code Red Initiatives**
-
-## Navigation
-1. **Code Red Pipeline** - Strategic initiatives with drag-and-drop, expandable to show/add projects
-2. **Business Outcomes** - 3-level hierarchy with KPI trend charts
-
-## Core Data Model (v5.0 - February 2025)
-
-### Code Red Pipeline (Execution Tracking)
-```
-STRATEGIC INITIATIVES (Big Bets)
-  └── name, description, status (Not Started/Discovery/Frame/WIP)
-  └── executive_sponsor, business_outcome_ids[]
-  
-PROJECTS (Workstreams under Initiatives)
-  └── name, description, strategic_initiative_id
-  └── status (Not Started/In Progress/Completed/On Hold)
-  └── owner, business_outcome_ids[]  ← NEW: Project-level alignment
-  └── milestones[], issues[]
-```
-
-### Business Outcomes (Measurement Tracking)
-```
-CATEGORY (Level 1) - e.g., ETO, Quality, PDSL
-  └── SUB-OUTCOME (Level 2) - e.g., Material Readiness, Planning Stability
-       └── KPI (Level 3) - e.g., Quote Cycle Time, Clean Order Entry Rate
-           ├── current_value, target_value, baseline_value
-           ├── unit, direction (increase/decrease)
-           └── history[] (with trend visualization)
-```
-
-## Features Implemented
+## Core Features
 
 ### 1. Code Red Pipeline (Dashboard)
-- **4-column drag-and-drop Kanban**: Not Started, Discovery, Frame, Work In Progress
-- Drag initiatives between columns to update status
-- Click initiative to expand and see projects
-- **Add Project** button directly in pipeline
-- **Add Project Modal** with:
-  - Name, Description, Owner, Status fields
-  - **Align to Business Outcomes** checkboxes (ETO, Quality, PDSL)
-- Edit/Delete project buttons on hover
-- "Add Initiative" button for creating new initiatives
+- Four-column Kanban board: Not Started, Discovery, Frame, Work In Progress
+- Drag-and-drop functionality for moving initiatives between stages
+- Expandable initiative cards showing underlying projects
+- Add/edit/delete initiatives and projects
+- Summary statistics (Initiatives, Projects, Outcomes, KPIs)
 
-### 2. Business Outcomes Page
-- 3-level expandable hierarchy (streamlined design)
-- Full CRUD via modals for Categories, Sub-Outcomes, and KPIs
-- **KPI Trend Chart** (NEW):
-  - Click chart icon to open trend modal
-  - Line chart showing historical data over time (recharts)
-  - Summary cards: Baseline, Current, Target
-  - Historical data table with dates and values
+### 2. Business Outcomes
+- Three-level hierarchy: Category → Sub-Outcome → KPI
+- Categories: ETO, Quality, PDSL (seeded)
+- Progress tracking with visual progress bars
+- KPI history tracking with trend charts
+- CRUD operations for categories, sub-outcomes, and KPIs
 
-### 3. Project Detail Page
-- Full project info with inline editing
-- Milestones management (CRUD)
-- Issues management (CRUD)
-- Progress tracking
+### 3. Reporting Dashboard (NEW - Dec 2025)
+- **Initiative Status Distribution**: Pie chart showing initiatives by status
+- **Project Status Distribution**: Horizontal bar chart
+- **KPI Performance Overview**: Pie chart (On Track, At Risk, Off Track)
+- **Progress by Business Outcome Category**: Bar chart
+- **KPI Trends Over Time**: Line charts for top KPIs with historical data
+- **Business Outcome Summary Table**: Detailed metrics per category
 
-### 4. Strategic Initiative Detail Page
-- Initiative info with inline editing
-- Linked Business Outcomes display
-- UI to link/unlink outcome categories
-- Projects listing with add/delete
+### 4. Authentication
+- JWT-based authentication
+- User registration and login
+- Role-based access (admin, initiative_lead, project_manager)
+
+## Technical Architecture
+
+### Backend (FastAPI - Modular Structure)
+```
+/app/backend/
+├── server.py          # Main app orchestrator
+├── models/
+│   ├── __init__.py
+│   └── schemas.py     # All Pydantic models
+├── routes/
+│   ├── __init__.py
+│   ├── auth.py        # Authentication endpoints
+│   ├── admin.py       # Admin user management
+│   ├── initiatives.py # Strategic initiatives & projects
+│   ├── business_outcomes.py # Categories, sub-outcomes, KPIs
+│   ├── dashboard.py   # Stats, pipeline, reporting
+│   └── seed.py        # Test data seeding
+└── utils/
+    ├── __init__.py
+    ├── auth.py        # Auth helpers (JWT, password hashing)
+    └── helpers.py     # KPI progress calculation
+```
+
+### Frontend (React)
+```
+/app/frontend/src/
+├── App.js             # Routes and auth context
+├── components/
+│   ├── Layout.jsx     # Navigation sidebar
+│   └── ui/            # Shadcn UI components
+└── pages/
+    ├── Login.jsx
+    ├── Dashboard.jsx       # Code Red Pipeline
+    ├── BusinessOutcomes.jsx
+    ├── Reporting.jsx       # NEW - Reporting Dashboard
+    ├── ProjectDetail.jsx
+    ├── StrategicInitiativeDetail.jsx
+    └── StrategicInitiativeForm.jsx
+```
+
+### Database
+- MongoDB with Motor async driver
+- Collections: users, strategic_initiatives, projects, business_outcome_categories, sub_outcomes, kpis, kpi_history
 
 ## API Endpoints
 
-### Pipeline
-- `GET /api/pipeline` - Initiatives grouped by status with nested projects
-- `PUT /api/pipeline/move/{id}?new_status={status}` - Drag-drop status update
-- CRUD for `/api/strategic-initiatives`, `/api/projects`
-- Projects now include `business_outcome_ids` field
+### Authentication
+- POST /api/auth/register
+- POST /api/auth/login
+- GET /api/auth/me
+
+### Dashboard & Pipeline
+- GET /api/dashboard/stats
+- GET /api/pipeline
+- PUT /api/pipeline/move/{initiative_id}
+
+### Reporting
+- GET /api/reports/pipeline
+- GET /api/reports/business-outcomes
+- GET /api/reports/trends
+
+### Strategic Initiatives
+- GET/POST /api/strategic-initiatives
+- GET/PUT/DELETE /api/strategic-initiatives/{id}
+
+### Projects
+- GET/POST /api/projects
+- GET/PUT/DELETE /api/projects/{id}
+- POST/PUT/DELETE /api/projects/{id}/milestones/{id}
+- POST/PUT/DELETE /api/projects/{id}/issues/{id}
 
 ### Business Outcomes
-- `GET /api/business-outcomes/tree` - Full 3-level hierarchy
-- CRUD for `/api/business-outcomes/categories`, `/sub-outcomes`, `/kpis`
-- `GET /api/business-outcomes/kpis/{id}/history` - KPI history with trend data
+- GET/POST /api/business-outcomes/categories
+- GET/PUT/DELETE /api/business-outcomes/categories/{id}
+- GET/POST /api/business-outcomes/sub-outcomes
+- GET/PUT/DELETE /api/business-outcomes/sub-outcomes/{id}
+- GET/POST /api/business-outcomes/kpis
+- GET/PUT/DELETE /api/business-outcomes/kpis/{id}
+- GET/POST /api/business-outcomes/kpis/{id}/history
+- GET /api/business-outcomes/tree
 
-### Dashboard
-- `GET /api/dashboard/stats` - Summary statistics
+### Seed Data
+- POST /api/seed
 
-## Seeded Test Data
-- **3 Categories**: ETO, Quality, PDSL
-- **7 Sub-Outcomes**
-- **11 KPIs** with weekly historical data (5 data points each)
-- **5 Strategic Initiatives**
-- **4 Projects** with milestones and issues
+## What's Been Implemented
+
+### December 2025 - Backend Refactoring & Reporting Dashboard
+1. **Backend Modularization** (COMPLETED)
+   - Broke down 1400+ line monolithic server.py
+   - Created models/schemas.py for all Pydantic models
+   - Created routes/ directory with separate files for auth, admin, initiatives, business_outcomes, dashboard, seed
+   - Created utils/ directory for auth helpers and KPI calculations
+
+2. **Reporting Dashboard** (COMPLETED)
+   - New /reporting route and page
+   - 6 chart types using recharts library
+   - Summary statistics at top
+   - Business outcome summary table
+
+3. **Testing** (PASSED 100%)
+   - Backend: 18/18 tests passed
+   - Frontend: All features verified
+
+## Pending/Backlog
+
+### P1 - High Priority
+- User Management Admin page (skipped per user request)
+- Role-based UI controls
+
+### P2 - Medium Priority
+- Business Outcomes card-based layout (user mentioned)
+
+### Future Enhancements
+- Export reports to PDF/Excel
+- Email notifications
+- Dashboard customization
 
 ## Test Credentials
-- Email: demo@vertiv.com
-- Password: Demo2024!
+- Email: admin@test.com
+- Password: password123
 
-## Tech Stack
-- **Backend**: FastAPI + MongoDB
-- **Frontend**: React + Tailwind CSS + Shadcn/UI
-- **Drag-Drop**: @hello-pangea/dnd
-- **Charts**: recharts
-- **Auth**: JWT
-
-## What's Been Implemented (February 2025)
-
-### v5.0 Update (February 10, 2025)
-- [x] Renamed "Executive Dashboard" to "Code Red Pipeline" in navigation
-- [x] Add Project button directly in pipeline view
-- [x] Add Project modal with business outcome alignment checkboxes
-- [x] Projects can be aligned to business outcome categories
-- [x] KPI trend charts with recharts (line visualization)
-- [x] Trend modal with baseline/current/target summary
-- [x] Historical data table in trend modal
-
-### Previous Updates
-- [x] Drag-and-drop pipeline columns
-- [x] Business Outcomes 3-level hierarchy with CRUD
-- [x] KPI progress tracking with history
-- [x] Project detail page with milestones/issues
-- [x] Initiative detail page with linking
-- [x] Risk removed from app
-
-### Testing Status
-- Backend: 100% (16/16 tests passed)
-- Frontend: 100% (all features verified)
-
-## Prioritized Backlog
-
-### P0 (Complete)
-- [x] Code Red Pipeline with drag-and-drop
-- [x] Add/Edit projects from pipeline
-- [x] Project-level business outcome alignment
-- [x] KPI trend charts with historical visualization
-- [x] Full CRUD for all entities
-
-### P1 (Future)
-- [ ] Reporting dashboard with charts across all KPIs
-- [ ] Bulk import/export for KPIs
-- [ ] Email notifications for KPI threshold alerts
-
-### P2 (Nice to Have)
-- [ ] Role-based permissions
-- [ ] Timeline/Gantt view for projects
-- [ ] Export to PDF/CSV
-- [ ] Dark mode
+## Libraries Used
+- **Backend**: FastAPI, Motor (MongoDB), PyJWT, bcrypt
+- **Frontend**: React, react-router-dom, @hello-pangea/dnd, recharts, lucide-react, Shadcn/UI
