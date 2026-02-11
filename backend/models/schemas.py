@@ -113,6 +113,9 @@ class StrategicInitiativeUpdate(BaseModel):
 class StrategicInitiativeResponse(StrategicInitiativeBase):
     id: str
     projects_count: int = 0
+    milestones: List[InitiativeMilestone] = []
+    activities: List[Activity] = []
+    documents: List[Document] = []
     created_at: str
     updated_at: str
 
