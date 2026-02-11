@@ -108,6 +108,15 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - `POST /api/strategic-initiatives` - Create
 - `PUT /api/strategic-initiatives/{id}` - Update (auto-tracks status history)
 - `DELETE /api/strategic-initiatives/{id}` - Delete (cascades to projects)
+- `POST /api/strategic-initiatives/{id}/milestones` - Add milestone
+- `PUT /api/strategic-initiatives/{id}/milestones/{mid}` - Update milestone
+- `DELETE /api/strategic-initiatives/{id}/milestones/{mid}` - Delete milestone
+- `POST /api/strategic-initiatives/{id}/activities` - Add activity
+- `PUT /api/strategic-initiatives/{id}/activities/{aid}` - Update activity
+- `DELETE /api/strategic-initiatives/{id}/activities/{aid}` - Delete activity
+- `POST /api/strategic-initiatives/{id}/documents` - Upload document (multipart/form-data)
+- `GET /api/strategic-initiatives/{id}/documents/download/{filename}` - Download document
+- `DELETE /api/strategic-initiatives/{id}/documents/{did}` - Delete document
 
 ### Projects
 - `GET /api/projects` - List all
