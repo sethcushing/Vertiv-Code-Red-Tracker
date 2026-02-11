@@ -115,6 +115,183 @@ async def delete_strategic_initiative(initiative_id: str):
     return {"message": "Strategic Initiative deleted"}
 
 
+# ==================== INITIATIVE MILESTONES ====================
+
+@router.post("/strategic-initiatives/{initiative_id}/milestones", response_model=InitiativeMilestone)
+async def add_initiative_milestone(initiative_id: str, milestone: InitiativeMilestoneBase):
+    initiative = await db.strategic_initiatives.find_one({"id": initiative_id})
+    if not initiative:
+        raise HTTPException(status_code=404, detail="Strategic Initiative not found")
+    
+    new_milestone = InitiativeMilestone(**milestone.model_dump())
+    await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$push": {"milestones": new_milestone.model_dump()}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    return new_milestone
+
+
+@router.put("/strategic-initiatives/{initiative_id}/milestones/{milestone_id}", response_model=InitiativeMilestone)
+async def update_initiative_milestone(initiative_id: str, milestone_id: str, milestone: InitiativeMilestoneBase):
+    result = await db.strategic_initiatives.update_one(
+        {"id": initiative_id, "milestones.id": milestone_id},
+        {"$set": {
+            "milestones.$.name": milestone.name,
+            "milestones.$.description": milestone.description,
+            "milestones.$.owner": milestone.owner,
+            "milestones.$.due_date": milestone.due_date,
+            "milestones.$.status": milestone.status,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Milestone not found")
+    return InitiativeMilestone(id=milestone_id, **milestone.model_dump())
+
+
+@router.delete("/strategic-initiatives/{initiative_id}/milestones/{milestone_id}")
+async def delete_initiative_milestone(initiative_id: str, milestone_id: str):
+    result = await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$pull": {"milestones": {"id": milestone_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Milestone not found")
+    return {"message": "Milestone deleted"}
+
+
+# ==================== INITIATIVE ACTIVITIES ====================
+
+@router.post("/strategic-initiatives/{initiative_id}/activities", response_model=Activity)
+async def add_initiative_activity(initiative_id: str, activity: ActivityBase):
+    initiative = await db.strategic_initiatives.find_one({"id": initiative_id})
+    if not initiative:
+        raise HTTPException(status_code=404, detail="Strategic Initiative not found")
+    
+    new_activity = Activity(**activity.model_dump())
+    await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$push": {"activities": new_activity.model_dump()}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    return new_activity
+
+
+@router.put("/strategic-initiatives/{initiative_id}/activities/{activity_id}", response_model=Activity)
+async def update_initiative_activity(initiative_id: str, activity_id: str, activity: ActivityBase):
+    result = await db.strategic_initiatives.update_one(
+        {"id": initiative_id, "activities.id": activity_id},
+        {"$set": {
+            "activities.$.name": activity.name,
+            "activities.$.activity_type": activity.activity_type,
+            "activities.$.description": activity.description,
+            "activities.$.date": activity.date,
+            "activities.$.time": activity.time,
+            "activities.$.location": activity.location,
+            "activities.$.attendees": activity.attendees,
+            "activities.$.status": activity.status,
+            "activities.$.notes": activity.notes,
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    return Activity(id=activity_id, **activity.model_dump())
+
+
+@router.delete("/strategic-initiatives/{initiative_id}/activities/{activity_id}")
+async def delete_initiative_activity(initiative_id: str, activity_id: str):
+    result = await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$pull": {"activities": {"id": activity_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    return {"message": "Activity deleted"}
+
+
+# ==================== INITIATIVE DOCUMENTS ====================
+
+# Create uploads directory if it doesn't exist
+UPLOAD_DIR = "/app/backend/uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
+@router.post("/strategic-initiatives/{initiative_id}/documents")
+async def upload_initiative_document(
+    initiative_id: str,
+    file: UploadFile = File(...),
+    description: str = Form("")
+):
+    initiative = await db.strategic_initiatives.find_one({"id": initiative_id})
+    if not initiative:
+        raise HTTPException(status_code=404, detail="Strategic Initiative not found")
+    
+    # Generate unique filename
+    file_ext = os.path.splitext(file.filename)[1]
+    unique_filename = f"{uuid.uuid4()}{file_ext}"
+    file_path = os.path.join(UPLOAD_DIR, unique_filename)
+    
+    # Save file
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    # Get file size
+    file_size = os.path.getsize(file_path)
+    
+    # Create document record
+    now = datetime.now(timezone.utc).isoformat()
+    new_document = {
+        "id": str(uuid.uuid4()),
+        "name": file.filename,
+        "file_url": f"/api/strategic-initiatives/{initiative_id}/documents/download/{unique_filename}",
+        "file_type": file_ext.lstrip('.'),
+        "file_size": file_size,
+        "description": description,
+        "uploaded_at": now,
+        "uploaded_by": "Admin"
+    }
+    
+    await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$push": {"documents": new_document}, "$set": {"updated_at": now}}
+    )
+    
+    return new_document
+
+
+@router.get("/strategic-initiatives/{initiative_id}/documents/download/{filename}")
+async def download_initiative_document(initiative_id: str, filename: str):
+    file_path = os.path.join(UPLOAD_DIR, filename)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(file_path)
+
+
+@router.delete("/strategic-initiatives/{initiative_id}/documents/{document_id}")
+async def delete_initiative_document(initiative_id: str, document_id: str):
+    # Get the document to find the file path
+    initiative = await db.strategic_initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    if not initiative:
+        raise HTTPException(status_code=404, detail="Strategic Initiative not found")
+    
+    # Find the document
+    document = next((d for d in initiative.get("documents", []) if d["id"] == document_id), None)
+    if document:
+        # Extract filename from URL and delete file
+        filename = document["file_url"].split("/")[-1]
+        file_path = os.path.join(UPLOAD_DIR, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    
+    result = await db.strategic_initiatives.update_one(
+        {"id": initiative_id},
+        {"$pull": {"documents": {"id": document_id}}, "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"message": "Document deleted"}
+
+
 # ==================== PROJECT ENDPOINTS ====================
 
 @router.post("/projects", response_model=ProjectResponse)
