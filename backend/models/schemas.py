@@ -87,6 +87,9 @@ class StrategicInitiativeBase(BaseModel):
     delivery_stages_impacted: List[str] = []  # Which delivery stages this impacts
     team_members: List[TeamMember] = []
     status_history: List[StatusUpdate] = []
+    milestones: List[InitiativeMilestone] = []  # Initiative-level milestones
+    activities: List[Activity] = []  # Meetings, workshops, etc.
+    documents: List[Document] = []  # Uploaded documents
 
 
 class StrategicInitiativeCreate(StrategicInitiativeBase):
