@@ -126,6 +126,18 @@ async def seed_data():
                 {"id": str(uuid.uuid4()), "old_status": "Not Started", "new_status": "Discovery", "changed_at": (datetime.now(timezone.utc) - timedelta(days=30)).isoformat(), "changed_by": "Admin", "notes": "Kickoff meeting completed"},
                 {"id": str(uuid.uuid4()), "old_status": "Discovery", "new_status": "Work In Progress", "changed_at": (datetime.now(timezone.utc) - timedelta(days=14)).isoformat(), "changed_by": "Admin", "notes": "Moving to implementation"},
             ],
+            "milestones": [
+                {"id": str(uuid.uuid4()), "name": "Discovery Complete", "description": "Complete discovery phase with stakeholder interviews", "owner": "Jennifer Martinez", "due_date": "2024-02-28", "status": "Completed"},
+                {"id": str(uuid.uuid4()), "name": "Solution Design Approval", "description": "Get executive approval on solution design", "owner": "Michael Chen", "due_date": "2024-04-15", "status": "In Progress"},
+                {"id": str(uuid.uuid4()), "name": "Pilot Launch", "description": "Launch pilot program with select plants", "owner": "Jennifer Martinez", "due_date": "2024-06-30", "status": "Pending"},
+            ],
+            "activities": [
+                {"id": str(uuid.uuid4()), "name": "Stakeholder Kickoff Meeting", "activity_type": "Meeting", "description": "Initial kickoff with all stakeholders", "date": (datetime.now(timezone.utc) - timedelta(days=28)).strftime("%Y-%m-%d"), "time": "10:00 AM", "location": "Conference Room A", "attendees": ["Michael Chen", "Jennifer Martinez", "Sarah Johnson"], "status": "Completed", "notes": "Aligned on objectives and timeline"},
+                {"id": str(uuid.uuid4()), "name": "Process Mapping Workshop", "activity_type": "Workshop", "description": "Map current ETO process flows", "date": (datetime.now(timezone.utc) - timedelta(days=21)).strftime("%Y-%m-%d"), "time": "9:00 AM", "location": "Innovation Lab", "attendees": ["Jennifer Martinez", "Process Team"], "status": "Completed", "notes": "Identified 5 key bottlenecks"},
+                {"id": str(uuid.uuid4()), "name": "Weekly Status Review", "activity_type": "Meeting", "description": "Weekly status update meeting", "date": (datetime.now(timezone.utc) + timedelta(days=3)).strftime("%Y-%m-%d"), "time": "2:00 PM", "location": "Virtual - Teams", "attendees": ["Michael Chen", "Jennifer Martinez"], "status": "Scheduled", "notes": ""},
+                {"id": str(uuid.uuid4()), "name": "Solution Design Review", "activity_type": "Review", "description": "Review solution design with technical leads", "date": (datetime.now(timezone.utc) + timedelta(days=10)).strftime("%Y-%m-%d"), "time": "1:00 PM", "location": "Conference Room B", "attendees": ["Technical Leads", "Architecture Team"], "status": "Scheduled", "notes": ""},
+            ],
+            "documents": [],
             "created_at": now, 
             "updated_at": now
         },
@@ -146,6 +158,14 @@ async def seed_data():
             "status_history": [
                 {"id": str(uuid.uuid4()), "old_status": "Not Started", "new_status": "Discovery", "changed_at": (datetime.now(timezone.utc) - timedelta(days=7)).isoformat(), "changed_by": "Admin", "notes": "Started discovery phase"},
             ],
+            "milestones": [
+                {"id": str(uuid.uuid4()), "name": "Quality Assessment", "description": "Complete quality baseline assessment", "owner": "Nicole Brown", "due_date": "2024-03-15", "status": "In Progress"},
+                {"id": str(uuid.uuid4()), "name": "Root Cause Analysis", "description": "Identify root causes of quality issues", "owner": "Nicole Brown", "due_date": "2024-04-30", "status": "Pending"},
+            ],
+            "activities": [
+                {"id": str(uuid.uuid4()), "name": "Quality Standards Training", "activity_type": "Training", "description": "Train team on quality standards", "date": (datetime.now(timezone.utc) + timedelta(days=5)).strftime("%Y-%m-%d"), "time": "9:00 AM", "location": "Training Room 1", "attendees": ["Quality Team", "Manufacturing Leads"], "status": "Scheduled", "notes": ""},
+            ],
+            "documents": [],
             "created_at": now, 
             "updated_at": now
         },
@@ -163,6 +183,9 @@ async def seed_data():
                 {"id": str(uuid.uuid4()), "name": "David Kim", "role": "Executive Sponsor", "responsibility": "Planning oversight"},
             ],
             "status_history": [],
+            "milestones": [],
+            "activities": [],
+            "documents": [],
             "created_at": now, 
             "updated_at": now
         },
@@ -180,6 +203,9 @@ async def seed_data():
                 {"id": str(uuid.uuid4()), "name": "Lisa Park", "role": "Executive Sponsor", "responsibility": "Manufacturing strategy"},
             ],
             "status_history": [],
+            "milestones": [],
+            "activities": [],
+            "documents": [],
             "created_at": now, 
             "updated_at": now
         },
@@ -195,6 +221,9 @@ async def seed_data():
             "delivery_stages_impacted": ["Commercials", "Order Capture"],
             "team_members": [],
             "status_history": [],
+            "milestones": [],
+            "activities": [],
+            "documents": [],
             "created_at": now, 
             "updated_at": now
         },
