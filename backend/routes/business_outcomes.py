@@ -250,7 +250,7 @@ async def update_kpi(kpi_id: str, update: KPIUpdate):
             "kpi_id": kpi_id,
             "value": update_data["current_value"],
             "recorded_at": update_data["updated_at"],
-            "recorded_by": current_user.get("email", "")
+            "recorded_by": "Admin"
         }
         await db.kpi_history.insert_one(history_entry)
     
