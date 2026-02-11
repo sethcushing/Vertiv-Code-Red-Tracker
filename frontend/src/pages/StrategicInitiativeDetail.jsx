@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -13,12 +13,18 @@ import {
   Save,
   FolderKanban,
   Link2,
-  X,
   Clock,
   Users,
   Building2,
   Truck,
   History,
+  Calendar,
+  CheckCircle2,
+  FileText,
+  Upload,
+  Download,
+  CalendarDays,
+  MapPin,
 } from 'lucide-react';
 import { api } from '../App';
 import { toast } from 'sonner';
@@ -41,11 +47,38 @@ const STATUS_OPTIONS = ['Not Started', 'Discovery', 'Frame', 'Work In Progress']
 const RAG_OPTIONS = ['Green', 'Amber', 'Red'];
 const BUSINESS_UNITS = ['IT', 'Sales', 'Manufacturing', 'Fulfillment', 'Engineering', 'Finance', 'Operations', 'HR', 'Marketing'];
 const DELIVERY_STAGES = ['Request', 'Solution Design', 'Commercials', 'Quote and Approval', 'Order Capture', 'Availability', 'Fulfillment', 'Post-Delivery'];
+const MILESTONE_STATUS = ['Pending', 'In Progress', 'Completed', 'Delayed'];
+const ACTIVITY_TYPES = ['Meeting', 'Workshop', 'Review', 'Training', 'Presentation', 'Planning Session', 'Demo', 'Other'];
+const ACTIVITY_STATUS = ['Scheduled', 'Completed', 'Cancelled'];
 
 const RAG_CONFIG = {
   'Red': { color: 'bg-red-500', text: 'text-red-700', light: 'bg-red-100' },
   'Amber': { color: 'bg-amber-500', text: 'text-amber-700', light: 'bg-amber-100' },
   'Green': { color: 'bg-emerald-500', text: 'text-emerald-700', light: 'bg-emerald-100' },
+};
+
+const MILESTONE_STATUS_COLORS = {
+  'Pending': 'bg-gray-100 text-gray-600',
+  'In Progress': 'bg-blue-100 text-blue-600',
+  'Completed': 'bg-green-100 text-green-600',
+  'Delayed': 'bg-red-100 text-red-600',
+};
+
+const ACTIVITY_STATUS_COLORS = {
+  'Scheduled': 'bg-blue-100 text-blue-600',
+  'Completed': 'bg-green-100 text-green-600',
+  'Cancelled': 'bg-gray-100 text-gray-600',
+};
+
+const ACTIVITY_TYPE_COLORS = {
+  'Meeting': 'bg-indigo-100 text-indigo-700',
+  'Workshop': 'bg-purple-100 text-purple-700',
+  'Review': 'bg-amber-100 text-amber-700',
+  'Training': 'bg-teal-100 text-teal-700',
+  'Presentation': 'bg-pink-100 text-pink-700',
+  'Planning Session': 'bg-cyan-100 text-cyan-700',
+  'Demo': 'bg-orange-100 text-orange-700',
+  'Other': 'bg-gray-100 text-gray-700',
 };
 
 const PROJECT_STATUS_COLORS = {
@@ -68,9 +101,15 @@ const StrategicInitiativeDetail = () => {
   // Modal states
   const [showProjectModal, setShowProjectModal] = useState(false);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [showMilestoneModal, setShowMilestoneModal] = useState(false);
+  const [showActivityModal, setShowActivityModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [teamMemberForm, setTeamMemberForm] = useState({ name: '', role: '', responsibility: '' });
-  const [editingTeamMember, setEditingTeamMember] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  
+  // Document upload state
+  const [isDragging, setIsDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -160,10 +199,7 @@ const StrategicInitiativeDetail = () => {
       return;
     }
     try {
-      const newMember = {
-        id: Date.now().toString(),
-        ...teamMemberForm
-      };
+      const newMember = { id: Date.now().toString(), ...teamMemberForm };
       const updatedTeam = [...(initiative.team_members || []), newMember];
       await api.put(`/strategic-initiatives/${id}`, { team_members: updatedTeam });
       toast.success('Team member added');
@@ -184,6 +220,160 @@ const StrategicInitiativeDetail = () => {
     } catch (error) {
       toast.error('Failed to remove team member');
     }
+  };
+
+  // Milestone handlers
+  const handleAddMilestone = () => {
+    setEditingItem(null);
+    setFormData({ name: '', description: '', owner: '', due_date: '', status: 'Pending' });
+    setShowMilestoneModal(true);
+  };
+
+  const handleEditMilestone = (milestone) => {
+    setEditingItem(milestone);
+    setFormData({ ...milestone });
+    setShowMilestoneModal(true);
+  };
+
+  const handleSaveMilestone = async () => {
+    try {
+      if (editingItem) {
+        await api.put(`/strategic-initiatives/${id}/milestones/${editingItem.id}`, formData);
+        toast.success('Milestone updated');
+      } else {
+        await api.post(`/strategic-initiatives/${id}/milestones`, formData);
+        toast.success('Milestone added');
+      }
+      setShowMilestoneModal(false);
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to save milestone');
+    }
+  };
+
+  const handleDeleteMilestone = async (milestoneId) => {
+    if (window.confirm('Delete this milestone?')) {
+      try {
+        await api.delete(`/strategic-initiatives/${id}/milestones/${milestoneId}`);
+        toast.success('Milestone deleted');
+        fetchData();
+      } catch (error) {
+        toast.error('Failed to delete milestone');
+      }
+    }
+  };
+
+  // Activity handlers
+  const handleAddActivity = () => {
+    setEditingItem(null);
+    setFormData({ name: '', activity_type: 'Meeting', description: '', date: '', time: '', location: '', attendees: [], status: 'Scheduled', notes: '' });
+    setShowActivityModal(true);
+  };
+
+  const handleEditActivity = (activity) => {
+    setEditingItem(activity);
+    setFormData({ ...activity, attendees: activity.attendees || [] });
+    setShowActivityModal(true);
+  };
+
+  const handleSaveActivity = async () => {
+    try {
+      const activityData = {
+        ...formData,
+        attendees: typeof formData.attendees === 'string' 
+          ? formData.attendees.split(',').map(a => a.trim()).filter(a => a)
+          : formData.attendees
+      };
+      if (editingItem) {
+        await api.put(`/strategic-initiatives/${id}/activities/${editingItem.id}`, activityData);
+        toast.success('Activity updated');
+      } else {
+        await api.post(`/strategic-initiatives/${id}/activities`, activityData);
+        toast.success('Activity added');
+      }
+      setShowActivityModal(false);
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to save activity');
+    }
+  };
+
+  const handleDeleteActivity = async (activityId) => {
+    if (window.confirm('Delete this activity?')) {
+      try {
+        await api.delete(`/strategic-initiatives/${id}/activities/${activityId}`);
+        toast.success('Activity deleted');
+        fetchData();
+      } catch (error) {
+        toast.error('Failed to delete activity');
+      }
+    }
+  };
+
+  // Document handlers with drag and drop
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback(async (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      await uploadFile(files[0]);
+    }
+  }, [id]);
+
+  const handleFileSelect = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      await uploadFile(file);
+    }
+  };
+
+  const uploadFile = async (file) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('description', '');
+      
+      await api.post(`/strategic-initiatives/${id}/documents`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      toast.success('Document uploaded');
+      fetchData();
+    } catch (error) {
+      toast.error('Failed to upload document');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteDocument = async (documentId) => {
+    if (window.confirm('Delete this document?')) {
+      try {
+        await api.delete(`/strategic-initiatives/${id}/documents/${documentId}`);
+        toast.success('Document deleted');
+        fetchData();
+      } catch (error) {
+        toast.error('Failed to delete document');
+      }
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   const toggleDeliveryStage = (stage) => {
@@ -454,6 +644,216 @@ const StrategicInitiativeDetail = () => {
         </CardContent>
       </Card>
 
+      {/* Milestones */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-base flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5 text-gray-400" />
+            Milestones
+          </CardTitle>
+          <Button size="sm" onClick={handleAddMilestone}>
+            <Plus className="w-4 h-4 mr-1" />
+            Add Milestone
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {(initiative.milestones || []).length > 0 ? (
+            <div className="space-y-2">
+              {initiative.milestones.map((milestone) => (
+                <div
+                  key={milestone.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center gap-3 flex-1">
+                    {milestone.status === 'Completed' ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Clock className="w-5 h-5 text-gray-400" />
+                    )}
+                    <div>
+                      <p className="font-medium text-gray-900">{milestone.name}</p>
+                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                        {milestone.due_date && (
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {milestone.due_date}
+                          </span>
+                        )}
+                        {milestone.owner && (
+                          <span className="flex items-center gap-1">
+                            <User className="w-3 h-3" />
+                            {milestone.owner}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${MILESTONE_STATUS_COLORS[milestone.status]}`}>
+                      {milestone.status}
+                    </span>
+                    <button onClick={() => handleEditMilestone(milestone)} className="p-1 hover:bg-gray-200 rounded">
+                      <Edit2 className="w-4 h-4 text-gray-400" />
+                    </button>
+                    <button onClick={() => handleDeleteMilestone(milestone.id)} className="p-1 hover:bg-red-50 rounded">
+                      <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-4">No milestones yet</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Activities */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2 flex flex-row items-center justify-between">
+          <CardTitle className="text-base flex items-center gap-2">
+            <CalendarDays className="w-5 h-5 text-gray-400" />
+            Activities
+          </CardTitle>
+          <Button size="sm" onClick={handleAddActivity}>
+            <Plus className="w-4 h-4 mr-1" />
+            Add Activity
+          </Button>
+        </CardHeader>
+        <CardContent>
+          {(initiative.activities || []).length > 0 ? (
+            <div className="space-y-2">
+              {initiative.activities.map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex items-start justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${ACTIVITY_TYPE_COLORS[activity.activity_type] || ACTIVITY_TYPE_COLORS['Other']}`}>
+                        {activity.activity_type}
+                      </span>
+                      <p className="font-medium text-gray-900">{activity.name}</p>
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {activity.date} {activity.time && `at ${activity.time}`}
+                      </span>
+                      {activity.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {activity.location}
+                        </span>
+                      )}
+                    </div>
+                    {activity.attendees && activity.attendees.length > 0 && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        <Users className="w-3 h-3 inline mr-1" />
+                        {activity.attendees.join(', ')}
+                      </p>
+                    )}
+                    {activity.notes && (
+                      <p className="text-xs text-gray-600 mt-1 italic">{activity.notes}</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 ml-4">
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${ACTIVITY_STATUS_COLORS[activity.status]}`}>
+                      {activity.status}
+                    </span>
+                    <button onClick={() => handleEditActivity(activity)} className="p-1 hover:bg-gray-200 rounded">
+                      <Edit2 className="w-4 h-4 text-gray-400" />
+                    </button>
+                    <button onClick={() => handleDeleteActivity(activity.id)} className="p-1 hover:bg-red-50 rounded">
+                      <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-4">No activities scheduled</p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Documents with Drag & Drop */}
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base flex items-center gap-2">
+            <FileText className="w-5 h-5 text-gray-400" />
+            Documents
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {/* Drag & Drop Zone */}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors mb-4 ${
+              isDragging 
+                ? 'border-[#FE5B1B] bg-orange-50' 
+                : 'border-gray-300 hover:border-gray-400'
+            }`}
+          >
+            <Upload className={`w-8 h-8 mx-auto mb-2 ${isDragging ? 'text-[#FE5B1B]' : 'text-gray-400'}`} />
+            <p className="text-sm text-gray-600 mb-2">
+              {uploading ? 'Uploading...' : 'Drag and drop files here'}
+            </p>
+            <p className="text-xs text-gray-400 mb-3">or</p>
+            <label className="cursor-pointer">
+              <span className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors">
+                Browse Files
+              </span>
+              <input
+                type="file"
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={uploading}
+              />
+            </label>
+          </div>
+
+          {/* Document List */}
+          {(initiative.documents || []).length > 0 ? (
+            <div className="space-y-2">
+              {initiative.documents.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <p className="font-medium text-gray-900">{doc.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {doc.file_type?.toUpperCase()} • {formatFileSize(doc.file_size)}
+                        {doc.uploaded_at && ` • Uploaded ${new Date(doc.uploaded_at).toLocaleDateString()}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`${process.env.REACT_APP_BACKEND_URL}${doc.file_url}`}
+                      download
+                      className="p-1 hover:bg-gray-200 rounded"
+                    >
+                      <Download className="w-4 h-4 text-gray-500" />
+                    </a>
+                    <button onClick={() => handleDeleteDocument(doc.id)} className="p-1 hover:bg-red-50 rounded">
+                      <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-500" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-2">No documents uploaded</p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Team Members */}
       <Card className="border-0 shadow-sm">
         <CardHeader className="pb-2 flex flex-row items-center justify-between">
@@ -674,6 +1074,156 @@ const StrategicInitiativeDetail = () => {
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowTeamModal(false)}>Cancel</Button>
             <Button onClick={handleAddTeamMember}>Add Member</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Milestone Modal */}
+      <Dialog open={showMilestoneModal} onOpenChange={setShowMilestoneModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{editingItem ? 'Edit Milestone' : 'Add Milestone'}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="text-sm font-medium">Name</label>
+              <Input
+                value={formData.name || ''}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Milestone name"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Description</label>
+              <Input
+                value={formData.description || ''}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                placeholder="Description"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium">Due Date</label>
+                <Input
+                  type="date"
+                  value={formData.due_date || ''}
+                  onChange={(e) => setFormData({ ...formData, due_date: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Status</label>
+                <Select value={formData.status || 'Pending'} onValueChange={(v) => setFormData({ ...formData, status: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {MILESTONE_STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium">Owner</label>
+              <Input
+                value={formData.owner || ''}
+                onChange={(e) => setFormData({ ...formData, owner: e.target.value })}
+                placeholder="Owner name"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowMilestoneModal(false)}>Cancel</Button>
+            <Button onClick={handleSaveMilestone}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Activity Modal */}
+      <Dialog open={showActivityModal} onOpenChange={setShowActivityModal}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{editingItem ? 'Edit Activity' : 'Add Activity'}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <label className="text-sm font-medium">Activity Name</label>
+                <Input
+                  value={formData.name || ''}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g., Weekly Status Meeting"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Type</label>
+                <Select value={formData.activity_type || 'Meeting'} onValueChange={(v) => setFormData({ ...formData, activity_type: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {ACTIVITY_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Status</label>
+                <Select value={formData.status || 'Scheduled'} onValueChange={(v) => setFormData({ ...formData, status: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    {ACTIVITY_STATUS.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Date</label>
+                <Input
+                  type="date"
+                  value={formData.date || ''}
+                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Time</label>
+                <Input
+                  value={formData.time || ''}
+                  onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  placeholder="e.g., 2:00 PM"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium">Location</label>
+                <Input
+                  value={formData.location || ''}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  placeholder="e.g., Conference Room A or Virtual - Teams"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium">Attendees (comma-separated)</label>
+                <Input
+                  value={Array.isArray(formData.attendees) ? formData.attendees.join(', ') : formData.attendees || ''}
+                  onChange={(e) => setFormData({ ...formData, attendees: e.target.value })}
+                  placeholder="e.g., John Smith, Jane Doe"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium">Description</label>
+                <Input
+                  value={formData.description || ''}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Brief description"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="text-sm font-medium">Notes / Outcomes</label>
+                <textarea
+                  value={formData.notes || ''}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  className="w-full p-2 border rounded-lg resize-none h-20 text-sm"
+                  placeholder="Meeting outcomes or notes..."
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowActivityModal(false)}>Cancel</Button>
+            <Button onClick={handleSaveActivity}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
