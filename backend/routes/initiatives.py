@@ -212,7 +212,7 @@ async def delete_initiative_activity(initiative_id: str, activity_id: str):
 # ==================== INITIATIVE DOCUMENTS ====================
 
 # Create uploads directory if it doesn't exist
-UPLOAD_DIR = "/app/backend/uploads"
+UPLOAD_DIR = "/tmp/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
