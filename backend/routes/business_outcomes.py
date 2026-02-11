@@ -200,7 +200,7 @@ async def create_kpi(kpi: KPICreate):
             "kpi_id": kpi_id,
             "value": kpi.current_value,
             "recorded_at": now,
-            "recorded_by": current_user.get("email", "")
+            "recorded_by": "Admin"
         }
         await db.kpi_history.insert_one(history_entry)
     
