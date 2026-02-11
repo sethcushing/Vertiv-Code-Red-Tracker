@@ -1,12 +1,16 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi.responses import FileResponse
 from typing import List, Optional
 import uuid
+import os
+import shutil
 from datetime import datetime, timezone
 
 from models.schemas import (
     StrategicInitiativeCreate, StrategicInitiativeUpdate, StrategicInitiativeResponse,
     ProjectCreate, ProjectUpdate, ProjectResponse,
-    MilestoneBase, Milestone, IssueBase, Issue
+    MilestoneBase, Milestone, IssueBase, Issue,
+    InitiativeMilestoneBase, InitiativeMilestone, ActivityBase, Activity, DocumentBase, Document
 )
 # from utils.auth import get_current_user
 
