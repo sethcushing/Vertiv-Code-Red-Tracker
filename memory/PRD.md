@@ -54,7 +54,10 @@ Build a project portfolio management application (Code Red Initiatives) with:
 ```
 
 ### Key Data Models
-- **StrategicInitiative**: id, name, description, status, rag_status, executive_sponsor, business_unit, delivery_stages_impacted, team_members, status_history, business_outcome_ids
+- **StrategicInitiative**: id, name, description, status, rag_status, executive_sponsor, business_unit, delivery_stages_impacted, team_members, status_history, milestones, activities, documents, business_outcome_ids
+- **InitiativeMilestone**: id, name, description, due_date, owner, status
+- **Activity**: id, name, activity_type (Meeting/Workshop/Review/Training/etc), date, time, location, attendees, status, notes
+- **Document**: id, name, file_url, file_type, file_size, description, uploaded_at, uploaded_by
 - **Project**: id, name, description, status, rag_status, owner, business_unit, delivery_stages_impacted, team_members, status_history, milestones, issues
 - **TeamMember**: id, name, role, responsibility
 - **StatusUpdate**: id, old_status, new_status, changed_at, changed_by, notes
