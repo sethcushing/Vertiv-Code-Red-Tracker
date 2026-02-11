@@ -86,7 +86,13 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - [x] Delivery stages impacted (multi-select)
 - [x] Editable detail pages for all fields
 
-### Phase 5: MongoDB Persistence
+### Phase 5: Initiative-Level Features (JUST COMPLETED)
+- [x] Initiative Milestones (add/edit/delete with status tracking)
+- [x] Initiative Activities (Meeting, Workshop, Review, Training, etc.)
+- [x] Document upload with drag-and-drop support
+- [x] Color-coded activity type badges
+
+### Phase 6: MongoDB Persistence
 - [x] MongoDB already configured and working
 - [x] All data persists across sessions
 - [x] Seed endpoint to populate sample data
