@@ -24,6 +24,54 @@ class TeamMember(BaseModel):
 # ========== BUSINESS UNITS ==========
 BUSINESS_UNITS = ["IT", "Sales", "Manufacturing", "Fulfillment", "Engineering", "Finance", "Operations", "HR", "Marketing"]
 
+# ========== ACTIVITY TYPES ==========
+ACTIVITY_TYPES = ["Meeting", "Workshop", "Review", "Training", "Presentation", "Planning Session", "Demo", "Other"]
+
+
+# ========== INITIATIVE MILESTONE ==========
+class InitiativeMilestoneBase(BaseModel):
+    name: str
+    description: Optional[str] = ""
+    owner: Optional[str] = ""
+    due_date: str
+    status: str = "Pending"  # Pending, In Progress, Completed, Delayed
+
+
+class InitiativeMilestone(InitiativeMilestoneBase):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
+# ========== ACTIVITY (Meetings, Workshops, etc.) ==========
+class ActivityBase(BaseModel):
+    name: str
+    activity_type: str = "Meeting"  # Meeting, Workshop, Review, Training, etc.
+    description: Optional[str] = ""
+    date: str  # Date of the activity
+    time: Optional[str] = ""  # Time of the activity
+    location: Optional[str] = ""  # Location or virtual link
+    attendees: List[str] = []  # List of attendee names
+    status: str = "Scheduled"  # Scheduled, Completed, Cancelled
+    notes: Optional[str] = ""  # Outcomes or notes from the activity
+
+
+class Activity(ActivityBase):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+
+# ========== DOCUMENT ==========
+class DocumentBase(BaseModel):
+    name: str
+    file_url: str  # Stored file path/URL
+    file_type: Optional[str] = ""  # pdf, docx, xlsx, etc.
+    file_size: Optional[int] = 0  # Size in bytes
+    description: Optional[str] = ""
+
+
+class Document(DocumentBase):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    uploaded_at: str = ""
+    uploaded_by: Optional[str] = ""
+
 
 # ========== STRATEGIC INITIATIVE (Big Bets) MODELS ==========
 class StrategicInitiativeBase(BaseModel):
