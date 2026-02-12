@@ -142,7 +142,7 @@ const StrategicInitiativeDetail = () => {
         status: editForm.status,
         rag_status: editForm.rag_status,
         executive_sponsor: editForm.executive_sponsor,
-        business_unit: editForm.business_unit,
+        business_units: editForm.business_units,
         delivery_stages_impacted: editForm.delivery_stages_impacted,
         business_outcome_ids: editForm.business_outcome_ids,
       });
