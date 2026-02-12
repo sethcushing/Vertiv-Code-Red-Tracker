@@ -116,7 +116,7 @@ async def seed_data():
             "rag_status": "Amber", 
             "executive_sponsor": "Michael Chen", 
             "business_outcome_ids": [cat_map["ETO"]], 
-            "business_unit": "Engineering",
+            "business_units": ["Engineering"],
             "delivery_stages_impacted": ["Request", "Solution Design", "Order Capture"],
             "team_members": [
                 {"id": str(uuid.uuid4()), "name": "Michael Chen", "role": "Executive Sponsor", "responsibility": "Strategic oversight and funding"},
@@ -149,7 +149,7 @@ async def seed_data():
             "rag_status": "Green", 
             "executive_sponsor": "Sarah Johnson", 
             "business_outcome_ids": [cat_map["Quality"]],
-            "business_unit": "Manufacturing",
+            "business_units": ["Manufacturing"],
             "delivery_stages_impacted": ["Availability", "Fulfillment"],
             "team_members": [
                 {"id": str(uuid.uuid4()), "name": "Sarah Johnson", "role": "Executive Sponsor", "responsibility": "Quality strategy"},
@@ -177,7 +177,7 @@ async def seed_data():
             "rag_status": "Green", 
             "executive_sponsor": "David Kim", 
             "business_outcome_ids": [cat_map["PDSL"]],
-            "business_unit": "Operations",
+            "business_units": ["Operations"],
             "delivery_stages_impacted": ["Quote and Approval", "Fulfillment"],
             "team_members": [
                 {"id": str(uuid.uuid4()), "name": "David Kim", "role": "Executive Sponsor", "responsibility": "Planning oversight"},
@@ -197,7 +197,7 @@ async def seed_data():
             "rag_status": "Red", 
             "executive_sponsor": "Lisa Park", 
             "business_outcome_ids": [],
-            "business_unit": "Manufacturing",
+            "business_units": ["Manufacturing"],
             "delivery_stages_impacted": ["Availability", "Fulfillment", "Post-Delivery"],
             "team_members": [
                 {"id": str(uuid.uuid4()), "name": "Lisa Park", "role": "Executive Sponsor", "responsibility": "Manufacturing strategy"},
@@ -217,7 +217,7 @@ async def seed_data():
             "rag_status": "Green", 
             "executive_sponsor": "Tom Wilson", 
             "business_outcome_ids": [],
-            "business_unit": "Finance",
+            "business_units": ["Finance"],
             "delivery_stages_impacted": ["Commercials", "Order Capture"],
             "team_members": [],
             "status_history": [],
@@ -245,7 +245,7 @@ async def seed_data():
             "rag_status": "Amber",
             "delivery_stage": "Order Capture",
             "delivery_stages_impacted": ["Order Capture", "Solution Design"],
-            "business_unit": "Engineering",
+            "business_units": ["Engineering"],
             "owner": "Jennifer Martinez",
             "business_outcome_ids": [],
             "team_members": [
@@ -277,7 +277,7 @@ async def seed_data():
             "rag_status": "Green",
             "delivery_stage": "Commercials",
             "delivery_stages_impacted": ["Commercials", "Quote and Approval"],
-            "business_unit": "Operations",
+            "business_units": ["Operations"],
             "owner": "Alex Rivera",
             "business_outcome_ids": [],
             "team_members": [
@@ -305,7 +305,7 @@ async def seed_data():
             "rag_status": "Red",
             "delivery_stage": "Request",
             "delivery_stages_impacted": ["Request", "Solution Design", "Availability"],
-            "business_unit": "IT",
+            "business_units": ["IT"],
             "owner": "Chris Anderson",
             "business_outcome_ids": [],
             "team_members": [
@@ -330,7 +330,7 @@ async def seed_data():
             "rag_status": "Green",
             "delivery_stage": "Solution Design",
             "delivery_stages_impacted": ["Solution Design"],
-            "business_unit": "Manufacturing",
+            "business_units": ["Manufacturing"],
             "owner": "Nicole Brown",
             "business_outcome_ids": [],
             "team_members": [
@@ -357,7 +357,7 @@ async def seed_data():
             "rag_status": "Amber",
             "delivery_stage": "Availability",
             "delivery_stages_impacted": ["Availability", "Fulfillment"],
-            "business_unit": "IT",
+            "business_units": ["IT"],
             "owner": "Sam Chen",
             "business_outcome_ids": [],
             "team_members": [
@@ -379,7 +379,7 @@ async def seed_data():
             "rag_status": "Green",
             "delivery_stage": "Quote and Approval",
             "delivery_stages_impacted": ["Quote and Approval", "Fulfillment"],
-            "business_unit": "Sales",
+            "business_units": ["Sales"],
             "owner": "Maria Garcia",
             "business_outcome_ids": [],
             "team_members": [],
@@ -398,7 +398,7 @@ async def seed_data():
             "rag_status": "Green",
             "delivery_stage": "Fulfillment",
             "delivery_stages_impacted": ["Fulfillment", "Post-Delivery"],
-            "business_unit": "Operations",
+            "business_units": ["Operations"],
             "owner": "James Wilson",
             "business_outcome_ids": [],
             "team_members": [
@@ -421,7 +421,7 @@ async def seed_data():
             "rag_status": "Green",
             "delivery_stage": "Post-Delivery",
             "delivery_stages_impacted": ["Post-Delivery"],
-            "business_unit": "Sales",
+            "business_units": ["Sales"],
             "owner": "Emily Davis",
             "business_outcome_ids": [],
             "team_members": [
