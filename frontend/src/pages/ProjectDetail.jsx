@@ -182,6 +182,16 @@ const ProjectDetail = () => {
     }
   };
 
+  // Toggle business unit in edit form
+  const toggleBusinessUnit = (unit) => {
+    const current = editForm.business_units || [];
+    if (current.includes(unit)) {
+      setEditForm({ ...editForm, business_units: current.filter(u => u !== unit) });
+    } else {
+      setEditForm({ ...editForm, business_units: [...current, unit] });
+    }
+  };
+
   // Toggle business outcome in edit form
   const toggleBusinessOutcome = (catId) => {
     const current = editForm.business_outcome_ids || [];
