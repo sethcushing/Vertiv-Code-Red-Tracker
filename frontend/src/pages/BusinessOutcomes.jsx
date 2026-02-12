@@ -339,6 +339,17 @@ const BusinessOutcomes = () => {
 
   return (
     <div className="space-y-6" data-testid="business-outcomes-page">
+      {/* Draft Notice Banner */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
+        <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Activity className="w-5 h-5 text-amber-600" />
+        </div>
+        <div>
+          <h3 className="font-semibold text-amber-800 text-sm">Draft Mode</h3>
+          <p className="text-amber-700 text-sm">This section is currently in draft. Updates coming soon.</p>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500 font-lato-light">
