@@ -115,7 +115,6 @@ function App() {
                   <Route path="/projects/:id" element={<ProjectDetail />} />
                   <Route path="/strategic-initiatives/new" element={<StrategicInitiativeForm />} />
                   <Route path="/strategic-initiatives/:id" element={<StrategicInitiativeDetail />} />
-                  <Route path="/reporting" element={<Reporting />} />
                   <Route path="/delivery-pipeline" element={<DeliveryPipeline />} />
                   <Route path="/admin/settings" element={<AdminSettings />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
