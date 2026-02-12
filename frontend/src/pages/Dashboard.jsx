@@ -341,7 +341,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Initiatives List */}
-                    <div className={`min-h-[200px] max-h-[600px] overflow-y-auto ${config.color}`}>
+                    <div className={`min-h-[450px] max-h-[600px] overflow-y-auto ${config.color}`}>
                       {statusInitiatives.length > 0 ? (
                         <div className="p-2 space-y-2">
                           {statusInitiatives.map((initiative, index) => {
