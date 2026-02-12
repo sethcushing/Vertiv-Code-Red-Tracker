@@ -8,6 +8,7 @@ import {
   ChevronRight,
   BarChart3,
   Truck,
+  Settings,
 } from 'lucide-react';
 
 const navigation = [
@@ -15,6 +16,7 @@ const navigation = [
   { name: 'Business Outcomes - demo', href: '/business-outcomes', icon: TrendingUp },
   { name: 'Delivery Pipeline', href: '/delivery-pipeline', icon: Truck },
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
+  { name: 'Admin Settings', href: '/admin/settings', icon: Settings },
 ];
 
 const Layout = ({ children }) => {
