@@ -30,6 +30,7 @@ Build a project portfolio management application (Code Red Initiatives) with:
 │   ├── business_outcomes.py  # Business outcomes hierarchy
 │   ├── dashboard.py    # Dashboard data endpoints
 │   ├── admin.py        # Admin endpoints
+│   ├── config.py       # Configuration management (Business Units, Delivery Stages)
 │   └── seed.py         # Data seeding endpoint
 └── utils/
     └── auth.py         # Auth helpers (currently unused)
@@ -43,11 +44,11 @@ Build a project portfolio management application (Code Red Initiatives) with:
 │   ├── Layout.jsx      # Sidebar navigation
 │   └── ui/             # Shadcn components
 └── pages/
-    ├── ExecutiveDashboard.jsx
     ├── Dashboard.jsx (Code Red Pipeline)
     ├── BusinessOutcomes.jsx
     ├── DeliveryPipeline.jsx
     ├── Reporting.jsx
+    ├── AdminSettings.jsx   # NEW: Admin page for managing Business Units & Delivery Stages
     ├── StrategicInitiativeDetail.jsx
     ├── ProjectDetail.jsx
     └── Admin.jsx (unused)
