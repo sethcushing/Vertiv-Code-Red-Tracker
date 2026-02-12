@@ -174,7 +174,7 @@ class ProjectUpdate(BaseModel):
     rag_status: Optional[str] = None
     delivery_stage: Optional[str] = None
     delivery_stages_impacted: Optional[List[str]] = None
-    business_unit: Optional[str] = None
+    business_units: Optional[List[str]] = None
     owner: Optional[str] = None
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
