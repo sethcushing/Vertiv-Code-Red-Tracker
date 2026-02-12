@@ -11,6 +11,7 @@ import StrategicInitiativeDetail from './pages/StrategicInitiativeDetail';
 import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Reporting from './pages/Reporting';
 import DeliveryPipeline from './pages/DeliveryPipeline';
+import AdminSettings from './pages/AdminSettings';
 import Layout from './components/Layout';
 
 import './App.css';
