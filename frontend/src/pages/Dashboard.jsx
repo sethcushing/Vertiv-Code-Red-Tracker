@@ -491,30 +491,6 @@ const Dashboard = () => {
         </div>
       </DragDropContext>
 
-      {/* Quick Actions */}
-      <div className="flex justify-end">
-        <Button
-          onClick={handleSeedData}
-          data-testid="refresh-seed-btn"
-          disabled={seeding}
-          variant="outline"
-          size="sm"
-          className="rounded-lg text-xs"
-        >
-          {seeding ? (
-            <>
-              <Loader2 className="w-3 h-3 mr-1.5 animate-spin" />
-              Seeding...
-            </>
-          ) : (
-            <>
-              <RefreshCw className="w-3 h-3 mr-1.5" />
-              Reset Data
-            </>
-          )}
-        </Button>
-      </div>
-
       {/* Project Modal */}
       <Dialog open={showProjectModal} onOpenChange={setShowProjectModal}>
         <DialogContent className="max-w-md">
