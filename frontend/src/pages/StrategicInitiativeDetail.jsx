@@ -555,22 +555,37 @@ const StrategicInitiativeDetail = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2">
               <Building2 className="w-4 h-4 text-gray-400" />
-              Business Unit
+              Business Units
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {editing ? (
-              <Select value={editForm.business_unit || ''} onValueChange={(v) => setEditForm({ ...editForm, business_unit: v })}>
-                <SelectTrigger><SelectValue placeholder="Select business unit" /></SelectTrigger>
-                <SelectContent>
-                  {BUSINESS_UNITS.map(u => <SelectItem key={u} value={u}>{u}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            ) : (
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${initiative.business_unit ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500'}`}>
-                {initiative.business_unit || 'Not set'}
-              </span>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {editing ? (
+                BUSINESS_UNITS.map(unit => (
+                  <button
+                    key={unit}
+                    onClick={() => toggleBusinessUnit(unit)}
+                    className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                      (editForm.business_units || []).includes(unit)
+                        ? 'bg-blue-100 text-blue-700 border border-blue-300'
+                        : 'bg-gray-100 text-gray-500 border border-gray-200 hover:bg-gray-200'
+                    }`}
+                  >
+                    {unit}
+                  </button>
+                ))
+              ) : (
+                (initiative.business_units || []).length > 0 ? (
+                  initiative.business_units.map(unit => (
+                    <span key={unit} className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                      {unit}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-gray-400 text-sm">None selected</span>
+                )
+              )}
+            </div>
           </CardContent>
         </Card>
 
