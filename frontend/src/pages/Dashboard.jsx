@@ -491,65 +491,6 @@ const Dashboard = () => {
         </div>
       </DragDropContext>
 
-      {/* Summary Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="border-0 shadow-sm rounded-xl" data-testid="stat-initiatives">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center">
-                <Target className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 font-lato-regular uppercase">Initiatives</p>
-                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_strategic_initiatives}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm rounded-xl" data-testid="stat-projects">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                <FolderKanban className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 font-lato-regular uppercase">Projects</p>
-                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_projects}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/business-outcomes')} data-testid="stat-outcomes">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 font-lato-regular uppercase">Outcomes</p>
-                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_business_outcomes}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-sm rounded-xl cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/business-outcomes')} data-testid="stat-kpis">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-violet-600 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-400 font-lato-regular uppercase">KPIs</p>
-                <p className="text-xl font-heading font-bold text-gray-900">{stats.total_kpis}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Quick Actions */}
       <div className="flex justify-end">
         <Button
