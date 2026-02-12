@@ -83,7 +83,7 @@ class StrategicInitiativeBase(BaseModel):
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
     business_outcome_ids: List[str] = []  # Links to Business Outcome Categories
-    business_unit: Optional[str] = ""  # IT, Sales, Manufacturing, etc.
+    business_units: List[str] = []  # IT, Sales, Manufacturing, etc. (multiple)
     delivery_stages_impacted: List[str] = []  # Which delivery stages this impacts
     team_members: List[TeamMember] = []
     status_history: List[StatusUpdate] = []
