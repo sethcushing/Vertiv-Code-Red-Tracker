@@ -40,8 +40,6 @@ import {
 
 const STATUS_OPTIONS = ['Not Started', 'In Progress', 'Completed', 'On Hold'];
 const RAG_OPTIONS = ['Green', 'Amber', 'Red'];
-const BUSINESS_UNITS = ['IT', 'Sales', 'Manufacturing', 'Fulfillment', 'Engineering', 'Finance', 'Operations', 'HR', 'Marketing'];
-const DELIVERY_STAGES = ['Request', 'Solution Design', 'Commercials', 'Quote and Approval', 'Order Capture', 'Availability', 'Fulfillment', 'Post-Delivery'];
 
 const RAG_CONFIG = {
   'Red': { color: 'bg-red-500', text: 'text-red-700', light: 'bg-red-100' },
