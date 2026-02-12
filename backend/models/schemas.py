@@ -153,7 +153,7 @@ class ProjectBase(BaseModel):
     rag_status: str = "Green"  # Red, Amber, Green
     delivery_stage: str = "Request"  # Current delivery stage
     delivery_stages_impacted: List[str] = []  # Which delivery stages this impacts
-    business_unit: Optional[str] = ""  # IT, Sales, Manufacturing, etc.
+    business_units: List[str] = []  # IT, Sales, Manufacturing, etc. (multiple)
     owner: Optional[str] = ""
     start_date: Optional[str] = None
     target_end_date: Optional[str] = None
