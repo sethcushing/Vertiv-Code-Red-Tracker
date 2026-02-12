@@ -111,7 +111,25 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - [x] Removed user authentication for public access
 - [x] Removed "Reset Data" button from Code Red Pipeline page
 
+### Phase 8: Admin Settings & Dynamic Configuration (Dec 2025)
+- [x] Added Admin Settings page for managing configuration
+- [x] Business Units now stored in database (dynamic, not hardcoded)
+- [x] Added "Planning" and "NPDI" to default Business Units
+- [x] Delivery Stages now stored in database (dynamic, not hardcoded)
+- [x] CRUD operations for Business Units (add/delete)
+- [x] CRUD operations for Delivery Stages (add/delete)
+- [x] Initiative and Project detail pages fetch config dynamically
+
 ## API Endpoints
+
+### Configuration
+- `GET /api/config` - Get all configuration values (business_units, delivery_stages)
+- `GET /api/config/business-units` - List all business units
+- `POST /api/config/business-units` - Add a new business unit
+- `DELETE /api/config/business-units/{name}` - Delete a business unit
+- `GET /api/config/delivery-stages` - List all delivery stages
+- `POST /api/config/delivery-stages` - Add a new delivery stage
+- `DELETE /api/config/delivery-stages/{name}` - Delete a delivery stage
 
 ### Strategic Initiatives
 - `GET /api/strategic-initiatives` - List all
