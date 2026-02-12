@@ -97,6 +97,10 @@ const StrategicInitiativeDetail = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
+  
+  // Config values from API
+  const [businessUnits, setBusinessUnits] = useState([]);
+  const [deliveryStages, setDeliveryStages] = useState([]);
 
   // Modal states
   const [showProjectModal, setShowProjectModal] = useState(false);
@@ -117,15 +121,18 @@ const StrategicInitiativeDetail = () => {
 
   const fetchData = async () => {
     try {
-      const [initRes, projRes, catRes] = await Promise.all([
+      const [initRes, projRes, catRes, configRes] = await Promise.all([
         api.get(`/strategic-initiatives/${id}`),
         api.get(`/projects?strategic_initiative_id=${id}`),
         api.get('/business-outcomes/categories'),
+        api.get('/config'),
       ]);
       setInitiative(initRes.data);
       setProjects(projRes.data);
       setCategories(catRes.data);
       setEditForm(initRes.data);
+      setBusinessUnits(configRes.data.business_units || []);
+      setDeliveryStages(configRes.data.delivery_stages || []);
     } catch (error) {
       toast.error('Failed to load initiative');
       navigate('/dashboard');
