@@ -62,6 +62,11 @@ api_router.include_router(seed.router)
 async def root():
     return {"message": "Code Red Initiatives API", "version": "4.0.0"}
 
+# Health check endpoint (for Kubernetes liveness/readiness probes)
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
 # Include main router
 app.include_router(api_router)
 
