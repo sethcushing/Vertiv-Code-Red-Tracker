@@ -45,8 +45,6 @@ import {
 
 const STATUS_OPTIONS = ['Not Started', 'Discovery', 'Frame', 'Work In Progress'];
 const RAG_OPTIONS = ['Green', 'Amber', 'Red'];
-const BUSINESS_UNITS = ['IT', 'Sales', 'Manufacturing', 'Fulfillment', 'Engineering', 'Finance', 'Operations', 'HR', 'Marketing'];
-const DELIVERY_STAGES = ['Request', 'Solution Design', 'Commercials', 'Quote and Approval', 'Order Capture', 'Availability', 'Fulfillment', 'Post-Delivery'];
 const MILESTONE_STATUS = ['Pending', 'In Progress', 'Completed', 'Delayed'];
 const ACTIVITY_TYPES = ['Meeting', 'Workshop', 'Review', 'Training', 'Presentation', 'Planning Session', 'Demo', 'Other'];
 const ACTIVITY_STATUS = ['Scheduled', 'Completed', 'Cancelled'];
