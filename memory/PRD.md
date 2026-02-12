@@ -62,7 +62,7 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - **TeamMember**: id, name, role, responsibility
 - **StatusUpdate**: id, old_status, new_status, changed_at, changed_by, notes
 
-## Completed Features (as of Feb 10, 2026)
+## Completed Features (as of Dec 2025)
 
 ### Phase 1: Core Infrastructure
 - [x] Backend refactoring to modular structure
@@ -71,25 +71,25 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - [x] React frontend with Tailwind + Shadcn UI
 
 ### Phase 2: Dashboard Views
-- [x] Executive Dashboard (consolidated view)
-- [x] Code Red Pipeline (Kanban-style, drag-drop)
-- [x] Business Outcomes page (card-based layout)
+- [x] Code Red Pipeline (Kanban-style, drag-drop) - **DEFAULT LANDING PAGE**
+- [x] Business Outcomes - demo page (card-based layout)
 - [x] Delivery Pipeline view
 - [x] Reporting dashboard with charts
+- [x] Executive Dashboard removed (per user request)
 
 ### Phase 3: RAG Status & Detail Pages
 - [x] RAG status indicators on initiative/project cards
 - [x] Initiative Detail Page with full edit capabilities
 - [x] Project Detail Page with full edit capabilities
 
-### Phase 4: Rich Tracking Features (JUST COMPLETED)
+### Phase 4: Rich Tracking Features
 - [x] Status history tracking (auto-logged on status change)
 - [x] Team members with roles and responsibilities
-- [x] Business unit alignment field
+- [x] Business unit alignment field (multi-select)
 - [x] Delivery stages impacted (multi-select)
 - [x] Editable detail pages for all fields
 
-### Phase 5: Initiative-Level Features (JUST COMPLETED)
+### Phase 5: Initiative-Level Features
 - [x] Initiative Milestones (add/edit/delete with status tracking)
 - [x] Initiative Activities (Meeting, Workshop, Review, Training, etc.)
 - [x] Document upload with drag-and-drop support
@@ -99,6 +99,16 @@ Build a project portfolio management application (Code Red Initiatives) with:
 - [x] MongoDB already configured and working
 - [x] All data persists across sessions
 - [x] Seed endpoint to populate sample data
+
+### Phase 7: UI/UX Refinements (Dec 2025)
+- [x] Removed Executive Dashboard from navigation
+- [x] Set Code Red Pipeline as default landing page
+- [x] Renamed "Business Outcomes" to "Business Outcomes - demo"
+- [x] Improved visibility of edit/delete buttons on Business Outcomes page
+- [x] Removed metrics panel from Code Red Pipeline page
+- [x] Changed Business Unit from single-select to multi-select
+- [x] Removed user authentication for public access
+- [x] Removed "Reset Data" button from Code Red Pipeline page
 
 ## API Endpoints
 
