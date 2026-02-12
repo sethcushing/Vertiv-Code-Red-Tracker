@@ -12,7 +12,7 @@ import {
 
 const navigation = [
   { name: 'Code Red Pipeline', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Business Outcomes', href: '/business-outcomes', icon: TrendingUp },
+  { name: 'Business Outcomes - demo', href: '/business-outcomes', icon: TrendingUp },
   { name: 'Delivery Pipeline', href: '/delivery-pipeline', icon: Truck },
   { name: 'Reporting', href: '/reporting', icon: BarChart3 },
 ];
