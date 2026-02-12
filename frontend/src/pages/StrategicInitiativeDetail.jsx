@@ -385,6 +385,15 @@ const StrategicInitiativeDetail = () => {
     }
   };
 
+  const toggleBusinessUnit = (unit) => {
+    const current = editForm.business_units || [];
+    if (current.includes(unit)) {
+      setEditForm({ ...editForm, business_units: current.filter(u => u !== unit) });
+    } else {
+      setEditForm({ ...editForm, business_units: [...current, unit] });
+    }
+  };
+
   const toggleBusinessOutcome = (catId) => {
     const current = editForm.business_outcome_ids || [];
     if (current.includes(catId)) {
