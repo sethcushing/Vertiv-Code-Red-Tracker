@@ -24,7 +24,6 @@ const Layout = ({ children }) => {
   // Get page title from path
   const getPageTitle = () => {
     const path = location.pathname;
-    if (path === '/executive') return 'Executive Dashboard';
     if (path === '/' || path === '/dashboard') return 'Code Red Pipeline';
     if (path === '/delivery-pipeline') return 'Delivery Pipeline';
     if (path === '/business-outcomes') return 'Business Outcomes';
