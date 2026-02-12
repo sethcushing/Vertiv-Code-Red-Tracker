@@ -508,27 +508,31 @@ const BusinessOutcomes = () => {
                             <span className={`text-xs font-lato-bold w-8 text-right ${getProgressColor(subProgress)}`}>
                               {subProgress.toFixed(0)}%
                             </span>
-                            <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100">
-                              <button
-                                onClick={(e) => { e.stopPropagation(); handleAddKPI(subOutcome.id, e); }}
-                                className="p-1 hover:bg-gray-200 rounded"
-                                title="Add KPI"
-                              >
-                                <Plus className="w-3 h-3 text-gray-400" />
-                              </button>
-                              <button
-                                onClick={(e) => { e.stopPropagation(); handleEditSubOutcome(subOutcome, e); }}
-                                className="p-1 hover:bg-gray-200 rounded"
-                              >
-                                <Edit2 className="w-3 h-3 text-gray-400" />
-                              </button>
-                              <button
-                                onClick={(e) => { e.stopPropagation(); handleDeleteSubOutcome(subOutcome.id, e); }}
-                                className="p-1 hover:bg-red-50 rounded"
-                              >
-                                <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
-                              </button>
-                            </div>
+                            {isAdmin && (
+                              <div className="flex items-center gap-0.5">
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); handleAddKPI(subOutcome.id, e); }}
+                                  className="p-1.5 hover:bg-gray-200 rounded"
+                                  title="Add KPI"
+                                >
+                                  <Plus className="w-4 h-4 text-gray-600" />
+                                </button>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); handleEditSubOutcome(subOutcome, e); }}
+                                  className="p-1.5 hover:bg-gray-200 rounded"
+                                  title="Edit"
+                                >
+                                  <Edit2 className="w-4 h-4 text-gray-600" />
+                                </button>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); handleDeleteSubOutcome(subOutcome.id, e); }}
+                                  className="p-1.5 hover:bg-red-100 rounded"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4 text-gray-600 hover:text-red-600" />
+                                </button>
+                              </div>
+                            )}
                           </div>
                         </div>
 
