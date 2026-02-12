@@ -567,22 +567,24 @@ const BusinessOutcomes = () => {
                                     <div className="flex items-center gap-1">
                                       <button
                                         onClick={(e) => handleViewHistory(kpi, e)}
-                                        className="p-1 hover:bg-gray-100 rounded"
+                                        className="p-1.5 hover:bg-gray-100 rounded"
                                         title="View Trend"
                                       >
-                                        <BarChart3 className="w-3 h-3 text-gray-400" />
+                                        <BarChart3 className="w-4 h-4 text-gray-600" />
                                       </button>
                                       <button
                                         onClick={(e) => handleEditKPI(kpi, e)}
-                                        className="p-1 hover:bg-gray-100 rounded"
+                                        className="p-1.5 hover:bg-gray-100 rounded"
+                                        title="Edit"
                                       >
-                                        <Edit2 className="w-3 h-3 text-gray-400" />
+                                        <Edit2 className="w-4 h-4 text-gray-600" />
                                       </button>
                                       <button
                                         onClick={(e) => handleDeleteKPI(kpi.id, e)}
-                                        className="p-1 hover:bg-red-50 rounded"
+                                        className="p-1.5 hover:bg-red-100 rounded"
+                                        title="Delete"
                                       >
-                                        <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
+                                        <Trash2 className="w-4 h-4 text-gray-600 hover:text-red-600" />
                                       </button>
                                     </div>
                                   </div>
