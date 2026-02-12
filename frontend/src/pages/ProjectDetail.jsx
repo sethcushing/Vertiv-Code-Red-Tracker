@@ -69,6 +69,10 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
+  
+  // Config values from API
+  const [businessUnits, setBusinessUnits] = useState([]);
+  const [deliveryStages, setDeliveryStages] = useState([]);
 
   // Modal states
   const [showMilestoneModal, setShowMilestoneModal] = useState(false);
@@ -84,13 +88,16 @@ const ProjectDetail = () => {
 
   const fetchData = async () => {
     try {
-      const [projRes, catRes] = await Promise.all([
+      const [projRes, catRes, configRes] = await Promise.all([
         api.get(`/projects/${id}`),
         api.get('/business-outcomes/categories'),
+        api.get('/config'),
       ]);
       setProject(projRes.data);
       setCategories(catRes.data);
       setEditForm(projRes.data);
+      setBusinessUnits(configRes.data.business_units || []);
+      setDeliveryStages(configRes.data.delivery_stages || []);
       
       // Fetch parent initiative
       if (projRes.data.strategic_initiative_id) {
