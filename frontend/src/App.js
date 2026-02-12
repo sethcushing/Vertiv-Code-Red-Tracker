@@ -10,7 +10,6 @@ import ProjectDetail from './pages/ProjectDetail';
 import StrategicInitiativeDetail from './pages/StrategicInitiativeDetail';
 import StrategicInitiativeForm from './pages/StrategicInitiativeForm';
 import Reporting from './pages/Reporting';
-import ExecutiveDashboard from './pages/ExecutiveDashboard';
 import DeliveryPipeline from './pages/DeliveryPipeline';
 import Layout from './components/Layout';
 
