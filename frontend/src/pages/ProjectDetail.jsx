@@ -464,7 +464,7 @@ const ProjectDetail = () => {
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {editing ? (
-                BUSINESS_UNITS.map(unit => (
+                businessUnits.map(unit => (
                   <button
                     key={unit}
                     onClick={() => toggleBusinessUnit(unit)}
@@ -502,7 +502,7 @@ const ProjectDetail = () => {
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {editing ? (
-                DELIVERY_STAGES.map(stage => (
+                deliveryStages.map(stage => (
                   <button
                     key={stage}
                     onClick={() => toggleDeliveryStage(stage)}
