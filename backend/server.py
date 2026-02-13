@@ -9,7 +9,8 @@ Architecture:
 - utils/: Helper functions (auth, helpers)
 """
 
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
+from fastapi.responses import Response
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -71,6 +72,16 @@ async def health_check():
 
 # Include main router
 app.include_router(api_router)
+
+# Cache control middleware - prevent browser caching of API responses
+@app.middleware("http")
+async def add_cache_control_headers(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/api"):
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
 
 # CORS Middleware
 app.add_middleware(
