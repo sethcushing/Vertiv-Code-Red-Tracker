@@ -181,34 +181,36 @@ const AdminSettings = () => {
               )}
             </div>
 
-            <p className="text-xs text-gray-400 font-lato-light">
+            <p className="text-xs text-gray-400">
               {businessUnits.length} business unit{businessUnits.length !== 1 ? 's' : ''} configured
             </p>
           </CardContent>
         </Card>
 
         {/* Delivery Stages */}
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-3">
+        <Card className="rounded-2xl shadow-glass border-0 overflow-hidden" style={{ background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(16px)' }}>
+          <CardHeader className="pb-3 border-b border-gray-100/50">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Truck className="w-5 h-5 text-[#FE5B1B]" />
+              <div className="p-2 bg-violet-500/10 rounded-xl">
+                <Truck className="w-5 h-5 text-violet-600" />
+              </div>
               Delivery Stages
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-4">
             {/* Add Form */}
             <form onSubmit={handleAddDeliveryStage} className="flex gap-2">
               <Input
                 value={newDeliveryStage}
                 onChange={(e) => setNewDeliveryStage(e.target.value)}
                 placeholder="Enter new delivery stage"
-                className="flex-1"
+                className="flex-1 rounded-xl border-gray-200 focus:border-[#FE5B1B] focus:ring-[#FE5B1B]/20"
                 data-testid="new-delivery-stage-input"
               />
               <Button
                 type="submit"
                 disabled={addingDS || !newDeliveryStage.trim()}
-                className="text-white"
+                className="text-white rounded-xl shadow-lg shadow-[#FE5B1B]/25 hover:shadow-xl hover:shadow-[#FE5B1B]/30 transition-all"
                 style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                 data-testid="add-delivery-stage-btn"
               >
@@ -225,7 +227,8 @@ const AdminSettings = () => {
               {deliveryStages.map((stage, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-3 rounded-xl group transition-all duration-200 hover:shadow-sm"
+                  style={{ background: 'rgba(249,250,251,0.8)' }}
                   data-testid={`delivery-stage-${stage.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <div className="flex items-center gap-2">
