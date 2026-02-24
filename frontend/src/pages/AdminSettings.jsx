@@ -112,38 +112,40 @@ const AdminSettings = () => {
     <div className="space-y-6 animate-fade-in" data-testid="admin-settings-page">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-xl flex items-center justify-center">
-          <Settings className="w-5 h-5 text-white" />
+        <div className="w-12 h-12 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-2xl flex items-center justify-center shadow-lg shadow-[#FE5B1B]/25">
+          <Settings className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 className="text-xl font-heading font-bold text-gray-900">Admin Settings</h1>
-          <p className="text-sm text-gray-500 font-lato-light">Manage system configuration</p>
+          <h1 className="text-xl font-bold text-gray-900">Admin Settings</h1>
+          <p className="text-sm text-gray-500">Manage system configuration</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Business Units */}
-        <Card className="border-gray-200 shadow-sm">
-          <CardHeader className="pb-3">
+        <Card className="rounded-2xl shadow-glass border-0 overflow-hidden" style={{ background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(16px)' }}>
+          <CardHeader className="pb-3 border-b border-gray-100/50">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Building2 className="w-5 h-5 text-[#FE5B1B]" />
+              <div className="p-2 bg-[#FE5B1B]/10 rounded-xl">
+                <Building2 className="w-5 h-5 text-[#FE5B1B]" />
+              </div>
               Business Units
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-4">
             {/* Add Form */}
             <form onSubmit={handleAddBusinessUnit} className="flex gap-2">
               <Input
                 value={newBusinessUnit}
                 onChange={(e) => setNewBusinessUnit(e.target.value)}
                 placeholder="Enter new business unit"
-                className="flex-1"
+                className="flex-1 rounded-xl border-gray-200 focus:border-[#FE5B1B] focus:ring-[#FE5B1B]/20"
                 data-testid="new-business-unit-input"
               />
               <Button
                 type="submit"
                 disabled={addingBU || !newBusinessUnit.trim()}
-                className="text-white"
+                className="text-white rounded-xl shadow-lg shadow-[#FE5B1B]/25 hover:shadow-xl hover:shadow-[#FE5B1B]/30 transition-all"
                 style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
                 data-testid="add-business-unit-btn"
               >
