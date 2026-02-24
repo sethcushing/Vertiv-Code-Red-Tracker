@@ -58,9 +58,9 @@ const STATUS_CONFIG = {
   },
   'Work In Progress': { 
     icon: PlayCircle, 
-    headerBg: 'bg-amber-600',
-    columnBg: 'bg-amber-50/50',
-    accent: 'border-amber-300',
+    headerGradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    columnBg: 'rgba(255, 251, 235, 0.7)',
+    lightColor: 'rgba(245, 158, 11, 0.1)',
   },
 };
 
