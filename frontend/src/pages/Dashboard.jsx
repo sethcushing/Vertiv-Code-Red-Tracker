@@ -360,20 +360,25 @@ const Dashboard = () => {
                                   <div
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
-                                    className={`bg-white rounded-xl border shadow-sm overflow-hidden transition-all ${
+                                    className={`rounded-xl overflow-hidden transition-all duration-300 ${
                                       snapshot.isDragging 
-                                        ? 'shadow-xl ring-2 ring-[#FE5B1B] rotate-1' 
-                                        : 'border-gray-200 hover:shadow-md'
+                                        ? 'shadow-glass-xl ring-2 ring-[#FE5B1B] rotate-1 scale-105' 
+                                        : 'shadow-glass hover:shadow-glass-lg hover:-translate-y-0.5'
                                     }`}
-                                    style={provided.draggableProps.style}
+                                    style={{
+                                      ...provided.draggableProps.style,
+                                      background: 'rgba(255,255,255,0.9)',
+                                      backdropFilter: 'blur(12px)',
+                                      border: '1px solid rgba(255,255,255,0.8)',
+                                    }}
                                     data-testid={`pipeline-initiative-${initiative.id}`}
                                   >
                                     {/* Initiative Header */}
-                                    <div className="p-3 border-b border-gray-100">
+                                    <div className="p-3 border-b border-gray-100/50">
                                       <div className="flex items-start gap-2">
                                         <div
                                           {...provided.dragHandleProps}
-                                          className="mt-0.5 cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 rounded"
+                                          className="mt-0.5 cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 rounded-lg transition-colors"
                                         >
                                           <GripVertical className="w-4 h-4 text-gray-300" />
                                         </div>
@@ -381,7 +386,7 @@ const Dashboard = () => {
                                           {/* Title with RAG */}
                                           <div className="flex items-center gap-2 mb-1">
                                             <div 
-                                              className={`w-2.5 h-2.5 rounded-full ${ragConfig.color} ring-2 ${ragConfig.ring}`}
+                                              className={`w-2.5 h-2.5 rounded-full ${ragConfig.color} ring-2 ${ragConfig.ring} shadow-sm`}
                                               title={ragConfig.label}
                                             />
                                             <h4 
@@ -391,7 +396,7 @@ const Dashboard = () => {
                                               {initiative.name}
                                             </h4>
                                             <ChevronRight 
-                                              className="w-4 h-4 text-gray-300 hover:text-[#FE5B1B] cursor-pointer flex-shrink-0"
+                                              className="w-4 h-4 text-gray-300 hover:text-[#FE5B1B] cursor-pointer flex-shrink-0 transition-colors"
                                               onClick={() => navigate(`/strategic-initiatives/${initiative.id}`)}
                                             />
                                           </div>
@@ -417,7 +422,7 @@ const Dashboard = () => {
                                     </div>
 
                                     {/* Projects Section - Always Visible */}
-                                    <div className="bg-gray-50/70">
+                                    <div style={{ background: 'rgba(249,250,251,0.5)' }}>
                                       {/* Projects Header */}
                                       <div className="px-3 py-2 flex items-center justify-between border-b border-gray-100">
                                         <span className="text-xs font-medium text-gray-500 flex items-center gap-1.5">
