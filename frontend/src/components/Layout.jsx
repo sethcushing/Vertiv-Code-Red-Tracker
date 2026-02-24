@@ -57,13 +57,13 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F5F7]">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-56 text-gray-300 z-50 flex flex-col" style={{ background: 'linear-gradient(180deg, #1F1F1F 0%, #171717 100%)' }}>
+    <div className="min-h-screen bg-gradient-mesh">
+      {/* Sidebar - Glassmorphism Dark */}
+      <aside className="fixed left-0 top-0 h-screen w-56 z-50 flex flex-col shadow-glass-xl" style={{ background: 'linear-gradient(180deg, rgba(31,31,31,0.98) 0%, rgba(23,23,23,0.99) 100%)', backdropFilter: 'blur(20px)' }}>
         {/* Logo */}
-        <div className="p-5 border-b border-gray-800/50">
+        <div className="p-5 border-b border-white/5">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center shadow-lg">
+            <div className="w-9 h-9 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-xl flex items-center justify-center shadow-lg shadow-[#FE5B1B]/30">
               <span className="text-white font-bold text-sm font-heading">CR</span>
             </div>
             <div>
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-3 overflow-y-auto">
+        <nav className="flex-1 py-4 overflow-y-auto px-2">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href || 
               (item.href === '/dashboard' && location.pathname === '/') ||
@@ -88,10 +88,10 @@ const Layout = ({ children }) => {
                 key={item.name}
                 to={item.href}
                 data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className={`flex items-center gap-2.5 px-3 py-2.5 mx-2 rounded-lg text-sm font-lato-regular transition-all duration-300 ${
+                className={`flex items-center gap-2.5 px-3 py-2.5 mb-1 rounded-xl text-sm font-medium transition-all duration-300 ${
                   isActive
-                    ? 'text-white shadow-lg'
-                    : 'text-gray-400 hover:bg-white/10 hover:text-white'
+                    ? 'text-white shadow-lg shadow-[#FE5B1B]/25'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 }`}
                 style={isActive ? { background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' } : {}}
               >
@@ -103,15 +103,13 @@ const Layout = ({ children }) => {
         </nav>
 
         {/* User Section */}
-        <div className="p-3 border-t border-gray-800/50">
-          <div 
-            className="w-full flex items-center gap-2.5 p-2.5 rounded-lg"
-          >
-            <div className="w-8 h-8 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center">
+        <div className="p-3 border-t border-white/5">
+          <div className="w-full flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-lg flex items-center justify-center shadow-md">
               <User className="w-3.5 h-3.5 text-white" />
             </div>
             <div className="flex-1 text-left">
-              <p className="text-sm text-white truncate font-lato-regular">{user?.name || 'Admin'}</p>
+              <p className="text-sm text-white truncate font-medium">{user?.name || 'Admin'}</p>
               <p className="text-[10px] text-gray-500 truncate">{user?.role || 'admin'}</p>
             </div>
           </div>
