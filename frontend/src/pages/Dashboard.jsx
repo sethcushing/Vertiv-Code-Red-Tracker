@@ -284,7 +284,7 @@ const Dashboard = () => {
   const pipelineStatuses = ['Not Started', 'Discovery', 'Frame', 'Work In Progress'];
 
   return (
-    <div className="space-y-4 animate-fade-in">
+    <div className="space-y-5 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">Drag initiatives between stages</p>
@@ -293,7 +293,7 @@ const Dashboard = () => {
             onClick={() => navigate('/strategic-initiatives/new')}
             data-testid="add-initiative-btn"
             size="sm"
-            className="text-white rounded-xl font-semibold shadow-lg shadow-[#FE5B1B]/25"
+            className="text-white rounded-xl font-semibold shadow-lg shadow-[#FE5B1B]/30 hover:shadow-xl hover:shadow-[#FE5B1B]/40 transition-all hover:-translate-y-0.5"
             style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
           >
             <Plus className="w-4 h-4 mr-1.5" />
@@ -302,9 +302,9 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Pipeline Columns */}
+      {/* Pipeline Columns - Glassmorphism */}
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {pipelineStatuses.map(status => {
             const config = STATUS_CONFIG[status];
             const StatusIcon = config.icon;
@@ -316,25 +316,38 @@ const Dashboard = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`rounded-xl overflow-hidden border-2 transition-all ${
+                    className={`rounded-2xl overflow-hidden transition-all duration-300 shadow-glass ${
                       snapshot.isDraggingOver 
-                        ? 'border-[#FE5B1B] ring-4 ring-[#FE5B1B]/20' 
-                        : `border-transparent`
+                        ? 'ring-2 ring-[#FE5B1B] shadow-glass-lg scale-[1.02]' 
+                        : 'hover:shadow-glass-lg'
                     }`}
+                    style={{ 
+                      background: 'rgba(255,255,255,0.6)', 
+                      backdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255,255,255,0.5)'
+                    }}
                   >
-                    {/* Column Header */}
-                    <div className={`${config.headerBg} px-4 py-3 flex items-center justify-between`}>
-                      <div className="flex items-center gap-2">
-                        <StatusIcon className="w-4 h-4 text-white/80" />
+                    {/* Column Header - Gradient */}
+                    <div 
+                      className="px-4 py-3.5 flex items-center justify-between"
+                      style={{ background: config.headerGradient }}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
+                          <StatusIcon className="w-4 h-4 text-white" />
+                        </div>
                         <span className="font-semibold text-sm text-white">{status}</span>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
+                      <span className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/25 backdrop-blur-sm text-white shadow-sm">
                         {statusInitiatives.length}
                       </span>
                     </div>
 
                     {/* Column Content */}
-                    <div className={`${config.columnBg} min-h-[500px] max-h-[700px] overflow-y-auto p-3 space-y-3`}>
+                    <div 
+                      className="min-h-[500px] max-h-[700px] overflow-y-auto p-3 space-y-3"
+                      style={{ background: config.columnBg }}
+                    >
                       {statusInitiatives.length > 0 ? (
                         <>
                           {statusInitiatives.map((initiative, index) => {
