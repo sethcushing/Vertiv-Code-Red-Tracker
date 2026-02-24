@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { api, AuthContext } from '../App';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/button';
@@ -7,7 +8,6 @@ import { Input } from '../components/ui/input';
 import {
   Target,
   ChevronRight,
-  ChevronDown,
   Loader2,
   Clock,
   PlayCircle,
@@ -19,12 +19,8 @@ import {
   Edit2,
   Trash2,
   Sparkles,
-  Calendar,
-  CheckCircle2,
-  AlertCircle,
+  GripVertical,
   Building2,
-  TrendingUp,
-  MoreHorizontal,
 } from 'lucide-react';
 import {
   Dialog,
@@ -44,57 +40,50 @@ import {
 const STATUS_CONFIG = {
   'Not Started': { 
     icon: Pause, 
-    color: 'bg-slate-500',
-    lightBg: 'bg-slate-500/10',
-    text: 'text-slate-600',
-    border: 'border-slate-200',
+    headerBg: 'bg-slate-600',
+    columnBg: 'bg-slate-50',
+    accent: 'border-slate-300',
   },
   'Discovery': { 
     icon: Search, 
-    color: 'bg-blue-500',
-    lightBg: 'bg-blue-500/10',
-    text: 'text-blue-600',
-    border: 'border-blue-200',
+    headerBg: 'bg-blue-600',
+    columnBg: 'bg-blue-50/50',
+    accent: 'border-blue-300',
   },
   'Frame': { 
     icon: Clock, 
-    color: 'bg-violet-500',
-    lightBg: 'bg-violet-500/10',
-    text: 'text-violet-600',
-    border: 'border-violet-200',
+    headerBg: 'bg-violet-600',
+    columnBg: 'bg-violet-50/50',
+    accent: 'border-violet-300',
   },
   'Work In Progress': { 
     icon: PlayCircle, 
-    color: 'bg-amber-500',
-    lightBg: 'bg-amber-500/10',
-    text: 'text-amber-600',
-    border: 'border-amber-200',
+    headerBg: 'bg-amber-600',
+    columnBg: 'bg-amber-50/50',
+    accent: 'border-amber-300',
   },
 };
 
-const PROJECT_STATUS_CONFIG = {
-  'Not Started': { color: 'bg-slate-100 text-slate-700 border-slate-200' },
-  'In Progress': { color: 'bg-blue-100 text-blue-700 border-blue-200' },
-  'Completed': { color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  'On Hold': { color: 'bg-orange-100 text-orange-700 border-orange-200' },
+const PROJECT_STATUS_COLORS = {
+  'Not Started': 'bg-slate-100 text-slate-700 border-slate-200',
+  'In Progress': 'bg-blue-100 text-blue-700 border-blue-200',
+  'Completed': 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  'On Hold': 'bg-orange-100 text-orange-700 border-orange-200',
 };
 
 const RAG_CONFIG = {
-  'Red': { color: 'bg-red-500', text: 'text-red-600', light: 'bg-red-50', border: 'border-red-200', label: 'At Risk' },
-  'Amber': { color: 'bg-amber-500', text: 'text-amber-600', light: 'bg-amber-50', border: 'border-amber-200', label: 'Needs Attention' },
-  'Green': { color: 'bg-emerald-500', text: 'text-emerald-600', light: 'bg-emerald-50', border: 'border-emerald-200', label: 'On Track' },
+  'Red': { color: 'bg-red-500', ring: 'ring-red-200', label: 'At Risk' },
+  'Amber': { color: 'bg-amber-500', ring: 'ring-amber-200', label: 'Needs Attention' },
+  'Green': { color: 'bg-emerald-500', ring: 'ring-emerald-200', label: 'On Track' },
 };
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [stats, setStats] = useState(null);
-  const [initiatives, setInitiatives] = useState([]);
+  const [pipeline, setPipeline] = useState({});
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
-  const [expandedInitiatives, setExpandedInitiatives] = useState({});
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterRag, setFilterRag] = useState('all');
   const navigate = useNavigate();
 
   const isAdmin = user?.role === 'admin';
@@ -120,23 +109,8 @@ const Dashboard = () => {
         api.get('/business-outcomes/categories'),
       ]);
       setStats(statsRes.data);
-      
-      // Flatten pipeline data into a list of initiatives
-      const allInitiatives = [];
-      Object.entries(pipelineRes.data).forEach(([status, items]) => {
-        items.forEach(item => {
-          allInitiatives.push({ ...item, status });
-        });
-      });
-      setInitiatives(allInitiatives);
+      setPipeline(pipelineRes.data);
       setCategories(catRes.data);
-      
-      // Expand all by default
-      const expanded = {};
-      allInitiatives.forEach(init => {
-        expanded[init.id] = true;
-      });
-      setExpandedInitiatives(expanded);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       toast.error('Failed to load dashboard data');
@@ -162,8 +136,32 @@ const Dashboard = () => {
     }
   };
 
-  const toggleInitiative = (id) => {
-    setExpandedInitiatives(prev => ({ ...prev, [id]: !prev[id] }));
+  const handleDragEnd = async (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+
+    const newStatus = destination.droppableId;
+    const oldStatus = source.droppableId;
+
+    const newPipeline = { ...pipeline };
+    const initiative = newPipeline[oldStatus].find(i => i.id === draggableId);
+    
+    if (initiative) {
+      newPipeline[oldStatus] = newPipeline[oldStatus].filter(i => i.id !== draggableId);
+      newPipeline[newStatus] = [...(newPipeline[newStatus] || [])];
+      newPipeline[newStatus].splice(destination.index, 0, initiative);
+      setPipeline(newPipeline);
+
+      try {
+        await api.put(`/pipeline/move/${draggableId}?new_status=${encodeURIComponent(newStatus)}`);
+        toast.success(`Moved to ${newStatus}`);
+      } catch (error) {
+        toast.error('Failed to update status');
+        fetchData();
+      }
+    }
   };
 
   const handleAddProject = (initiativeId, e) => {
@@ -245,31 +243,12 @@ const Dashboard = () => {
     setProjectForm({ ...projectForm, business_outcome_ids: updated });
   };
 
-  // Filter initiatives
-  const filteredInitiatives = initiatives.filter(init => {
-    if (filterStatus !== 'all' && init.status !== filterStatus) return false;
-    if (filterRag !== 'all' && init.rag_status !== filterRag) return false;
-    return true;
-  });
-
-  // Group by status for summary
-  const statusCounts = initiatives.reduce((acc, init) => {
-    acc[init.status] = (acc[init.status] || 0) + 1;
-    return acc;
-  }, {});
-
-  const ragCounts = initiatives.reduce((acc, init) => {
-    const rag = init.rag_status || 'Green';
-    acc[rag] = (acc[rag] || 0) + 1;
-    return acc;
-  }, {});
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-[#FE5B1B] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-500 font-light">Loading initiatives...</p>
+          <p className="text-gray-500 font-light">Loading pipeline...</p>
         </div>
       </div>
     );
@@ -278,16 +257,12 @@ const Dashboard = () => {
   if (!stats || stats.total_strategic_initiatives === 0) {
     return (
       <div className="max-w-2xl mx-auto mt-12">
-        <div className="relative bg-white rounded-2xl p-12 text-center shadow-xl border border-gray-100">
+        <div className="bg-white rounded-2xl p-12 text-center shadow-lg border border-gray-100">
           <div className="w-20 h-20 bg-gradient-to-br from-[#FE5B1B] to-[#E0480E] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[#FE5B1B]/30">
             <Target className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-3">
-            No Strategic Initiatives Found
-          </h2>
-          <p className="text-gray-500 mb-8">
-            Get started by loading sample data to explore the pipeline.
-          </p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">No Strategic Initiatives Found</h2>
+          <p className="text-gray-500 mb-8">Get started by loading sample data to explore the pipeline.</p>
           <Button
             onClick={handleSeedData}
             data-testid="seed-data-btn"
@@ -296,15 +271,9 @@ const Dashboard = () => {
             style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
           >
             {seeding ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Loading...
-              </>
+              <><Loader2 className="w-5 h-5 mr-2 animate-spin" />Loading...</>
             ) : (
-              <>
-                <Sparkles className="w-5 h-5 mr-2" />
-                Load Sample Data
-              </>
+              <><Sparkles className="w-5 h-5 mr-2" />Load Sample Data</>
             )}
           </Button>
         </div>
@@ -312,77 +281,13 @@ const Dashboard = () => {
     );
   }
 
-  return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-        {/* Status Counts */}
-        {Object.entries(STATUS_CONFIG).map(([status, config]) => {
-          const StatusIcon = config.icon;
-          const count = statusCounts[status] || 0;
-          return (
-            <button
-              key={status}
-              onClick={() => setFilterStatus(filterStatus === status ? 'all' : status)}
-              className={`p-3 rounded-xl border transition-all ${
-                filterStatus === status 
-                  ? `${config.lightBg} ${config.border} ring-2 ring-offset-1 ring-${config.color.replace('bg-', '')}`
-                  : 'bg-white border-gray-100 hover:border-gray-200'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <div className={`p-1.5 rounded-lg ${config.lightBg}`}>
-                  <StatusIcon className={`w-4 h-4 ${config.text}`} />
-                </div>
-                <div className="text-left">
-                  <p className="text-xl font-bold text-gray-900">{count}</p>
-                  <p className="text-[10px] text-gray-500 truncate">{status}</p>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-        
-        {/* RAG Summary */}
-        {Object.entries(RAG_CONFIG).map(([rag, config]) => {
-          const count = ragCounts[rag] || 0;
-          return (
-            <button
-              key={rag}
-              onClick={() => setFilterRag(filterRag === rag ? 'all' : rag)}
-              className={`p-3 rounded-xl border transition-all ${
-                filterRag === rag 
-                  ? `${config.light} ${config.border} ring-2 ring-offset-1`
-                  : 'bg-white border-gray-100 hover:border-gray-200'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <div className={`w-3 h-3 rounded-full ${config.color}`} />
-                <div className="text-left">
-                  <p className="text-xl font-bold text-gray-900">{count}</p>
-                  <p className="text-[10px] text-gray-500">{rag}</p>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
+  const pipelineStatuses = ['Not Started', 'Discovery', 'Frame', 'Work In Progress'];
 
-      {/* Header Actions */}
+  return (
+    <div className="space-y-4 animate-fade-in">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">
-            Showing {filteredInitiatives.length} of {initiatives.length} initiatives
-          </span>
-          {(filterStatus !== 'all' || filterRag !== 'all') && (
-            <button
-              onClick={() => { setFilterStatus('all'); setFilterRag('all'); }}
-              className="text-xs text-[#FE5B1B] hover:underline"
-            >
-              Clear filters
-            </button>
-          )}
-        </div>
+        <p className="text-sm text-gray-500">Drag initiatives between stages</p>
         {isAdmin && (
           <Button
             onClick={() => navigate('/strategic-initiatives/new')}
@@ -397,251 +302,243 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Initiatives List */}
-      <div className="space-y-4">
-        {filteredInitiatives.map((initiative) => {
-          const isExpanded = expandedInitiatives[initiative.id];
-          const statusConfig = STATUS_CONFIG[initiative.status] || STATUS_CONFIG['Not Started'];
-          const StatusIcon = statusConfig.icon;
-          const ragConfig = RAG_CONFIG[initiative.rag_status || 'Green'];
-          const hasProjects = initiative.projects && initiative.projects.length > 0;
-          const projectCount = initiative.projects?.length || 0;
-          const completedProjects = initiative.projects?.filter(p => p.status === 'Completed').length || 0;
+      {/* Pipeline Columns */}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {pipelineStatuses.map(status => {
+            const config = STATUS_CONFIG[status];
+            const StatusIcon = config.icon;
+            const statusInitiatives = pipeline[status] || [];
 
-          return (
-            <div
-              key={initiative.id}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all"
-              data-testid={`initiative-card-${initiative.id}`}
-            >
-              {/* Initiative Header */}
-              <div 
-                className="p-4 cursor-pointer"
-                onClick={() => toggleInitiative(initiative.id)}
-              >
-                <div className="flex items-start gap-4">
-                  {/* Expand/Collapse & RAG */}
-                  <div className="flex items-center gap-2 pt-1">
-                    <button className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
-                      {isExpanded ? 
-                        <ChevronDown className="w-5 h-5 text-gray-400" /> : 
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                      }
-                    </button>
-                    <div 
-                      className={`w-3 h-3 rounded-full ${ragConfig.color} shadow-sm`}
-                      title={ragConfig.label}
-                    />
-                  </div>
-
-                  {/* Main Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        {/* Title Row */}
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 
-                            className="text-lg font-bold text-gray-900 hover:text-[#FE5B1B] cursor-pointer transition-colors truncate"
-                            onClick={(e) => { e.stopPropagation(); navigate(`/strategic-initiatives/${initiative.id}`); }}
-                          >
-                            {initiative.name}
-                          </h3>
-                          <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 ${statusConfig.lightBg} ${statusConfig.text} border ${statusConfig.border}`}>
-                            <StatusIcon className="w-3.5 h-3.5" />
-                            {initiative.status}
-                          </span>
-                        </div>
-
-                        {/* Meta Row */}
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                          {initiative.executive_sponsor && (
-                            <span className="flex items-center gap-1.5">
-                              <Users className="w-4 h-4 text-gray-400" />
-                              {initiative.executive_sponsor}
-                            </span>
-                          )}
-                          {initiative.business_units?.length > 0 && (
-                            <span className="flex items-center gap-1.5">
-                              <Building2 className="w-4 h-4 text-gray-400" />
-                              {initiative.business_units.slice(0, 2).join(', ')}
-                              {initiative.business_units.length > 2 && ` +${initiative.business_units.length - 2}`}
-                            </span>
-                          )}
-                          <span className="flex items-center gap-1.5">
-                            <FolderKanban className="w-4 h-4 text-gray-400" />
-                            {projectCount} project{projectCount !== 1 ? 's' : ''}
-                            {completedProjects > 0 && (
-                              <span className="text-emerald-600">({completedProjects} done)</span>
-                            )}
-                          </span>
-                        </div>
+            return (
+              <Droppable key={status} droppableId={status}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={`rounded-xl overflow-hidden border-2 transition-all ${
+                      snapshot.isDraggingOver 
+                        ? 'border-[#FE5B1B] ring-4 ring-[#FE5B1B]/20' 
+                        : `border-transparent`
+                    }`}
+                  >
+                    {/* Column Header */}
+                    <div className={`${config.headerBg} px-4 py-3 flex items-center justify-between`}>
+                      <div className="flex items-center gap-2">
+                        <StatusIcon className="w-4 h-4 text-white/80" />
+                        <span className="font-semibold text-sm text-white">{status}</span>
                       </div>
-
-                      {/* Right Side Stats */}
-                      <div className="flex items-center gap-3">
-                        <div className={`px-3 py-2 rounded-xl ${ragConfig.light} ${ragConfig.border} border`}>
-                          <p className={`text-xs font-medium ${ragConfig.text}`}>{ragConfig.label}</p>
-                        </div>
-                        <button
-                          onClick={(e) => { e.stopPropagation(); navigate(`/strategic-initiatives/${initiative.id}`); }}
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
-                          <ChevronRight className="w-5 h-5 text-gray-400" />
-                        </button>
-                      </div>
+                      <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white">
+                        {statusInitiatives.length}
+                      </span>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              {/* Projects Section - Expanded */}
-              {isExpanded && (
-                <div className="border-t border-gray-100 bg-gray-50/50">
-                  {/* Projects Header */}
-                  <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
-                    <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                      <FolderKanban className="w-4 h-4 text-gray-400" />
-                      Projects ({projectCount})
-                    </h4>
-                    <button
-                      onClick={(e) => handleAddProject(initiative.id, e)}
-                      className="flex items-center gap-1.5 text-xs text-[#FE5B1B] hover:text-[#E0480E] font-semibold transition-colors"
-                      data-testid={`add-project-${initiative.id}`}
-                    >
-                      <Plus className="w-4 h-4" />
-                      Add Project
-                    </button>
-                  </div>
+                    {/* Column Content */}
+                    <div className={`${config.columnBg} min-h-[500px] max-h-[700px] overflow-y-auto p-3 space-y-3`}>
+                      {statusInitiatives.length > 0 ? (
+                        <>
+                          {statusInitiatives.map((initiative, index) => {
+                            const ragConfig = RAG_CONFIG[initiative.rag_status || 'Green'];
+                            const hasProjects = initiative.projects && initiative.projects.length > 0;
 
-                  {/* Projects Grid */}
-                  {hasProjects ? (
-                    <div className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {initiative.projects.map(project => {
-                        const projectRag = RAG_CONFIG[project.rag_status || 'Green'];
-                        const projectStatusConfig = PROJECT_STATUS_CONFIG[project.status] || PROJECT_STATUS_CONFIG['Not Started'];
-                        const milestoneProgress = project.milestones_count > 0 
-                          ? Math.round((project.milestones_completed / project.milestones_count) * 100)
-                          : 0;
-
-                        return (
-                          <div
-                            key={project.id}
-                            className="bg-white rounded-xl border border-gray-200 p-4 hover:border-gray-300 hover:shadow-sm cursor-pointer transition-all group"
-                            onClick={() => navigate(`/projects/${project.id}`)}
-                            data-testid={`project-${project.id}`}
-                          >
-                            {/* Project Header */}
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex items-center gap-2 flex-1 min-w-0">
-                                <div className={`w-2.5 h-2.5 rounded-full ${projectRag.color} flex-shrink-0`} />
-                                <h5 className="font-semibold text-gray-900 truncate group-hover:text-[#FE5B1B] transition-colors">
-                                  {project.name}
-                                </h5>
-                              </div>
-                              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                  onClick={(e) => handleEditProject(project.id, e)}
-                                  className="p-1.5 hover:bg-gray-100 rounded-lg"
-                                  title="Edit"
-                                >
-                                  <Edit2 className="w-3.5 h-3.5 text-gray-400" />
-                                </button>
-                                <button
-                                  onClick={(e) => handleDeleteProject(project.id, e)}
-                                  className="p-1.5 hover:bg-red-50 rounded-lg"
-                                  title="Delete"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Project Details */}
-                            <div className="space-y-3">
-                              {/* Status & Owner */}
-                              <div className="flex items-center justify-between">
-                                <span className={`px-2 py-1 rounded-md text-xs font-medium border ${projectStatusConfig.color}`}>
-                                  {project.status}
-                                </span>
-                                {project.owner && (
-                                  <span className="text-xs text-gray-500 flex items-center gap-1">
-                                    <Users className="w-3 h-3" />
-                                    {project.owner}
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Milestone Progress */}
-                              <div>
-                                <div className="flex items-center justify-between mb-1">
-                                  <span className="text-xs text-gray-500">Milestones</span>
-                                  <span className="text-xs font-medium text-gray-700">
-                                    {project.milestones_completed}/{project.milestones_count}
-                                  </span>
-                                </div>
-                                <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                                  <div 
-                                    className={`h-full rounded-full transition-all ${
-                                      milestoneProgress === 100 ? 'bg-emerald-500' :
-                                      milestoneProgress > 50 ? 'bg-blue-500' :
-                                      milestoneProgress > 0 ? 'bg-amber-500' : 'bg-gray-300'
+                            return (
+                              <Draggable key={initiative.id} draggableId={initiative.id} index={index}>
+                                {(provided, snapshot) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    className={`bg-white rounded-xl border shadow-sm overflow-hidden transition-all ${
+                                      snapshot.isDragging 
+                                        ? 'shadow-xl ring-2 ring-[#FE5B1B] rotate-1' 
+                                        : 'border-gray-200 hover:shadow-md'
                                     }`}
-                                    style={{ width: `${milestoneProgress}%` }}
-                                  />
-                                </div>
-                              </div>
+                                    style={provided.draggableProps.style}
+                                    data-testid={`pipeline-initiative-${initiative.id}`}
+                                  >
+                                    {/* Initiative Header */}
+                                    <div className="p-3 border-b border-gray-100">
+                                      <div className="flex items-start gap-2">
+                                        <div
+                                          {...provided.dragHandleProps}
+                                          className="mt-0.5 cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 rounded"
+                                        >
+                                          <GripVertical className="w-4 h-4 text-gray-300" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          {/* Title with RAG */}
+                                          <div className="flex items-center gap-2 mb-1">
+                                            <div 
+                                              className={`w-2.5 h-2.5 rounded-full ${ragConfig.color} ring-2 ${ragConfig.ring}`}
+                                              title={ragConfig.label}
+                                            />
+                                            <h4 
+                                              className="font-semibold text-sm text-gray-900 truncate hover:text-[#FE5B1B] cursor-pointer transition-colors flex-1"
+                                              onClick={() => navigate(`/strategic-initiatives/${initiative.id}`)}
+                                            >
+                                              {initiative.name}
+                                            </h4>
+                                            <ChevronRight 
+                                              className="w-4 h-4 text-gray-300 hover:text-[#FE5B1B] cursor-pointer flex-shrink-0"
+                                              onClick={() => navigate(`/strategic-initiatives/${initiative.id}`)}
+                                            />
+                                          </div>
+                                          
+                                          {/* Meta Info */}
+                                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+                                            {initiative.executive_sponsor && (
+                                              <span className="flex items-center gap-1">
+                                                <Users className="w-3 h-3" />
+                                                {initiative.executive_sponsor}
+                                              </span>
+                                            )}
+                                            {initiative.business_units?.length > 0 && (
+                                              <span className="flex items-center gap-1">
+                                                <Building2 className="w-3 h-3" />
+                                                {initiative.business_units.slice(0, 2).join(', ')}
+                                                {initiative.business_units.length > 2 && ` +${initiative.business_units.length - 2}`}
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
 
-                              {/* Business Units if any */}
-                              {project.business_units?.length > 0 && (
-                                <div className="flex flex-wrap gap-1">
-                                  {project.business_units.slice(0, 3).map(bu => (
-                                    <span key={bu} className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px]">
-                                      {bu}
-                                    </span>
-                                  ))}
-                                  {project.business_units.length > 3 && (
-                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px]">
-                                      +{project.business_units.length - 3}
-                                    </span>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="p-8 text-center">
-                      <FolderKanban className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                      <p className="text-sm text-gray-400">No projects yet</p>
-                      <button
-                        onClick={(e) => handleAddProject(initiative.id, e)}
-                        className="mt-2 text-sm text-[#FE5B1B] hover:underline"
-                      >
-                        Create first project
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                                    {/* Projects Section - Always Visible */}
+                                    <div className="bg-gray-50/70">
+                                      {/* Projects Header */}
+                                      <div className="px-3 py-2 flex items-center justify-between border-b border-gray-100">
+                                        <span className="text-xs font-medium text-gray-500 flex items-center gap-1.5">
+                                          <FolderKanban className="w-3.5 h-3.5" />
+                                          Projects ({initiative.projects?.length || 0})
+                                        </span>
+                                        <button
+                                          onClick={(e) => handleAddProject(initiative.id, e)}
+                                          className="text-[10px] text-[#FE5B1B] hover:text-[#E0480E] font-semibold flex items-center gap-0.5"
+                                          data-testid={`add-project-${initiative.id}`}
+                                        >
+                                          <Plus className="w-3 h-3" />
+                                          Add
+                                        </button>
+                                      </div>
 
-      {filteredInitiatives.length === 0 && (
-        <div className="text-center py-12">
-          <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-500">No initiatives match your filters</p>
-          <button
-            onClick={() => { setFilterStatus('all'); setFilterRag('all'); }}
-            className="mt-2 text-sm text-[#FE5B1B] hover:underline"
-          >
-            Clear filters
-          </button>
+                                      {/* Projects List */}
+                                      <div className="p-2 space-y-1.5">
+                                        {hasProjects ? (
+                                          initiative.projects.map(project => {
+                                            const projectRag = RAG_CONFIG[project.rag_status || 'Green'];
+                                            const projectStatus = PROJECT_STATUS_COLORS[project.status] || PROJECT_STATUS_COLORS['Not Started'];
+                                            const progress = project.milestones_count > 0 
+                                              ? Math.round((project.milestones_completed / project.milestones_count) * 100)
+                                              : 0;
+
+                                            return (
+                                              <div
+                                                key={project.id}
+                                                className="bg-white rounded-lg border border-gray-200 p-2.5 hover:border-gray-300 hover:shadow-sm cursor-pointer transition-all group"
+                                                onClick={() => navigate(`/projects/${project.id}`)}
+                                                data-testid={`project-${project.id}`}
+                                              >
+                                                {/* Project Title Row */}
+                                                <div className="flex items-center justify-between gap-2 mb-2">
+                                                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                                                    <div className={`w-2 h-2 rounded-full ${projectRag.color} flex-shrink-0`} />
+                                                    <span className="text-xs font-semibold text-gray-800 truncate group-hover:text-[#FE5B1B] transition-colors">
+                                                      {project.name}
+                                                    </span>
+                                                  </div>
+                                                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <button
+                                                      onClick={(e) => handleEditProject(project.id, e)}
+                                                      className="p-1 hover:bg-gray-100 rounded"
+                                                    >
+                                                      <Edit2 className="w-3 h-3 text-gray-400" />
+                                                    </button>
+                                                    <button
+                                                      onClick={(e) => handleDeleteProject(project.id, e)}
+                                                      className="p-1 hover:bg-red-50 rounded"
+                                                    >
+                                                      <Trash2 className="w-3 h-3 text-gray-400 hover:text-red-500" />
+                                                    </button>
+                                                  </div>
+                                                </div>
+
+                                                {/* Project Details */}
+                                                <div className="flex items-center justify-between gap-2 text-[10px]">
+                                                  <span className={`px-1.5 py-0.5 rounded border font-medium ${projectStatus}`}>
+                                                    {project.status}
+                                                  </span>
+                                                  {project.owner && (
+                                                    <span className="text-gray-500 truncate">{project.owner}</span>
+                                                  )}
+                                                </div>
+
+                                                {/* Milestone Progress */}
+                                                {project.milestones_count > 0 && (
+                                                  <div className="mt-2">
+                                                    <div className="flex items-center justify-between text-[10px] text-gray-500 mb-1">
+                                                      <span>Milestones</span>
+                                                      <span className="font-medium">{project.milestones_completed}/{project.milestones_count}</span>
+                                                    </div>
+                                                    <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                                      <div 
+                                                        className={`h-full rounded-full transition-all ${
+                                                          progress === 100 ? 'bg-emerald-500' :
+                                                          progress > 50 ? 'bg-blue-500' :
+                                                          progress > 0 ? 'bg-amber-500' : 'bg-gray-300'
+                                                        }`}
+                                                        style={{ width: `${progress}%` }}
+                                                      />
+                                                    </div>
+                                                  </div>
+                                                )}
+
+                                                {/* Business Units Tags */}
+                                                {project.business_units?.length > 0 && (
+                                                  <div className="mt-2 flex flex-wrap gap-1">
+                                                    {project.business_units.slice(0, 2).map(bu => (
+                                                      <span key={bu} className="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-[9px]">
+                                                        {bu}
+                                                      </span>
+                                                    ))}
+                                                    {project.business_units.length > 2 && (
+                                                      <span className="px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded text-[9px]">
+                                                        +{project.business_units.length - 2}
+                                                      </span>
+                                                    )}
+                                                  </div>
+                                                )}
+                                              </div>
+                                            );
+                                          })
+                                        ) : (
+                                          <div className="text-center py-4 text-xs text-gray-400">
+                                            No projects yet
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center h-40 text-center">
+                          <FolderKanban className="w-8 h-8 text-gray-300 mb-2" />
+                          <p className="text-sm text-gray-400">Drop initiatives here</p>
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </Droppable>
+            );
+          })}
         </div>
-      )}
+      </DragDropContext>
 
       {/* Project Modal */}
       <Dialog open={showProjectModal} onOpenChange={setShowProjectModal}>
@@ -719,9 +616,7 @@ const Dashboard = () => {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowProjectModal(false)}>
-              Cancel
-            </Button>
+            <Button variant="outline" onClick={() => setShowProjectModal(false)}>Cancel</Button>
             <Button 
               onClick={handleSaveProject}
               className="text-white"
