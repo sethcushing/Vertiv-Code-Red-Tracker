@@ -117,18 +117,18 @@ const Layout = ({ children }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-56 min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 px-5 py-3 sticky top-0 z-40">
-          <div className="flex items-center justify-between">
+      <main className="ml-56 min-h-screen">
+        {/* Header - Glassmorphism */}
+        <header className="sticky top-0 z-40 mx-4 mt-4 rounded-2xl shadow-glass" style={{ background: 'rgba(255,255,255,0.8)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.6)' }}>
+          <div className="px-5 py-4 flex items-center justify-between">
             <div>
               {/* Breadcrumbs */}
-              <nav className="flex items-center gap-1 text-xs text-gray-500 mb-0.5 font-lato-light">
+              <nav className="flex items-center gap-1 text-xs text-gray-500 mb-0.5 font-light">
                 {getBreadcrumbs().map((crumb, index, arr) => (
                   <React.Fragment key={crumb.href}>
                     <Link 
                       to={crumb.href}
-                      className={index === arr.length - 1 ? 'text-gray-900 font-lato-regular' : 'hover:text-gray-700'}
+                      className={index === arr.length - 1 ? 'text-gray-900 font-medium' : 'hover:text-gray-700'}
                     >
                       {crumb.name}
                     </Link>
@@ -138,7 +138,7 @@ const Layout = ({ children }) => {
                   </React.Fragment>
                 ))}
               </nav>
-              <h1 className="text-xl font-heading font-bold text-gray-900 uppercase tracking-tight">
+              <h1 className="text-xl font-bold text-gray-900 uppercase tracking-tight">
                 {getPageTitle()}
               </h1>
             </div>
@@ -146,7 +146,7 @@ const Layout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <div className="p-5">
+        <div className="p-4">
           {children}
         </div>
       </main>
