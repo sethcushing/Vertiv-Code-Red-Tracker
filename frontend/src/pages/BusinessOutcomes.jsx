@@ -339,20 +339,20 @@ const BusinessOutcomes = () => {
 
   return (
     <div className="space-y-6" data-testid="business-outcomes-page">
-      {/* Draft Notice Banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
-        <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Activity className="w-5 h-5 text-amber-600" />
+      {/* Draft Notice Banner - Glassmorphism */}
+      <div className="rounded-2xl p-4 flex items-center gap-4 shadow-glass" style={{ background: 'rgba(254,243,199,0.8)', backdropFilter: 'blur(12px)', border: '1px solid rgba(251,191,36,0.3)' }}>
+        <div className="w-12 h-12 bg-amber-400/20 rounded-xl flex items-center justify-center flex-shrink-0">
+          <Activity className="w-6 h-6 text-amber-600" />
         </div>
         <div>
-          <h3 className="font-semibold text-amber-800 text-sm">Draft Mode</h3>
+          <h3 className="font-bold text-amber-800 text-sm">Draft Mode</h3>
           <p className="text-amber-700 text-sm">This section is currently in draft. Updates coming soon.</p>
         </div>
       </div>
 
       {/* Header */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500 font-lato-light">
+        <p className="text-sm text-gray-500">
           Business outcome categories with KPI tracking
         </p>
         {isAdmin && (
@@ -360,7 +360,7 @@ const BusinessOutcomes = () => {
             onClick={handleAddCategory}
             data-testid="add-category-btn"
             size="sm"
-            className="text-white rounded-lg font-lato-bold text-xs"
+            className="text-white rounded-xl font-semibold text-xs shadow-lg shadow-[#FE5B1B]/25 hover:shadow-xl hover:shadow-[#FE5B1B]/30 transition-all"
             style={{ background: 'linear-gradient(135deg, #FE5B1B 0%, #E0480E 100%)' }}
           >
             <Plus className="w-3 h-3 mr-1" />
@@ -378,14 +378,15 @@ const BusinessOutcomes = () => {
           return (
             <Card 
               key={category.id} 
-              className={`border-0 shadow-md rounded-xl overflow-hidden`}
+              className="border-0 rounded-2xl overflow-hidden shadow-glass hover:shadow-glass-lg transition-all duration-300 hover:-translate-y-1"
+              style={{ background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(16px)' }}
               data-testid={`category-card-${category.id}`}
             >
               {/* Category Header */}
               <div className={`${colorScheme.bg} p-4 text-white`}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="font-heading font-bold text-lg uppercase tracking-wide">
+                    <h3 className="font-bold text-lg uppercase tracking-wide">
                       {category.name}
                     </h3>
                     {category.description && (
