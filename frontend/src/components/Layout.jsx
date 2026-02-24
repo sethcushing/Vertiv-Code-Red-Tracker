@@ -119,9 +119,9 @@ const Layout = ({ children }) => {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-56 min-h-screen">
+      <main className="ml-56 min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
         {/* Header */}
-        <header className="bg-white border-b border-gray-200 px-5 py-3">
+        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 px-5 py-3 sticky top-0 z-40">
           <div className="flex items-center justify-between">
             <div>
               {/* Breadcrumbs */}
