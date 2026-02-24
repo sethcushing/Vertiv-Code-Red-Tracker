@@ -40,21 +40,21 @@ import {
 const STATUS_CONFIG = {
   'Not Started': { 
     icon: Pause, 
-    headerBg: 'bg-slate-600',
-    columnBg: 'bg-slate-50',
-    accent: 'border-slate-300',
+    headerGradient: 'linear-gradient(135deg, #64748b 0%, #475569 100%)',
+    columnBg: 'rgba(248, 250, 252, 0.7)',
+    lightColor: 'rgba(100, 116, 139, 0.1)',
   },
   'Discovery': { 
     icon: Search, 
-    headerBg: 'bg-blue-600',
-    columnBg: 'bg-blue-50/50',
-    accent: 'border-blue-300',
+    headerGradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    columnBg: 'rgba(239, 246, 255, 0.7)',
+    lightColor: 'rgba(59, 130, 246, 0.1)',
   },
   'Frame': { 
     icon: Clock, 
-    headerBg: 'bg-violet-600',
-    columnBg: 'bg-violet-50/50',
-    accent: 'border-violet-300',
+    headerGradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+    columnBg: 'rgba(245, 243, 255, 0.7)',
+    lightColor: 'rgba(139, 92, 246, 0.1)',
   },
   'Work In Progress': { 
     icon: PlayCircle, 
