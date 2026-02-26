@@ -18,12 +18,41 @@ router = APIRouter(tags=["Strategic Initiatives & Projects"])
 
 # Database reference - will be set by server.py
 db = None
+# Collection reference - will be determined dynamically
+_initiatives_collection = None
 
 
 def set_database(database):
     """Set the database reference from server.py"""
     global db
     db = database
+
+
+async def get_initiatives_collection():
+    """Get the initiatives collection, handling both possible collection names"""
+    global _initiatives_collection
+    if _initiatives_collection is not None:
+        return _initiatives_collection
+    
+    collections = await db.list_collection_names()
+    
+    # Check for data in strategic_initiatives first (preferred)
+    if "strategic_initiatives" in collections:
+        count = await db.strategic_initiatives.count_documents({})
+        if count > 0:
+            _initiatives_collection = db.strategic_initiatives
+            return _initiatives_collection
+    
+    # Fall back to initiatives collection
+    if "initiatives" in collections:
+        count = await db.initiatives.count_documents({})
+        if count > 0:
+            _initiatives_collection = db.initiatives
+            return _initiatives_collection
+    
+    # Default to strategic_initiatives
+    _initiatives_collection = db.strategic_initiatives
+    return _initiatives_collection
 
 
 # ==================== DEBUG ENDPOINT ====================
