@@ -73,17 +73,17 @@ api_router.include_router(config.router)
 # Root endpoint
 @api_router.get("/")
 async def root():
-    return {"message": "Code Red Initiatives API", "version": "4.2.0", "seed_disabled": True}
+    return {"message": "Code Red Initiatives API", "version": "4.2.1", "seed_disabled": True}
 
 # Health check endpoint (for Kubernetes/Koyeb liveness/readiness probes)
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "version": "4.2.0"}
+    return {"status": "healthy", "version": "4.2.1"}
 
 # Version endpoint for deployment verification
 @api_router.get("/version")
 async def get_version():
-    return {"version": "4.2.0", "db_name": db_name}
+    return {"version": "4.2.1", "db_name": db_name}
 
 # Include main router
 app.include_router(api_router)
