@@ -1,0 +1,2474 @@
+{
+  "sub_outcomes": [
+    {
+      "id": "f6b3c11c-edb4-4125-9d90-6216d1598180",
+      "name": "Data and Order Integrity",
+      "description": "Ensuring accurate data flow from quote to production",
+      "category_id": "4a845291-80bc-490a-b8cc-8e360a32824a",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "fdbd19a2-f4fe-4a30-a78f-2b5be6b7814d",
+      "name": "Material Readiness",
+      "description": "Material availability and planning accuracy",
+      "category_id": "4a845291-80bc-490a-b8cc-8e360a32824a",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "4c43dc48-f462-4156-8220-ca6aa5ce26d6",
+      "name": "Planning Stability",
+      "description": "Production schedule stability and adherence",
+      "category_id": "4a845291-80bc-490a-b8cc-8e360a32824a",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "7fd86edc-fd3b-432a-999e-d1b948fd9a19",
+      "name": "Design Quality",
+      "description": "First-pass quality of engineering designs",
+      "category_id": "70fe8eca-571d-4319-a82d-b03df65d4c1a",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "f8339fab-9799-4bf1-9b3d-18f371dad229",
+      "name": "Manufacturing Quality",
+      "description": "Production quality and defect rates",
+      "category_id": "70fe8eca-571d-4319-a82d-b03df65d4c1a",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "d0ac9f2c-2bdb-4f9a-8822-1b63bdfca371",
+      "name": "Production Throughput",
+      "description": "Manufacturing capacity and output",
+      "category_id": "6947e6c5-61cf-4445-8d1f-aa8aab04fd5e",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "1d1c1eed-6607-4a11-8c48-3d53e3d2ab00",
+      "name": "On-Time Delivery",
+      "description": "Customer delivery performance",
+      "category_id": "6947e6c5-61cf-4445-8d1f-aa8aab04fd5e",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    }
+  ],
+  "kpis": [
+    {
+      "id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "name": "Quote Cycle Time",
+      "description": "Days from quote request to quote delivery",
+      "sub_outcome_id": "f6b3c11c-edb4-4125-9d90-6216d1598180",
+      "current_value": 14,
+      "target_value": 5,
+      "baseline_value": 21,
+      "unit": "days",
+      "direction": "decrease",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "6b109483-be59-4695-9479-5595de4301e9",
+      "name": "Clean Order Entry Rate",
+      "description": "Percentage of orders entered correctly first time",
+      "sub_outcome_id": "f6b3c11c-edb4-4125-9d90-6216d1598180",
+      "current_value": 78,
+      "target_value": 95,
+      "baseline_value": 65,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "name": "Tech Spec Lead Time",
+      "description": "Days to complete technical specification",
+      "sub_outcome_id": "f6b3c11c-edb4-4125-9d90-6216d1598180",
+      "current_value": 8,
+      "target_value": 3,
+      "baseline_value": 12,
+      "unit": "days",
+      "direction": "decrease",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "name": "BOM Release Lead Time",
+      "description": "Days from order to BOM release",
+      "sub_outcome_id": "fdbd19a2-f4fe-4a30-a78f-2b5be6b7814d",
+      "current_value": 5,
+      "target_value": 2,
+      "baseline_value": 8,
+      "unit": "days",
+      "direction": "decrease",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "name": "BOM Release Schedule Attainment",
+      "description": "Percentage of BOMs released on schedule",
+      "sub_outcome_id": "fdbd19a2-f4fe-4a30-a78f-2b5be6b7814d",
+      "current_value": 82,
+      "target_value": 95,
+      "baseline_value": 70,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "name": "Schedule Attainment",
+      "description": "Did we build what we planned?",
+      "sub_outcome_id": "4c43dc48-f462-4156-8220-ca6aa5ce26d6",
+      "current_value": 85,
+      "target_value": 95,
+      "baseline_value": 75,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "name": "Promise Date Stability",
+      "description": "Percentage of dates never moved",
+      "sub_outcome_id": "4c43dc48-f462-4156-8220-ca6aa5ce26d6",
+      "current_value": 70,
+      "target_value": 90,
+      "baseline_value": 55,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "name": "Design FPY",
+      "description": "First Pass Yield on engineering designs",
+      "sub_outcome_id": "7fd86edc-fd3b-432a-999e-d1b948fd9a19",
+      "current_value": 72,
+      "target_value": 95,
+      "baseline_value": 60,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "name": "Production FPY",
+      "description": "First Pass Yield in manufacturing",
+      "sub_outcome_id": "f8339fab-9799-4bf1-9b3d-18f371dad229",
+      "current_value": 88,
+      "target_value": 98,
+      "baseline_value": 82,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "name": "Lead Time Variability",
+      "description": "Standard deviation in lead times",
+      "sub_outcome_id": "d0ac9f2c-2bdb-4f9a-8822-1b63bdfca371",
+      "current_value": 4.2,
+      "target_value": 1.5,
+      "baseline_value": 6.8,
+      "unit": "days",
+      "direction": "decrease",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "name": "On-Time Delivery Rate",
+      "description": "Percentage delivered by promise date",
+      "sub_outcome_id": "1d1c1eed-6607-4a11-8c48-3d53e3d2ab00",
+      "current_value": 87,
+      "target_value": 98,
+      "baseline_value": 78,
+      "unit": "%",
+      "direction": "increase",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "42f25867-602b-4fe7-8634-65dbde3f7d3b",
+      "entity_type": "initiative",
+      "entity_id": "2d65283e-b88f-4e27-bcf5-15ee3481cd56",
+      "entity_name": "Quote-to-Order Cycle Time Reduction",
+      "action": "updated",
+      "user_email": "demo@vertiv.com",
+      "user_name": "Demo Executive",
+      "timestamp": "2026-02-10T17:27:47.347241+00:00",
+      "changes": [
+        {
+          "field": "name",
+          "old_value": "Quote-to-Order Cycle Time Reduction",
+          "new_value": null
+        },
+        {
+          "field": "description",
+          "old_value": "Critical initiative to reduce quote-to-order cycle time from 14 days to 5 days. Current delays in pricing approvals and solution design handoffs are causing customer frustration and lost deals.",
+          "new_value": null
+        },
+        {
+          "field": "status",
+          "old_value": "Work In Progress",
+          "new_value": "Discovery"
+        },
+        {
+          "field": "bucket",
+          "old_value": "Modernization",
+          "new_value": null
+        },
+        {
+          "field": "lifecycle_stage",
+          "old_value": "Quote / Sales Ops / Approval",
+          "new_value": null
+        },
+        {
+          "field": "initiative_owner",
+          "old_value": "Sarah Johnson",
+          "new_value": null
+        },
+        {
+          "field": "metric_ids",
+          "old_value": "['e1ea0167-3b89-49f7-ab9f-7ac47a575c43', '984a94b2-7532-4ed4-9f5c-5a8800b321e4']",
+          "new_value": null
+        }
+      ]
+    },
+    {
+      "id": "9f2ec032-889f-4e65-9cea-d38c0a447c2a",
+      "entity_type": "strategic_initiative",
+      "entity_id": "f4616257-e707-40d6-9f3d-22a8b2f678d0",
+      "entity_name": "TEST_New Initiative",
+      "action": "created",
+      "user_email": "demo@vertiv.com",
+      "user_name": "Demo Executive",
+      "timestamp": "2026-02-10T18:10:48.036834+00:00",
+      "changes": []
+    },
+    {
+      "id": "474e3bc6-e06e-4f21-bb86-9f952b23db9a",
+      "entity_type": "strategic_initiative",
+      "entity_id": "f4616257-e707-40d6-9f3d-22a8b2f678d0",
+      "entity_name": "TEST_New Initiative",
+      "action": "deleted",
+      "user_email": "demo@vertiv.com",
+      "user_name": "Demo Executive",
+      "timestamp": "2026-02-10T18:10:48.090566+00:00",
+      "changes": []
+    }
+  ],
+  "initiatives": [
+    {
+      "name": "Quote-to-Order Cycle Time Reduction",
+      "description": "Critical initiative to reduce quote-to-order cycle time from 14 days to 5 days. Current delays in pricing approvals and solution design handoffs are causing customer frustration and lost deals.",
+      "bucket": "Modernization",
+      "business_domain": "Sales",
+      "lifecycle_stage": "Quote / Sales Ops / Approval",
+      "executive_sponsor": "Michael Chen",
+      "initiative_owner": "Sarah Johnson",
+      "owning_team": "Sales",
+      "supporting_teams": [
+        "IT",
+        "Finance",
+        "Engineering"
+      ],
+      "status": "Work In Progress",
+      "start_date": "2024-01-15",
+      "target_end_date": "2024-06-30",
+      "metric_ids": [
+        "bcab27a3-8237-484e-adf3-13a2e7934771",
+        "f8c5f96b-8c38-49f1-ae02-9820f1a649f8"
+      ],
+      "milestones": [
+        {
+          "id": "39af8827-961d-41cf-8db4-ffbe41063de1",
+          "name": "Process Bottleneck Analysis",
+          "description": "Map current quote workflow and identify top 5 delay points",
+          "owner": "Sarah Johnson",
+          "due_date": "2024-02-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "eaf1d680-bea2-4355-8705-d858b1907f53",
+          "name": "Pricing Matrix Simplification",
+          "description": "Reduce pricing tiers from 47 to 12 standard configurations",
+          "owner": "Tom Wilson",
+          "due_date": "2024-03-30",
+          "status": "Delayed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "High"
+        },
+        {
+          "id": "e1f43062-3846-4b82-a2f9-88f6b8376324",
+          "name": "Approval Workflow Automation",
+          "description": "Implement auto-approval for quotes under $100K with standard configs",
+          "owner": "Lisa Park",
+          "due_date": "2024-05-15",
+          "status": "Pending",
+          "dependency_indicator": "Pricing Matrix Simplification",
+          "ai_risk_signal": "Medium"
+        },
+        {
+          "id": "f10e54cc-a332-4e99-95bc-45738a15f9a9",
+          "name": "Sales Team Enablement",
+          "description": "Train 200+ sales reps on new quoting process",
+          "owner": "James Miller",
+          "due_date": "2024-06-30",
+          "status": "Pending",
+          "dependency_indicator": "Approval Workflow Automation",
+          "ai_risk_signal": "Medium"
+        }
+      ],
+      "risks": [
+        {
+          "id": "28bde1b1-d373-4107-8ad1-4aa8ff7e1e53",
+          "description": "Finance team resistance to delegated approval authority - concerns about margin protection",
+          "risk_type": "Operational",
+          "impact": "High",
+          "likelihood": "High",
+          "mitigation_plan": "Executive alignment meeting scheduled; proposing margin guardrails in system",
+          "risk_owner": "Sarah Johnson",
+          "escalation_flag": true
+        },
+        {
+          "id": "ff6bd899-0d6d-4cb5-b43e-682cf467138e",
+          "description": "Legacy CPQ system cannot support new workflow without major upgrade",
+          "risk_type": "Delivery",
+          "impact": "High",
+          "likelihood": "Medium",
+          "mitigation_plan": "Evaluating interim manual workaround while planning system upgrade",
+          "risk_owner": "Lisa Park",
+          "escalation_flag": true
+        }
+      ],
+      "financial": {
+        "approved_budget": 850000,
+        "forecasted_spend": 920000,
+        "actual_spend": 340000,
+        "variance": -580000,
+        "financial_risk_indicator": "Medium",
+        "roi_hypothesis": "Each day reduced in cycle time = $2.3M additional annual revenue capture"
+      },
+      "team_members": [
+        {
+          "id": "7b7e0727-8313-42ab-bf84-468bcec4d7cc",
+          "name": "Sarah Johnson",
+          "role": "Initiative Owner",
+          "team": "Sales",
+          "allocation_percent": 100
+        },
+        {
+          "id": "8acb5502-9914-49e8-94f9-1246a9313f1f",
+          "name": "Tom Wilson",
+          "role": "Pricing Lead",
+          "team": "Finance",
+          "allocation_percent": 60
+        },
+        {
+          "id": "4665ec74-9d40-4a9b-af19-6a86fa37c5f4",
+          "name": "Lisa Park",
+          "role": "Systems Lead",
+          "team": "IT",
+          "allocation_percent": 80
+        }
+      ],
+      "id": "b44845b7-a0f6-4248-a462-384eb8d3e8d3",
+      "confidence_score": 32,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Customer Request Intake Portal",
+      "description": "Unified digital portal for customer solution requests replacing email/phone intake. Will standardize requirements capture and auto-route to appropriate solution design teams.",
+      "bucket": "Modernization",
+      "business_domain": "Sales",
+      "lifecycle_stage": "Request",
+      "executive_sponsor": "Amanda Foster",
+      "initiative_owner": "David Kim",
+      "owning_team": "IT",
+      "supporting_teams": [
+        "Sales",
+        "Engineering"
+      ],
+      "status": "Work In Progress",
+      "start_date": "2024-02-01",
+      "target_end_date": "2024-08-31",
+      "metric_ids": [
+        "f8c5f96b-8c38-49f1-ae02-9820f1a649f8",
+        "bcab27a3-8237-484e-adf3-13a2e7934771"
+      ],
+      "milestones": [
+        {
+          "id": "84786026-7b59-469f-b3f8-5a0cb1d947b6",
+          "name": "Requirements Documentation",
+          "description": "Document intake requirements across all product lines",
+          "owner": "David Kim",
+          "due_date": "2024-03-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "87d35b8e-e2b7-4525-8eb6-d1de72545c53",
+          "name": "Portal UX Design",
+          "description": "Complete customer-facing portal design and testing",
+          "owner": "Rachel Green",
+          "due_date": "2024-04-30",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "9b8f4c40-8f12-4fec-8018-9018e85d8063",
+          "name": "Integration Development",
+          "description": "Connect portal to CRM and solution design workflow",
+          "owner": "Dev Team",
+          "due_date": "2024-06-30",
+          "status": "In Progress",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Medium"
+        },
+        {
+          "id": "941fdca5-9976-4a4d-929b-ac8a08ee0a47",
+          "name": "Customer Pilot Launch",
+          "description": "Launch with 20 strategic accounts for feedback",
+          "owner": "David Kim",
+          "due_date": "2024-08-31",
+          "status": "Pending",
+          "dependency_indicator": "Integration Development",
+          "ai_risk_signal": "Low"
+        }
+      ],
+      "risks": [
+        {
+          "id": "b69b917d-46f4-440c-ba54-645c2d8d725f",
+          "description": "Customer adoption may be slow - some prefer existing relationship-based intake",
+          "risk_type": "Operational",
+          "impact": "Medium",
+          "likelihood": "Medium",
+          "mitigation_plan": "Designing hybrid model that preserves rep relationships while adding digital option",
+          "risk_owner": "David Kim",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 620000,
+        "forecasted_spend": 590000,
+        "actual_spend": 280000,
+        "variance": -310000,
+        "financial_risk_indicator": "Low",
+        "roi_hypothesis": "40% reduction in request-to-acknowledgment time; improved requirements accuracy"
+      },
+      "team_members": [
+        {
+          "id": "95a30f4b-59db-4471-a0b2-71eee5fdde7a",
+          "name": "David Kim",
+          "role": "Initiative Owner",
+          "team": "IT",
+          "allocation_percent": 100
+        },
+        {
+          "id": "127af80f-32f6-48f8-8c91-955a7a3a73e7",
+          "name": "Rachel Green",
+          "role": "UX Lead",
+          "team": "IT",
+          "allocation_percent": 70
+        }
+      ],
+      "id": "ff4d0c79-5708-413d-b38a-65b568c9902d",
+      "confidence_score": 88,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Solution Design Handoff Standardization",
+      "description": "Critical fix for breakdowns between Sales and Engineering during solution design. 34% of deals require re-work due to incomplete or misunderstood requirements at handoff.",
+      "bucket": "Stabilization",
+      "business_domain": "Engineering",
+      "lifecycle_stage": "Solution Design",
+      "executive_sponsor": "Robert Hayes",
+      "initiative_owner": "Jennifer Martinez",
+      "owning_team": "Engineering",
+      "supporting_teams": [
+        "Sales",
+        "IT"
+      ],
+      "status": "Frame",
+      "start_date": "2024-01-10",
+      "target_end_date": "2024-05-31",
+      "metric_ids": [
+        "4e1e160c-f317-41de-bea4-7451c70f4de8",
+        "bcab27a3-8237-484e-adf3-13a2e7934771"
+      ],
+      "milestones": [
+        {
+          "id": "64e27b60-bc2f-41ee-8211-72d456ea4ff1",
+          "name": "Failure Mode Analysis",
+          "description": "Analyze 100 recent re-work cases to identify root causes",
+          "owner": "Jennifer Martinez",
+          "due_date": "2024-02-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "8c85a9ec-6abc-4f9a-8c44-5c9e6ad1e788",
+          "name": "Handoff Checklist Development",
+          "description": "Create standardized requirements checklist for each product family",
+          "owner": "Mark Thompson",
+          "due_date": "2024-03-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "896abf75-e0e0-423b-8412-a043ad9886f1",
+          "name": "Sales-Engineering Alignment Sessions",
+          "description": "Conduct joint training sessions in all regions",
+          "owner": "Sales Ops",
+          "due_date": "2024-04-30",
+          "status": "Delayed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "High"
+        },
+        {
+          "id": "25c2656f-9662-4d85-b8a3-cbe72afb75b3",
+          "name": "Process Compliance Tracking",
+          "description": "Implement tracking dashboard for handoff quality metrics",
+          "owner": "Jennifer Martinez",
+          "due_date": "2024-05-31",
+          "status": "Pending",
+          "dependency_indicator": "Sales-Engineering Alignment Sessions",
+          "ai_risk_signal": "High"
+        }
+      ],
+      "risks": [
+        {
+          "id": "1ee46b3b-ef62-450c-9464-7de90598b4d5",
+          "description": "Sales leadership not prioritizing training attendance - quota pressures",
+          "risk_type": "Operational",
+          "impact": "High",
+          "likelihood": "High",
+          "mitigation_plan": "Escalating to CRO for mandate; proposing quota relief during training",
+          "risk_owner": "Jennifer Martinez",
+          "escalation_flag": true
+        },
+        {
+          "id": "420f949c-7e28-470b-8500-611f4849720d",
+          "description": "Regional variations in solution complexity making single checklist insufficient",
+          "risk_type": "Delivery",
+          "impact": "Medium",
+          "likelihood": "Medium",
+          "mitigation_plan": "Creating region-specific addendums to core checklist",
+          "risk_owner": "Mark Thompson",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 380000,
+        "forecasted_spend": 450000,
+        "actual_spend": 290000,
+        "variance": -160000,
+        "financial_risk_indicator": "Medium",
+        "roi_hypothesis": "Eliminating re-work saves $4.2M annually in engineering hours and accelerates delivery by 8 days"
+      },
+      "team_members": [
+        {
+          "id": "4f6e702f-79a0-44c1-8438-92a61138c654",
+          "name": "Jennifer Martinez",
+          "role": "Initiative Owner",
+          "team": "Engineering",
+          "allocation_percent": 100
+        },
+        {
+          "id": "b016fea5-32b4-40e2-a6be-3b1d34988966",
+          "name": "Mark Thompson",
+          "role": "Process Lead",
+          "team": "Engineering",
+          "allocation_percent": 80
+        }
+      ],
+      "id": "c27f41f1-39f2-48eb-a0e4-dab4c215989e",
+      "confidence_score": 38,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Commercial Pricing Engine Upgrade",
+      "description": "Replace legacy pricing spreadsheets with automated pricing engine that enforces margin floors, applies volume discounts, and generates audit-ready documentation.",
+      "bucket": "Modernization",
+      "business_domain": "Finance",
+      "lifecycle_stage": "Commercials & Pricing",
+      "executive_sponsor": "Patricia Wong",
+      "initiative_owner": "Alex Rivera",
+      "owning_team": "Finance",
+      "supporting_teams": [
+        "IT",
+        "Sales"
+      ],
+      "status": "Work In Progress",
+      "start_date": "2024-02-15",
+      "target_end_date": "2024-09-30",
+      "metric_ids": [
+        "bcab27a3-8237-484e-adf3-13a2e7934771",
+        "85855260-bf44-4ff1-9e0f-461f2660738e"
+      ],
+      "milestones": [
+        {
+          "id": "5561ab5b-c6ca-4dab-a0f0-6deca3926f8f",
+          "name": "Pricing Logic Documentation",
+          "description": "Document all pricing rules, exceptions, and approval thresholds",
+          "owner": "Alex Rivera",
+          "due_date": "2024-03-30",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "dd533670-7f33-4348-9ee9-23d949c084e4",
+          "name": "Vendor Selection",
+          "description": "Select and contract with pricing software vendor",
+          "owner": "IT Procurement",
+          "due_date": "2024-05-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "8b0f6721-2e3e-44f9-83ff-b1652c67cdac",
+          "name": "System Configuration",
+          "description": "Configure pricing rules and integrate with CRM/ERP",
+          "owner": "Alex Rivera",
+          "due_date": "2024-07-31",
+          "status": "In Progress",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Medium"
+        },
+        {
+          "id": "0464d172-944c-4acf-81f4-9514780f0aea",
+          "name": "Parallel Run & Validation",
+          "description": "Run parallel with legacy system for 60 days",
+          "owner": "Finance Team",
+          "due_date": "2024-09-30",
+          "status": "Pending",
+          "dependency_indicator": "System Configuration",
+          "ai_risk_signal": "Low"
+        }
+      ],
+      "risks": [
+        {
+          "id": "87554a7c-8c63-403b-83e6-035c63b82dae",
+          "description": "Complex regional pricing variations may require extensive customization",
+          "risk_type": "Delivery",
+          "impact": "Medium",
+          "likelihood": "Medium",
+          "mitigation_plan": "Phasing rollout by region; starting with North America",
+          "risk_owner": "Alex Rivera",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 1100000,
+        "forecasted_spend": 1050000,
+        "actual_spend": 420000,
+        "variance": -630000,
+        "financial_risk_indicator": "Low",
+        "roi_hypothesis": "2% margin improvement from consistent pricing discipline = $8M annual impact"
+      },
+      "team_members": [
+        {
+          "id": "e85206b9-cc7c-483d-8b6f-3f8f9b2e11c1",
+          "name": "Alex Rivera",
+          "role": "Initiative Owner",
+          "team": "Finance",
+          "allocation_percent": 100
+        }
+      ],
+      "id": "561bcbc3-a777-4d1d-8f30-fbbf46fa110f",
+      "confidence_score": 90,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Order Capture Error Reduction",
+      "description": "Address 12% order entry error rate causing fulfillment delays and customer complaints. Implementing validation rules, guided entry, and real-time inventory checks.",
+      "bucket": "Stabilization",
+      "business_domain": "Sales",
+      "lifecycle_stage": "Order Capture",
+      "executive_sponsor": "William Chang",
+      "initiative_owner": "Nicole Brown",
+      "owning_team": "Sales",
+      "supporting_teams": [
+        "IT",
+        "Operations"
+      ],
+      "status": "Work In Progress",
+      "start_date": "2024-03-01",
+      "target_end_date": "2024-07-31",
+      "metric_ids": [
+        "1c4373f0-a2d9-43a3-b0d8-d1971aa2a9dd",
+        "48e3014f-b0e5-45bd-9c2f-274e41209a9e"
+      ],
+      "milestones": [
+        {
+          "id": "562c4896-a552-4bd4-ba1c-544ac6621fa5",
+          "name": "Error Pattern Analysis",
+          "description": "Categorize errors by type, frequency, and root cause",
+          "owner": "Nicole Brown",
+          "due_date": "2024-03-31",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "8d25fbd0-1e1b-4823-bfd3-46b6c3f8ebf5",
+          "name": "Validation Rule Design",
+          "description": "Design field-level validation rules for top 10 error types",
+          "owner": "IT Team",
+          "due_date": "2024-05-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "4f1cdcf5-3c9c-42a8-9aac-f8ed2408bdbd",
+          "name": "System Implementation",
+          "description": "Deploy validation rules to order entry system",
+          "owner": "IT Team",
+          "due_date": "2024-06-30",
+          "status": "In Progress",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Medium"
+        },
+        {
+          "id": "3458e483-3449-4de3-9918-f5e68505edf2",
+          "name": "Training & Go-Live",
+          "description": "Train order entry team and monitor error rates",
+          "owner": "Nicole Brown",
+          "due_date": "2024-07-31",
+          "status": "Pending",
+          "dependency_indicator": "System Implementation",
+          "ai_risk_signal": "Low"
+        }
+      ],
+      "risks": [
+        {
+          "id": "1efa775b-e485-4c08-943b-4f4fbed258a3",
+          "description": "Validation rules may slow order entry, impacting throughput",
+          "risk_type": "Operational",
+          "impact": "Medium",
+          "likelihood": "Low",
+          "mitigation_plan": "Implementing smart defaults and auto-fill to offset validation time",
+          "risk_owner": "Nicole Brown",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 420000,
+        "forecasted_spend": 400000,
+        "actual_spend": 185000,
+        "variance": -215000,
+        "financial_risk_indicator": "Low",
+        "roi_hypothesis": "Reducing errors from 12% to 3% saves $1.8M in re-work and expedite costs"
+      },
+      "team_members": [
+        {
+          "id": "1e104855-53d2-4231-9c27-21b448747cfe",
+          "name": "Nicole Brown",
+          "role": "Initiative Owner",
+          "team": "Sales",
+          "allocation_percent": 80
+        }
+      ],
+      "id": "cd0fb614-83ef-48b6-a03c-a6bc09752135",
+      "confidence_score": 88,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Real-Time Inventory Visibility for Sales",
+      "description": "Provide sales team with real-time ATP (Available-to-Promise) data during quoting to eliminate over-commits and improve delivery date accuracy.",
+      "bucket": "Stabilization",
+      "business_domain": "Sales",
+      "lifecycle_stage": "Availability",
+      "executive_sponsor": "Emily Watson",
+      "initiative_owner": "Chris Anderson",
+      "owning_team": "IT",
+      "supporting_teams": [
+        "Sales",
+        "Supply Chain"
+      ],
+      "status": "Discovery",
+      "start_date": "2024-02-01",
+      "target_end_date": "2024-06-30",
+      "metric_ids": [
+        "48e3014f-b0e5-45bd-9c2f-274e41209a9e",
+        "f8c5f96b-8c38-49f1-ae02-9820f1a649f8"
+      ],
+      "milestones": [
+        {
+          "id": "e84ebf3c-7487-42b7-8a72-d556556cac62",
+          "name": "Data Source Mapping",
+          "description": "Identify all inventory data sources and refresh frequencies",
+          "owner": "Chris Anderson",
+          "due_date": "2024-03-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "77144b6e-20b3-4922-8536-1a71d4c5fcf1",
+          "name": "API Development",
+          "description": "Build real-time inventory API for CPQ integration",
+          "owner": "IT Team",
+          "due_date": "2024-04-30",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "b4618d79-5c53-4dcf-824d-16c2dceb7bf9",
+          "name": "CPQ Integration",
+          "description": "Integrate ATP data into quoting workflow",
+          "owner": "Chris Anderson",
+          "due_date": "2024-05-31",
+          "status": "Delayed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "High"
+        },
+        {
+          "id": "82dcfa3b-09aa-40bb-980b-3bcff400e8a7",
+          "name": "Sales Enablement",
+          "description": "Train sales on using ATP data in customer conversations",
+          "owner": "Sales Ops",
+          "due_date": "2024-06-30",
+          "status": "Pending",
+          "dependency_indicator": "CPQ Integration",
+          "ai_risk_signal": "Medium"
+        }
+      ],
+      "risks": [
+        {
+          "id": "a675a141-b827-4d06-ac6b-3963c1478432",
+          "description": "Legacy ERP refresh latency causing stale inventory data in CPQ",
+          "risk_type": "Data",
+          "impact": "High",
+          "likelihood": "Medium",
+          "mitigation_plan": "Implementing change data capture for near-real-time sync",
+          "risk_owner": "Chris Anderson",
+          "escalation_flag": false
+        },
+        {
+          "id": "0d8b9206-e232-4331-896a-3fcce8d1788e",
+          "description": "Multiple warehouse systems with inconsistent data formats",
+          "risk_type": "Data",
+          "impact": "Medium",
+          "likelihood": "High",
+          "mitigation_plan": "Building normalization layer in integration middleware",
+          "risk_owner": "IT Team",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 580000,
+        "forecasted_spend": 650000,
+        "actual_spend": 380000,
+        "variance": -270000,
+        "financial_risk_indicator": "Medium",
+        "roi_hypothesis": "Accurate ATP reduces expedite costs by $2.1M and improves customer satisfaction scores"
+      },
+      "team_members": [
+        {
+          "id": "d1548f37-4fe5-4506-b78c-336fb38fcfe3",
+          "name": "Chris Anderson",
+          "role": "Initiative Owner",
+          "team": "IT",
+          "allocation_percent": 100
+        }
+      ],
+      "id": "903b7e04-6380-4db7-8d54-2dccdd8dce42",
+      "confidence_score": 28,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Order Fulfillment Status Dashboard",
+      "description": "Customer-facing and internal dashboard providing real-time order status from capture through delivery. Reduces status inquiry calls by enabling self-service tracking.",
+      "bucket": "Growth",
+      "business_domain": "Fulfillment",
+      "lifecycle_stage": "Fulfillment",
+      "executive_sponsor": "George Liu",
+      "initiative_owner": "Maria Santos",
+      "owning_team": "Operations",
+      "supporting_teams": [
+        "IT",
+        "Sales"
+      ],
+      "status": "Work In Progress",
+      "start_date": "2024-03-01",
+      "target_end_date": "2024-10-31",
+      "metric_ids": [
+        "f8c5f96b-8c38-49f1-ae02-9820f1a649f8",
+        "48e3014f-b0e5-45bd-9c2f-274e41209a9e"
+      ],
+      "milestones": [
+        {
+          "id": "449cf7e5-e17e-4039-8b9d-322cb7140e8d",
+          "name": "Status Milestone Definition",
+          "description": "Define standard order milestones across all product lines",
+          "owner": "Maria Santos",
+          "due_date": "2024-04-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "bb155522-fb57-4dee-a834-117f9f506ab3",
+          "name": "Internal Dashboard MVP",
+          "description": "Launch internal dashboard for customer service team",
+          "owner": "IT Team",
+          "due_date": "2024-06-30",
+          "status": "In Progress",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "5876681b-2403-4438-b8a4-1651a374eadc",
+          "name": "Customer Portal Development",
+          "description": "Build customer-facing order tracking portal",
+          "owner": "IT Team",
+          "due_date": "2024-08-31",
+          "status": "Pending",
+          "dependency_indicator": "Internal Dashboard MVP",
+          "ai_risk_signal": "Medium"
+        },
+        {
+          "id": "6a10f61c-0196-4dac-81a0-48e58c2b3949",
+          "name": "Customer Launch",
+          "description": "Roll out portal to all customers with training",
+          "owner": "Maria Santos",
+          "due_date": "2024-10-31",
+          "status": "Pending",
+          "dependency_indicator": "Customer Portal Development",
+          "ai_risk_signal": "Low"
+        }
+      ],
+      "risks": [
+        {
+          "id": "f2dd17ea-f0cb-445b-bec7-0491ce262e03",
+          "description": "Third-party logistics providers may not support real-time data feeds",
+          "risk_type": "Vendor",
+          "impact": "Medium",
+          "likelihood": "Medium",
+          "mitigation_plan": "Negotiating API access requirements in carrier contracts",
+          "risk_owner": "Maria Santos",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 720000,
+        "forecasted_spend": 680000,
+        "actual_spend": 190000,
+        "variance": -490000,
+        "financial_risk_indicator": "Low",
+        "roi_hypothesis": "30% reduction in status inquiry calls saves $1.2M in support costs; improved NPS"
+      },
+      "team_members": [
+        {
+          "id": "4a217372-8152-4f9d-82a3-3c7dea9df748",
+          "name": "Maria Santos",
+          "role": "Initiative Owner",
+          "team": "Operations",
+          "allocation_percent": 100
+        }
+      ],
+      "id": "be132b05-0142-44c3-a20e-d5d79d006e41",
+      "confidence_score": 88,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "name": "Post-Delivery Customer Feedback Loop",
+      "description": "Systematic capture of customer feedback at delivery completion to identify process improvements and drive continuous improvement in the sales-to-fulfillment journey.",
+      "bucket": "Growth",
+      "business_domain": "Sales",
+      "lifecycle_stage": "Post-Delivery / Support",
+      "executive_sponsor": "Karen Mitchell",
+      "initiative_owner": "Steven Lee",
+      "owning_team": "Sales",
+      "supporting_teams": [
+        "IT",
+        "Operations"
+      ],
+      "status": "Not Started",
+      "start_date": "2024-04-01",
+      "target_end_date": "2024-09-30",
+      "metric_ids": [
+        "f8c5f96b-8c38-49f1-ae02-9820f1a649f8"
+      ],
+      "milestones": [
+        {
+          "id": "bdd0eb60-637c-4417-aaa5-9f5546d05ac3",
+          "name": "Survey Design",
+          "description": "Design NPS and process satisfaction survey",
+          "owner": "Steven Lee",
+          "due_date": "2024-05-15",
+          "status": "Completed",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "ed1dd336-2ed0-4637-815e-058ab588cc2f",
+          "name": "Automation Setup",
+          "description": "Configure automated survey triggers post-delivery",
+          "owner": "IT Team",
+          "due_date": "2024-06-30",
+          "status": "In Progress",
+          "dependency_indicator": "",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "afc34671-30d4-42e9-a886-f0d4fb045171",
+          "name": "Feedback Dashboard",
+          "description": "Build executive dashboard for feedback insights",
+          "owner": "Data Team",
+          "due_date": "2024-08-15",
+          "status": "Pending",
+          "dependency_indicator": "Automation Setup",
+          "ai_risk_signal": "Low"
+        },
+        {
+          "id": "09ad1d6a-99d7-4dca-a0b1-2387945e827f",
+          "name": "Closed-Loop Process",
+          "description": "Implement process for acting on negative feedback",
+          "owner": "Steven Lee",
+          "due_date": "2024-09-30",
+          "status": "Pending",
+          "dependency_indicator": "Feedback Dashboard",
+          "ai_risk_signal": "Medium"
+        }
+      ],
+      "risks": [
+        {
+          "id": "b1d7ecc6-d9c8-4572-bf48-92f5cace5726",
+          "description": "Low customer response rates may limit data value",
+          "risk_type": "Operational",
+          "impact": "Low",
+          "likelihood": "Medium",
+          "mitigation_plan": "Designing brief survey with incentive program for completion",
+          "risk_owner": "Steven Lee",
+          "escalation_flag": false
+        }
+      ],
+      "financial": {
+        "approved_budget": 280000,
+        "forecasted_spend": 260000,
+        "actual_spend": 85000,
+        "variance": -175000,
+        "financial_risk_indicator": "Low",
+        "roi_hypothesis": "Data-driven process improvements projected to increase repeat purchase rate by 5%"
+      },
+      "team_members": [
+        {
+          "id": "89fc4283-03c2-45c9-a7e6-610cb61186cb",
+          "name": "Steven Lee",
+          "role": "Initiative Owner",
+          "team": "Sales",
+          "allocation_percent": 100
+        }
+      ],
+      "id": "d3593802-7e9e-49cc-ac43-157cd286b560",
+      "confidence_score": 78,
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    }
+  ],
+  "kpi_history": [
+    {
+      "id": "0f537963-33d1-4081-97a2-ceb0f65eecac",
+      "kpi_id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "value": 21,
+      "recorded_at": "2026-01-15T16:37:34.888286+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "dedc5afa-0407-4f76-86cc-fe6f2eb1b703",
+      "kpi_id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "value": 19,
+      "recorded_at": "2026-01-22T16:37:34.888819+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "cd49c36e-937e-4bf6-aed4-ce8c61a87e78",
+      "kpi_id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "value": 17,
+      "recorded_at": "2026-01-29T16:37:34.889263+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "6346eeb2-8cac-4245-b23c-9fb20af87c1f",
+      "kpi_id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "value": 15,
+      "recorded_at": "2026-02-05T16:37:34.889753+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "aac7c773-3a2b-4ed7-96ab-d5f71f8a2867",
+      "kpi_id": "3115f514-7e3e-455c-b3fa-2c11c524ceaa",
+      "value": 14,
+      "recorded_at": "2026-02-12T16:37:34.890265+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "9032da20-8926-48ac-8f9b-5af06cc685a0",
+      "kpi_id": "6b109483-be59-4695-9479-5595de4301e9",
+      "value": 65,
+      "recorded_at": "2026-01-15T16:37:34.891247+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "9e604524-1063-482c-8ad0-6d5c08efc3b9",
+      "kpi_id": "6b109483-be59-4695-9479-5595de4301e9",
+      "value": 68,
+      "recorded_at": "2026-01-22T16:37:34.891723+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "92d62830-35b6-41bb-bbc8-02f9ee180c9e",
+      "kpi_id": "6b109483-be59-4695-9479-5595de4301e9",
+      "value": 72,
+      "recorded_at": "2026-01-29T16:37:34.892183+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "d2e1501a-3f16-4b78-9868-3982ffd99395",
+      "kpi_id": "6b109483-be59-4695-9479-5595de4301e9",
+      "value": 75,
+      "recorded_at": "2026-02-05T16:37:34.892562+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "e1ecb282-bfbd-4c4b-a96f-9cd5978ac2da",
+      "kpi_id": "6b109483-be59-4695-9479-5595de4301e9",
+      "value": 78,
+      "recorded_at": "2026-02-12T16:37:34.893008+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "a076071e-6509-4b8c-8d23-f30cdc26d142",
+      "kpi_id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "value": 12,
+      "recorded_at": "2026-01-15T16:37:34.893764+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "067fd7ca-9471-42da-b907-08b90abea090",
+      "kpi_id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "value": 11,
+      "recorded_at": "2026-01-22T16:37:34.894229+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "6dd39fb2-f432-4c7a-94ac-7fba380b60fb",
+      "kpi_id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "value": 10,
+      "recorded_at": "2026-01-29T16:37:34.894632+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "0bab54c9-5f52-4f39-a754-d6f1a608c0cb",
+      "kpi_id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "value": 9,
+      "recorded_at": "2026-02-05T16:37:34.895062+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "c65806f6-f07f-451d-bfe8-ab2626813b34",
+      "kpi_id": "d7b51452-3da2-4d6f-88bc-878df0ba2a70",
+      "value": 8,
+      "recorded_at": "2026-02-12T16:37:34.895574+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "a33570d3-cb22-4163-9245-c3b735aee005",
+      "kpi_id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "value": 8,
+      "recorded_at": "2026-01-15T16:37:34.896421+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "f43b8582-df83-46cf-a5bf-18c580ea9460",
+      "kpi_id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "value": 7,
+      "recorded_at": "2026-01-22T16:37:34.896940+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "07e8da12-ee2d-4271-9931-9d668f5ff8ab",
+      "kpi_id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "value": 6,
+      "recorded_at": "2026-01-29T16:37:34.897419+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "ca5a34bc-1265-43ae-9d9f-9cbcb227f3ab",
+      "kpi_id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "value": 5.5,
+      "recorded_at": "2026-02-05T16:37:34.897882+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "6854eeec-eaac-4a14-ba92-ad3278c72ff5",
+      "kpi_id": "98000366-bf18-4d24-8d04-e1abd22bbd56",
+      "value": 5,
+      "recorded_at": "2026-02-12T16:37:34.898403+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "51117269-d628-4083-b56c-47754ce5d503",
+      "kpi_id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "value": 70,
+      "recorded_at": "2026-01-15T16:37:34.899352+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "ca2f1137-cbe9-46f6-ab84-fd82508b73c0",
+      "kpi_id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "value": 74,
+      "recorded_at": "2026-01-22T16:37:34.899804+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "8c6075e1-40fd-42ff-9e60-13c78138b102",
+      "kpi_id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "value": 77,
+      "recorded_at": "2026-01-29T16:37:34.900228+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "99650f86-5f5b-42f8-8a12-7302eae5951c",
+      "kpi_id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "value": 80,
+      "recorded_at": "2026-02-05T16:37:34.900676+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "c49ec870-45ac-479c-a693-68b4ea6ff110",
+      "kpi_id": "425d57ec-6c6d-4649-96a5-2c073518a190",
+      "value": 82,
+      "recorded_at": "2026-02-12T16:37:34.901088+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "2e5998b9-387a-435f-bbb5-3b94b67b2394",
+      "kpi_id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "value": 75,
+      "recorded_at": "2026-01-15T16:37:34.902039+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "ed41462f-90fb-4e00-a402-583260574691",
+      "kpi_id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "value": 78,
+      "recorded_at": "2026-01-22T16:37:34.902359+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "37757a4b-6a86-46ad-a578-9fd88ea7b5a3",
+      "kpi_id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "value": 81,
+      "recorded_at": "2026-01-29T16:37:34.902741+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "9664e08f-1488-4f5a-9e2d-8ec460cc1498",
+      "kpi_id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "value": 83,
+      "recorded_at": "2026-02-05T16:37:34.903234+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "808d3482-ba0a-443e-8f3e-5d3a22900df8",
+      "kpi_id": "4b58bb1a-9223-4a0d-a6a9-9a463a46c05a",
+      "value": 85,
+      "recorded_at": "2026-02-12T16:37:34.903667+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "47961670-0b82-4c36-a309-58562e2000ae",
+      "kpi_id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "value": 55,
+      "recorded_at": "2026-01-15T16:37:34.904507+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "39cf5312-c76f-4c89-88fd-11ec2e01b33c",
+      "kpi_id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "value": 60,
+      "recorded_at": "2026-01-22T16:37:34.904901+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "907c1e4d-13ea-4cfb-8ba5-3c4fc58e4c49",
+      "kpi_id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "value": 64,
+      "recorded_at": "2026-01-29T16:37:34.905268+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "c66c8314-8a89-4408-a750-bc550e5f8ed7",
+      "kpi_id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "value": 67,
+      "recorded_at": "2026-02-05T16:37:34.905604+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "cb4521b3-38c4-45f8-aa7f-2048d0c24841",
+      "kpi_id": "9fe13219-16d9-4387-af69-edb5a350f05e",
+      "value": 70,
+      "recorded_at": "2026-02-12T16:37:34.906040+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "e544be38-c883-46cf-aec1-814ac452981e",
+      "kpi_id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "value": 60,
+      "recorded_at": "2026-01-15T16:37:34.906803+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "ddc0b099-2f7e-49e1-8785-dbd24b15a88f",
+      "kpi_id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "value": 64,
+      "recorded_at": "2026-01-22T16:37:34.907254+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "918a994e-adf1-4c45-b073-8986d398bbde",
+      "kpi_id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "value": 67,
+      "recorded_at": "2026-01-29T16:37:34.907739+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "8df9c91a-3579-406d-a62b-1cfdf2639f39",
+      "kpi_id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "value": 70,
+      "recorded_at": "2026-02-05T16:37:34.908078+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "5249751f-7e4a-4e88-a0d7-d9cd4ede2ca8",
+      "kpi_id": "581427f1-1e76-4c58-9000-85df50cad7ce",
+      "value": 72,
+      "recorded_at": "2026-02-12T16:37:34.908466+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "93a0f864-1e7c-4d3d-a28a-2aaa1e854578",
+      "kpi_id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "value": 82,
+      "recorded_at": "2026-01-15T16:37:34.909386+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "6e0b31e1-936e-45df-b356-1bd6559f16f3",
+      "kpi_id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "value": 84,
+      "recorded_at": "2026-01-22T16:37:34.909816+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "93343ec0-2c7c-47a8-8775-92ae4112460f",
+      "kpi_id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "value": 86,
+      "recorded_at": "2026-01-29T16:37:34.910257+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "0b008774-ac97-4cac-8b59-67e57113c69d",
+      "kpi_id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "value": 87,
+      "recorded_at": "2026-02-05T16:37:34.910638+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "8f515f76-9e46-4444-95f9-bee41a252987",
+      "kpi_id": "cc2995e7-d3e1-44e7-baa4-b140c1f342cf",
+      "value": 88,
+      "recorded_at": "2026-02-12T16:37:34.911047+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "f617b826-72e5-4b22-8fcd-002298a3e62e",
+      "kpi_id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "value": 6.8,
+      "recorded_at": "2026-01-15T16:37:34.911760+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "26fe8e64-d43e-4fb3-8f9e-eaa414539c94",
+      "kpi_id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "value": 6.0,
+      "recorded_at": "2026-01-22T16:37:34.912088+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "8e606f9e-bef3-40a8-8740-2ff101bc8d3b",
+      "kpi_id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "value": 5.2,
+      "recorded_at": "2026-01-29T16:37:34.912528+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "afc2fccf-cedb-4e73-a6bc-6a76d827c85b",
+      "kpi_id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "value": 4.7,
+      "recorded_at": "2026-02-05T16:37:34.912961+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "e168910c-0aa0-45a8-8473-e9eb28593c4b",
+      "kpi_id": "d8e7e71f-ea2e-4e86-8e08-4a2e740cad11",
+      "value": 4.2,
+      "recorded_at": "2026-02-12T16:37:34.913385+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "86abe4e7-99a4-4a38-b4ae-2038e17cd33f",
+      "kpi_id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "value": 78,
+      "recorded_at": "2026-01-15T16:37:34.914239+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "ae91e039-ca7f-4f4f-bbbd-2928c08934ec",
+      "kpi_id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "value": 81,
+      "recorded_at": "2026-01-22T16:37:34.914677+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "fe6e52da-d97b-415a-96fa-efb16f660bd7",
+      "kpi_id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "value": 83,
+      "recorded_at": "2026-01-29T16:37:34.915162+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "a50d0566-d5a0-49fe-a51f-ecf4d7610a82",
+      "kpi_id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "value": 85,
+      "recorded_at": "2026-02-05T16:37:34.915612+00:00",
+      "recorded_by": "system"
+    },
+    {
+      "id": "4c35cd98-1f24-424a-a870-2e7d573cce25",
+      "kpi_id": "4ad0e2b8-5cb2-4ce9-ba29-d6dcf8b6fd34",
+      "value": 87,
+      "recorded_at": "2026-02-12T16:37:34.916169+00:00",
+      "recorded_by": "system"
+    }
+  ],
+  "enterprise_metrics": [
+    {
+      "id": "94ef528b-755b-4e91-8403-cd08b064bb4b",
+      "name": "Engineer To Order Cycle Time",
+      "description": "Average time from engineering request to completed design specification",
+      "category": "ETO",
+      "target_value": 10,
+      "current_value": 21,
+      "unit": "days",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "bcab27a3-8237-484e-adf3-13a2e7934771",
+      "name": "Quote-to-Order Cycle Time",
+      "description": "Average time from initial quote to confirmed order",
+      "category": "ETO",
+      "target_value": 5,
+      "current_value": 14,
+      "unit": "days",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "85855260-bf44-4ff1-9e0f-461f2660738e",
+      "name": "Configuration Accuracy",
+      "description": "Percentage of configurations completed correctly on first attempt",
+      "category": "ETO",
+      "target_value": 95,
+      "current_value": 78,
+      "unit": "%",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "31411222-fd46-4c8e-9213-a99849d2b730",
+      "name": "Engineering Change Order Rate",
+      "description": "Percentage of orders requiring engineering changes after submission",
+      "category": "ETO",
+      "target_value": 5,
+      "current_value": 18,
+      "unit": "%",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "4e1e160c-f317-41de-bea4-7451c70f4de8",
+      "name": "Solution Design Accuracy",
+      "description": "Percentage of designs that pass first review without rework",
+      "category": "Quality",
+      "target_value": 95,
+      "current_value": 66,
+      "unit": "%",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "1c4373f0-a2d9-43a3-b0d8-d1971aa2a9dd",
+      "name": "Order Entry Error Rate",
+      "description": "Percentage of orders requiring correction after submission",
+      "category": "Quality",
+      "target_value": 3,
+      "current_value": 12,
+      "unit": "%",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "48e3014f-b0e5-45bd-9c2f-274e41209a9e",
+      "name": "On-Time Delivery Rate",
+      "description": "Percentage of orders delivered by promised date",
+      "category": "Quality",
+      "target_value": 98,
+      "current_value": 87,
+      "unit": "%",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    },
+    {
+      "id": "f8c5f96b-8c38-49f1-ae02-9820f1a649f8",
+      "name": "Customer Satisfaction Score",
+      "description": "Post-delivery NPS score",
+      "category": "Quality",
+      "target_value": 75,
+      "current_value": 62,
+      "unit": "NPS",
+      "created_at": "2026-02-10T17:52:49.062876+00:00",
+      "updated_at": "2026-02-10T17:52:49.062876+00:00"
+    }
+  ],
+  "config": [
+    {
+      "type": "app_config",
+      "business_units": [
+        "IT",
+        "Sales",
+        "Manufacturing",
+        "Fulfillment",
+        "Engineering",
+        "Finance",
+        "Operations",
+        "HR",
+        "Marketing",
+        "Planning",
+        "NPDI",
+        "Do something fun"
+      ],
+      "delivery_stages": [
+        "Request",
+        "Solution Design",
+        "Commercials",
+        "Quote and Approval",
+        "Order Capture",
+        "Availability",
+        "Fulfillment",
+        "Post-Delivery"
+      ],
+      "created_at": "2026-02-12T19:00:32.331133+00:00",
+      "updated_at": "2026-02-12T19:02:27.396380+00:00"
+    }
+  ],
+  "strategic_initiatives": [
+    {
+      "id": "ec5f03ba-d253-43be-b326-f7417653673d",
+      "name": "ETO",
+      "description": "Engineer To Order transformation - reducing cycle times and improving configuration accuracy",
+      "status": "Work In Progress",
+      "rag_status": "Amber",
+      "executive_sponsor": "Michael Chen",
+      "business_outcome_ids": [
+        "4a845291-80bc-490a-b8cc-8e360a32824a"
+      ],
+      "business_units": [
+        "Engineering",
+        "Manufacturing",
+        "Sales",
+        "Fulfillment",
+        "Do something fun"
+      ],
+      "delivery_stages_impacted": [
+        "Request",
+        "Solution Design",
+        "Order Capture"
+      ],
+      "team_members": [
+        {
+          "id": "a8e03f71-7d54-485f-95ca-94269e9e7933",
+          "name": "Michael Chen",
+          "role": "Executive Sponsor",
+          "responsibility": "Strategic oversight and funding"
+        },
+        {
+          "id": "01744683-41e9-478c-9bcf-d7af3423bd58",
+          "name": "Jennifer Martinez",
+          "role": "Program Lead",
+          "responsibility": "Day-to-day program management"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "7cf5f350-909c-4c45-a7d3-ceac4019f10f",
+          "old_status": "Not Started",
+          "new_status": "Discovery",
+          "changed_at": "2026-01-13T16:37:34.916644+00:00",
+          "changed_by": "Admin",
+          "notes": "Kickoff meeting completed"
+        },
+        {
+          "id": "f435b415-3f96-4021-811c-1c86e9156533",
+          "old_status": "Discovery",
+          "new_status": "Work In Progress",
+          "changed_at": "2026-01-29T16:37:34.916657+00:00",
+          "changed_by": "Admin",
+          "notes": "Moving to implementation"
+        }
+      ],
+      "milestones": [
+        {
+          "id": "d292aac9-f4d5-4c02-9142-d0a2ce158549",
+          "name": "Discovery Complete",
+          "description": "Complete discovery phase with stakeholder interviews",
+          "owner": "Jennifer Martinez",
+          "due_date": "2024-02-28",
+          "status": "Completed"
+        },
+        {
+          "id": "719af8e7-b67a-45bd-aa22-dc9f21c6a7df",
+          "name": "Solution Design Approval",
+          "description": "Get executive approval on solution design",
+          "owner": "Michael Chen",
+          "due_date": "2024-04-15",
+          "status": "In Progress"
+        },
+        {
+          "id": "5dc7a0ed-fc1e-4081-ab99-4266d2f23d4f",
+          "name": "Pilot Launch",
+          "description": "Launch pilot program with select plants",
+          "owner": "Jennifer Martinez",
+          "due_date": "2024-06-30",
+          "status": "Pending"
+        }
+      ],
+      "activities": [
+        {
+          "id": "1273002f-d9d6-47af-a814-588cf3c1cd1f",
+          "name": "Stakeholder Kickoff Meeting",
+          "activity_type": "Meeting",
+          "description": "Initial kickoff with all stakeholders",
+          "date": "2026-01-15",
+          "time": "10:00 AM",
+          "location": "Conference Room A",
+          "attendees": [
+            "Michael Chen",
+            "Jennifer Martinez",
+            "Sarah Johnson"
+          ],
+          "status": "Completed",
+          "notes": "Aligned on objectives and timeline"
+        },
+        {
+          "id": "f6827934-f813-4bbf-a262-212bf96d1688",
+          "name": "Process Mapping Workshop",
+          "activity_type": "Workshop",
+          "description": "Map current ETO process flows",
+          "date": "2026-01-22",
+          "time": "9:00 AM",
+          "location": "Innovation Lab",
+          "attendees": [
+            "Jennifer Martinez",
+            "Process Team"
+          ],
+          "status": "Completed",
+          "notes": "Identified 5 key bottlenecks"
+        },
+        {
+          "id": "0ed547bf-a3bc-433f-9082-1e0b4ceaa762",
+          "name": "Weekly Status Review",
+          "activity_type": "Meeting",
+          "description": "Weekly status update meeting",
+          "date": "2026-02-15",
+          "time": "2:00 PM",
+          "location": "Virtual - Teams",
+          "attendees": [
+            "Michael Chen",
+            "Jennifer Martinez"
+          ],
+          "status": "Scheduled",
+          "notes": ""
+        },
+        {
+          "id": "8f321be5-d040-478a-83ca-92ecf2b8fa20",
+          "name": "Solution Design Review",
+          "activity_type": "Review",
+          "description": "Review solution design with technical leads",
+          "date": "2026-02-22",
+          "time": "1:00 PM",
+          "location": "Conference Room B",
+          "attendees": [
+            "Technical Leads",
+            "Architecture Team"
+          ],
+          "status": "Scheduled",
+          "notes": ""
+        }
+      ],
+      "documents": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T19:02:39.532665+00:00"
+    },
+    {
+      "id": "81fa80c2-4065-4bd1-ba74-ab292b66f1c9",
+      "name": "Quality",
+      "description": "Enterprise-wide quality improvement initiative",
+      "status": "Discovery",
+      "rag_status": "Green",
+      "executive_sponsor": "Sarah Johnson",
+      "business_outcome_ids": [
+        "70fe8eca-571d-4319-a82d-b03df65d4c1a"
+      ],
+      "business_units": [
+        "Manufacturing"
+      ],
+      "delivery_stages_impacted": [
+        "Availability",
+        "Fulfillment"
+      ],
+      "team_members": [
+        {
+          "id": "f1d3920a-7b2b-4617-acba-030776a2d3b0",
+          "name": "Sarah Johnson",
+          "role": "Executive Sponsor",
+          "responsibility": "Quality strategy"
+        },
+        {
+          "id": "4965da04-f921-4e74-bab6-16d653e9b943",
+          "name": "Nicole Brown",
+          "role": "Quality Lead",
+          "responsibility": "Process implementation"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "53cd1095-0af7-428b-8899-d8b5a5d89dcf",
+          "old_status": "Not Started",
+          "new_status": "Discovery",
+          "changed_at": "2026-02-05T16:37:34.916722+00:00",
+          "changed_by": "Admin",
+          "notes": "Started discovery phase"
+        }
+      ],
+      "milestones": [
+        {
+          "id": "52d67e36-d56a-479f-8901-dc6eb5a3dadf",
+          "name": "Quality Assessment",
+          "description": "Complete quality baseline assessment",
+          "owner": "Nicole Brown",
+          "due_date": "2024-03-15",
+          "status": "In Progress"
+        },
+        {
+          "id": "d6577ef8-e128-4db5-9f98-9780a4be03f5",
+          "name": "Root Cause Analysis",
+          "description": "Identify root causes of quality issues",
+          "owner": "Nicole Brown",
+          "due_date": "2024-04-30",
+          "status": "Pending"
+        }
+      ],
+      "activities": [
+        {
+          "id": "1ae5ff83-4ff9-4c67-922d-d06235dfde0a",
+          "name": "Quality Standards Training",
+          "activity_type": "Training",
+          "description": "Train team on quality standards",
+          "date": "2026-02-17",
+          "time": "9:00 AM",
+          "location": "Training Room 1",
+          "attendees": [
+            "Quality Team",
+            "Manufacturing Leads"
+          ],
+          "status": "Scheduled",
+          "notes": ""
+        }
+      ],
+      "documents": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "5dbf3adb-113d-4c6e-a723-186e77a4b74e",
+      "name": "Planning",
+      "description": "Planning stability and forecast accuracy improvement",
+      "status": "Not Started",
+      "rag_status": "Green",
+      "executive_sponsor": "David Kim",
+      "business_outcome_ids": [
+        "6947e6c5-61cf-4445-8d1f-aa8aab04fd5e"
+      ],
+      "business_units": [
+        "Operations"
+      ],
+      "delivery_stages_impacted": [
+        "Quote and Approval",
+        "Fulfillment"
+      ],
+      "team_members": [
+        {
+          "id": "d4cff9fb-1bfc-4328-aa81-f4fa4dfd9f95",
+          "name": "David Kim",
+          "role": "Executive Sponsor",
+          "responsibility": "Planning oversight"
+        }
+      ],
+      "status_history": [],
+      "milestones": [],
+      "activities": [],
+      "documents": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "27821bd2-5276-4797-a3d7-32fb15dce697",
+      "name": "Manufacturing Visibility",
+      "description": "Real-time visibility into manufacturing operations",
+      "status": "Not Started",
+      "rag_status": "Red",
+      "executive_sponsor": "Lisa Park",
+      "business_outcome_ids": [],
+      "business_units": [
+        "Manufacturing"
+      ],
+      "delivery_stages_impacted": [
+        "Availability",
+        "Fulfillment",
+        "Post-Delivery"
+      ],
+      "team_members": [
+        {
+          "id": "8863dbcb-604b-4457-bc3f-2d92278b8f19",
+          "name": "Lisa Park",
+          "role": "Executive Sponsor",
+          "responsibility": "Manufacturing strategy"
+        }
+      ],
+      "status_history": [],
+      "milestones": [],
+      "activities": [],
+      "documents": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "3e253fde-c260-4d59-a361-4d388d185a3d",
+      "name": "Intercompany",
+      "description": "Intercompany process optimization",
+      "status": "Not Started",
+      "rag_status": "Green",
+      "executive_sponsor": "Tom Wilson",
+      "business_outcome_ids": [],
+      "business_units": [
+        "Finance"
+      ],
+      "delivery_stages_impacted": [
+        "Commercials",
+        "Order Capture"
+      ],
+      "team_members": [],
+      "status_history": [],
+      "milestones": [],
+      "activities": [],
+      "documents": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    }
+  ],
+  "users": [
+    {
+      "id": "ed03c6a3-33c6-4816-becb-193d11ded4a4",
+      "email": "testuser@vertiv.com",
+      "name": "Test User",
+      "role": "viewer",
+      "password_hash": "$2b$12$YZAjDSak6LAZzTaKkKTiB.3JXH/V5oqd0Ckc2ASzHGxA20FChnaDi",
+      "created_at": "2026-02-10T00:00:55.078853+00:00"
+    },
+    {
+      "id": "508906c4-0906-4929-a274-1ec1efdc1242",
+      "email": "uitester@vertiv.com",
+      "name": "UI Test User",
+      "role": "viewer",
+      "password_hash": "$2b$12$fB0Ep7gXN1gxeu2WfmA32e.R.Bv6tYSNJMwDcDq8iGh1Np6D5QltG",
+      "created_at": "2026-02-10T00:01:56.038558+00:00"
+    },
+    {
+      "id": "f73da6c8-3a0c-4434-9e9f-4bc4db4e4e50",
+      "email": "test1770681846@vertiv.com",
+      "name": "Test User",
+      "role": "viewer",
+      "password_hash": "$2b$12$lCa5PNTMJeWRrPY2Tbuciel7wyHQ7F2Fe3hDhJOf5o2OM7TFsycDK",
+      "created_at": "2026-02-10T00:04:07.077235+00:00"
+    },
+    {
+      "id": "8070e5b1-dc41-4c20-819e-0b41c8b6369c",
+      "email": "exec1770681887@vertiv.com",
+      "name": "Executive User",
+      "role": "viewer",
+      "password_hash": "$2b$12$vNFiS8l4mF6hvF1WJ2PpJONnGRAD8w4DnjaQ459Sp7pCt.8X0fXxi",
+      "created_at": "2026-02-10T00:04:48.058034+00:00"
+    },
+    {
+      "id": "aa19ac68-2897-45a5-af93-ed8bdfac0e52",
+      "email": "test1770681907@vertiv.com",
+      "name": "Test Admin",
+      "role": "viewer",
+      "password_hash": "$2b$12$.WbJm8XmVB4EhUZH70P5nuX/mcHP05XNQI92./l8ozBwmymC.iInS",
+      "created_at": "2026-02-10T00:05:08.725713+00:00"
+    },
+    {
+      "id": "060587f8-b70a-4c1d-8674-8ac19e6d40d0",
+      "email": "riskuser1770681927@vertiv.com",
+      "name": "Risk Analyst",
+      "role": "viewer",
+      "password_hash": "$2b$12$9baFDGlJ7hFCmHBIB/sGKemOxIv.8ZE5nL0yjAvscs11txD9orWrK",
+      "created_at": "2026-02-10T00:05:28.808668+00:00"
+    },
+    {
+      "id": "1dbb236d-46b6-4a5e-8ea4-34b7f205fceb",
+      "email": "finance1770681947@vertiv.com",
+      "name": "CFO User",
+      "role": "viewer",
+      "password_hash": "$2b$12$Brpi5pHm6MyjkDIuBQgRF..GSMHIaTb3iQ3fc7/DMIe1rZAEEhJcq",
+      "created_at": "2026-02-10T00:05:48.092055+00:00"
+    },
+    {
+      "id": "e2a137a1-147b-4161-98d2-ed08b0d740d9",
+      "email": "finaltest@vertiv.com",
+      "name": "Final Test User",
+      "role": "viewer",
+      "password_hash": "$2b$12$kN1nWAWAujuO8U165PniueYnSz2tscIOv6GbFsXqZXZ2Qrsu/V8zW",
+      "created_at": "2026-02-10T00:07:50.772824+00:00"
+    },
+    {
+      "id": "09e61918-a05e-4e44-80ff-f10b2c169e7e",
+      "email": "demo@vertiv.com",
+      "name": "Demo Executive",
+      "role": "admin",
+      "password_hash": "$2b$12$lpct4p1VWXRV/aqUMYFh3uGVTvydVEfkOQNryLaFLNAoYhnDnFJ/y",
+      "created_at": "2026-02-10T00:14:49.463013+00:00"
+    },
+    {
+      "id": "9f119642-6788-431e-bd1f-0eacbd8a49ef",
+      "email": "seth@vertiv.com",
+      "name": "Seth",
+      "role": "viewer",
+      "password_hash": "$2b$12$vlrluVyG6f2RJJ5xg6YkbO5v4IdmWq4jlmOYn9qt/2dYCUn0SOwE6",
+      "created_at": "2026-02-10T00:17:11.692966+00:00"
+    },
+    {
+      "id": "68ffe4f9-7f9f-4b29-ad96-5a24a0d75e7f",
+      "email": "admin@test.com",
+      "name": "Admin",
+      "role": "admin",
+      "password_hash": "$2b$12$dlKudNUkU8B4FeQGgXl7R.THEXqlypr9puAl9c9o873vVN/RSRv.O",
+      "created_at": "2026-02-10T19:26:21.501502+00:00"
+    },
+    {
+      "id": "80cfc1c7-d0ed-45d0-b0e5-2487353580e4",
+      "email": "pm@test.com",
+      "name": "PM User",
+      "role": "project_manager",
+      "password_hash": "$2b$12$2AGf1A9ziEnQ2sWA/jnZ3OUMPG7FFetJh1H.5nw.OmS4Krosk/tfm",
+      "created_at": "2026-02-10T20:14:27.631438+00:00"
+    }
+  ],
+  "business_outcome_categories": [
+    {
+      "id": "4a845291-80bc-490a-b8cc-8e360a32824a",
+      "name": "ETO",
+      "description": "Engineer To Order - Custom product engineering and configuration",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "70fe8eca-571d-4319-a82d-b03df65d4c1a",
+      "name": "Quality",
+      "description": "Product and process quality metrics",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "6947e6c5-61cf-4445-8d1f-aa8aab04fd5e",
+      "name": "PDSL",
+      "description": "Product Delivery Service Level",
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    }
+  ],
+  "projects": [
+    {
+      "id": "18d18c90-9128-4988-a593-8657728d6a65",
+      "name": "BOM Grid Enhancement",
+      "description": "Improve BOM configuration grid for faster and more accurate product specification",
+      "strategic_initiative_id": "ec5f03ba-d253-43be-b326-f7417653673d",
+      "status": "In Progress",
+      "rag_status": "Amber",
+      "delivery_stage": "Order Capture",
+      "delivery_stages_impacted": [
+        "Order Capture",
+        "Solution Design"
+      ],
+      "business_units": [
+        "Engineering"
+      ],
+      "owner": "Jennifer Martinez",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "a1bb9bfd-b851-48bf-8170-5f6199eb74bb",
+          "name": "Jennifer Martinez",
+          "role": "Project Lead",
+          "responsibility": "Overall project delivery"
+        },
+        {
+          "id": "3c2a66dd-58d8-42f1-9dfc-e62c12f28480",
+          "name": "Mike Chen",
+          "role": "Senior Developer",
+          "responsibility": "Backend development"
+        },
+        {
+          "id": "727ff6cc-60c5-4067-ae18-e4573393b46f",
+          "name": "Sara Kim",
+          "role": "UX Designer",
+          "responsibility": "UI/UX design"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "310cb22c-fb5e-4975-b990-01a298199d89",
+          "old_status": "Not Started",
+          "new_status": "In Progress",
+          "changed_at": "2026-01-22T16:37:34.919095+00:00",
+          "changed_by": "Admin",
+          "notes": "Project kickoff completed"
+        }
+      ],
+      "milestones": [
+        {
+          "id": "859f54d3-8062-4fbf-8a67-6616e5b5145d",
+          "name": "Requirements Gathering",
+          "description": "",
+          "owner": "Jennifer Martinez",
+          "due_date": "2024-02-15",
+          "status": "Completed"
+        },
+        {
+          "id": "4671024c-3a50-486f-9e2a-d1ca9f855ef7",
+          "name": "UI Prototype",
+          "description": "",
+          "owner": "UX Team",
+          "due_date": "2024-03-30",
+          "status": "Completed"
+        },
+        {
+          "id": "cb3f5306-1db4-4304-a823-2a4debb68c3b",
+          "name": "Backend Integration",
+          "description": "",
+          "owner": "Dev Team",
+          "due_date": "2024-05-15",
+          "status": "In Progress"
+        },
+        {
+          "id": "855930df-c59d-453f-9076-993b875e740c",
+          "name": "User Acceptance Testing",
+          "description": "",
+          "owner": "QA Team",
+          "due_date": "2024-06-30",
+          "status": "Pending"
+        }
+      ],
+      "issues": [
+        {
+          "id": "f156d033-1c14-4ed7-a7cf-162922c07eac",
+          "description": "Legacy system integration causing delays",
+          "severity": "High",
+          "status": "In Progress",
+          "owner": "Dev Team",
+          "resolution": ""
+        }
+      ],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "34bb7175-3759-4057-9579-f27970c7ed1c",
+      "name": "Plant Team Standardization",
+      "description": "Standardize engineering processes across plant teams",
+      "strategic_initiative_id": "ec5f03ba-d253-43be-b326-f7417653673d",
+      "status": "In Progress",
+      "rag_status": "Green",
+      "delivery_stage": "Commercials",
+      "delivery_stages_impacted": [
+        "Commercials",
+        "Quote and Approval"
+      ],
+      "business_units": [
+        "Operations"
+      ],
+      "owner": "Alex Rivera",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "d358636d-f2ae-4a73-996b-b4939007dfc6",
+          "name": "Alex Rivera",
+          "role": "Process Lead",
+          "responsibility": "Process design and documentation"
+        },
+        {
+          "id": "b4e919fb-b291-47f3-a6d1-8101c04e9820",
+          "name": "Tom Jackson",
+          "role": "Training Specialist",
+          "responsibility": "Training materials"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "45c2a8f5-695e-4907-bf5b-1f73c7906cfe",
+          "old_status": "Not Started",
+          "new_status": "In Progress",
+          "changed_at": "2026-01-29T16:37:34.919138+00:00",
+          "changed_by": "Admin",
+          "notes": "Started process documentation"
+        }
+      ],
+      "milestones": [
+        {
+          "id": "562a5be1-537c-4afd-91dd-696667307fe8",
+          "name": "Process Documentation",
+          "description": "",
+          "owner": "Alex Rivera",
+          "due_date": "2024-03-01",
+          "status": "Completed"
+        },
+        {
+          "id": "21f8e475-76bd-401b-ab23-4cc6b121345a",
+          "name": "Training Development",
+          "description": "",
+          "owner": "Training Team",
+          "due_date": "2024-04-15",
+          "status": "In Progress"
+        },
+        {
+          "id": "e9006bf9-58c7-4701-8e31-94feadcad95d",
+          "name": "Pilot Rollout",
+          "description": "",
+          "owner": "Alex Rivera",
+          "due_date": "2024-06-01",
+          "status": "Pending"
+        }
+      ],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "775dbf02-9fee-4496-b85b-fde619d61841",
+      "name": "Visibility Platform",
+      "description": "End-to-end visibility platform for ETO process",
+      "strategic_initiative_id": "ec5f03ba-d253-43be-b326-f7417653673d",
+      "status": "Not Started",
+      "rag_status": "Red",
+      "delivery_stage": "Request",
+      "delivery_stages_impacted": [
+        "Request",
+        "Solution Design",
+        "Availability"
+      ],
+      "business_units": [
+        "IT"
+      ],
+      "owner": "Chris Anderson",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "b91c3fe3-8f52-4a40-b10c-b09c362d0718",
+          "name": "Chris Anderson",
+          "role": "Technical Lead",
+          "responsibility": "Platform architecture"
+        }
+      ],
+      "status_history": [],
+      "milestones": [
+        {
+          "id": "21d61f12-abc5-4b2c-b5a4-2dd9f2d0afc1",
+          "name": "Platform Selection",
+          "description": "",
+          "owner": "IT Team",
+          "due_date": "2024-04-30",
+          "status": "Pending"
+        },
+        {
+          "id": "99b668c6-d7c4-4b80-b588-612ac7b625b0",
+          "name": "Data Integration Design",
+          "description": "",
+          "owner": "Data Team",
+          "due_date": "2024-06-15",
+          "status": "Pending"
+        }
+      ],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "77b889b0-982a-412e-8988-dc9c68863c0a",
+      "name": "Design Review Process",
+      "description": "Implement structured design review checkpoints",
+      "strategic_initiative_id": "81fa80c2-4065-4bd1-ba74-ab292b66f1c9",
+      "status": "In Progress",
+      "rag_status": "Green",
+      "delivery_stage": "Solution Design",
+      "delivery_stages_impacted": [
+        "Solution Design"
+      ],
+      "business_units": [
+        "Manufacturing"
+      ],
+      "owner": "Nicole Brown",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "2cdc9279-73de-4f78-a806-3a7437337583",
+          "name": "Nicole Brown",
+          "role": "Quality Lead",
+          "responsibility": "Quality process ownership"
+        },
+        {
+          "id": "01534320-faac-4e74-b575-a6b93376eb56",
+          "name": "David Park",
+          "role": "Quality Engineer",
+          "responsibility": "Checklist development"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "78f977b2-4671-465a-8c06-c4effe66f9ef",
+          "old_status": "Not Started",
+          "new_status": "In Progress",
+          "changed_at": "2026-02-02T16:37:34.919174+00:00",
+          "changed_by": "Admin",
+          "notes": "Review gates defined"
+        }
+      ],
+      "milestones": [
+        {
+          "id": "120adbe8-3178-484e-b84b-2f20efe8e4b0",
+          "name": "Review Gate Definition",
+          "description": "",
+          "owner": "Nicole Brown",
+          "due_date": "2024-02-28",
+          "status": "Completed"
+        },
+        {
+          "id": "ca503697-5fc9-4648-a1c6-74484a3d5596",
+          "name": "Checklist Development",
+          "description": "",
+          "owner": "Quality Team",
+          "due_date": "2024-04-15",
+          "status": "In Progress"
+        }
+      ],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "527dc9ba-9e54-4bdc-b716-3c536858df59",
+      "name": "Quality Metrics Dashboard",
+      "description": "Real-time quality metrics visualization",
+      "strategic_initiative_id": "81fa80c2-4065-4bd1-ba74-ab292b66f1c9",
+      "status": "In Progress",
+      "rag_status": "Amber",
+      "delivery_stage": "Availability",
+      "delivery_stages_impacted": [
+        "Availability",
+        "Fulfillment"
+      ],
+      "business_units": [
+        "IT"
+      ],
+      "owner": "Sam Chen",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "278a1aa4-fda7-4d36-9fad-a0e9d08d6da5",
+          "name": "Sam Chen",
+          "role": "Analytics Lead",
+          "responsibility": "Dashboard design and metrics"
+        }
+      ],
+      "status_history": [],
+      "milestones": [],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "9f4690be-b6e2-4038-aba4-ec2dd3835fe2",
+      "name": "Demand Forecasting Tool",
+      "description": "ML-based demand forecasting system",
+      "strategic_initiative_id": "5dbf3adb-113d-4c6e-a723-186e77a4b74e",
+      "status": "Not Started",
+      "rag_status": "Green",
+      "delivery_stage": "Quote and Approval",
+      "delivery_stages_impacted": [
+        "Quote and Approval",
+        "Fulfillment"
+      ],
+      "business_units": [
+        "Sales"
+      ],
+      "owner": "Maria Garcia",
+      "business_outcome_ids": [],
+      "team_members": [],
+      "status_history": [],
+      "milestones": [],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "5c579185-d75d-4248-a2f3-29055cf7dace",
+      "name": "Supply Chain Visibility",
+      "description": "End-to-end supply chain tracking",
+      "strategic_initiative_id": "5dbf3adb-113d-4c6e-a723-186e77a4b74e",
+      "status": "In Progress",
+      "rag_status": "Green",
+      "delivery_stage": "Fulfillment",
+      "delivery_stages_impacted": [
+        "Fulfillment",
+        "Post-Delivery"
+      ],
+      "business_units": [
+        "Operations"
+      ],
+      "owner": "James Wilson",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "b1f00909-3506-4dca-95d1-0993f287d2be",
+          "name": "James Wilson",
+          "role": "Supply Chain Manager",
+          "responsibility": "End-to-end visibility"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "5650db00-cb05-4901-b9ad-57ad637d0961",
+          "old_status": "Not Started",
+          "new_status": "In Progress",
+          "changed_at": "2026-02-07T16:37:34.919200+00:00",
+          "changed_by": "Admin",
+          "notes": "Started implementation"
+        }
+      ],
+      "milestones": [],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    },
+    {
+      "id": "9cd6f2d8-c108-43e8-912c-e45903406667",
+      "name": "Customer Portal Upgrade",
+      "description": "Enhanced customer self-service portal",
+      "strategic_initiative_id": "27821bd2-5276-4797-a3d7-32fb15dce697",
+      "status": "Completed",
+      "rag_status": "Green",
+      "delivery_stage": "Post-Delivery",
+      "delivery_stages_impacted": [
+        "Post-Delivery"
+      ],
+      "business_units": [
+        "Sales"
+      ],
+      "owner": "Emily Davis",
+      "business_outcome_ids": [],
+      "team_members": [
+        {
+          "id": "b3b0be13-b758-4585-bf9f-df4be7c623c4",
+          "name": "Emily Davis",
+          "role": "Product Manager",
+          "responsibility": "Feature prioritization"
+        },
+        {
+          "id": "43662944-c978-47d5-afbb-f06a1c0c8a55",
+          "name": "Ryan Lee",
+          "role": "Full Stack Developer",
+          "responsibility": "Portal development"
+        }
+      ],
+      "status_history": [
+        {
+          "id": "1981f415-f5b6-4b25-8cc2-bedfb0d9658f",
+          "old_status": "Not Started",
+          "new_status": "In Progress",
+          "changed_at": "2025-12-14T16:37:34.919214+00:00",
+          "changed_by": "Admin",
+          "notes": "Started development"
+        },
+        {
+          "id": "3a9a692e-c5d5-43d0-a509-e092c8719e97",
+          "old_status": "In Progress",
+          "new_status": "Completed",
+          "changed_at": "2026-02-09T16:37:34.919219+00:00",
+          "changed_by": "Admin",
+          "notes": "Portal launched successfully"
+        }
+      ],
+      "milestones": [],
+      "issues": [],
+      "created_at": "2026-02-12T16:37:34.882559+00:00",
+      "updated_at": "2026-02-12T16:37:34.882559+00:00"
+    }
+  ]
+}
