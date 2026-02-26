@@ -31,9 +31,20 @@ def set_database(database):
 @router.get("/debug/initiatives-raw")
 async def get_initiatives_raw():
     """Debug endpoint to see raw data from database without Pydantic validation"""
-    initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(10)
-    projects = await db.projects.find({}, {"_id": 0}).to_list(10)
+    # List all collections in the database
+    collections = await db.list_collection_names()
+    
+    # Try both possible collection names
+    initiatives = []
+    if "strategic_initiatives" in collections:
+        initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(10)
+    elif "initiatives" in collections:
+        initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(10)
+    
+    projects = await db.projects.find({}, {"_id": 0}).to_list(10) if "projects" in collections else []
+    
     return {
+        "collections": collections,
         "initiatives_count": len(initiatives),
         "initiatives": initiatives,
         "projects_count": len(projects),
