@@ -173,6 +173,8 @@ async def get_strategic_initiative(initiative_id: str):
     if not initiative:
         raise HTTPException(status_code=404, detail="Strategic Initiative not found")
     
+    # Remove any existing projects_count to avoid duplicate keyword argument
+    initiative.pop("projects_count", None)
     projects_count = await db.projects.count_documents({"strategic_initiative_id": initiative_id})
     return StrategicInitiativeResponse(**initiative, projects_count=projects_count)
 
