@@ -23,6 +23,10 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Configure logging first
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 # MongoDB connection - support both MONGO_URL and MONGODB_URI (for Koyeb)
 mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI')
 if not mongo_url:
@@ -37,10 +41,6 @@ if not db_name:
     
 db = client[db_name]
 logger.info(f"Connected to MongoDB database: {db_name}")
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
 
 # Create the main app
 app = FastAPI(title="Code Red Initiatives", version="4.0.0")
