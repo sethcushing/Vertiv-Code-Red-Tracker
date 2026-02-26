@@ -47,7 +47,8 @@ app = FastAPI(title="Code Red Initiatives", version="4.0.0")
 api_router = APIRouter(prefix="/api")
 
 # Import routes
-from routes import auth, initiatives, business_outcomes, dashboard, admin, seed, config
+from routes import auth, initiatives, business_outcomes, dashboard, admin, config
+# Note: seed module removed from production to prevent data overwrites
 
 # Import utils and set database reference
 from utils import auth as auth_utils
@@ -58,7 +59,6 @@ initiatives.set_database(db)
 business_outcomes.set_database(db)
 dashboard.set_database(db)
 admin.set_database(db)
-seed.set_database(db)
 config.set_database(db)
 auth_utils.set_db(db)
 
@@ -68,7 +68,6 @@ api_router.include_router(initiatives.router)
 api_router.include_router(business_outcomes.router)
 api_router.include_router(dashboard.router)
 api_router.include_router(admin.router)
-api_router.include_router(seed.router)
 api_router.include_router(config.router)
 
 # Root endpoint
