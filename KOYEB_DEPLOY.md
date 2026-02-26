@@ -17,12 +17,14 @@
    - **Builder**: Dockerfile
    - **Dockerfile location**: `Dockerfile`
 
-5. **Configure Environment Variables**:
+5. **Configure Environment Variables** (no quotes, no spaces):
    ```
    MONGODB_URI=mongodb+srv://sethcushing:CompassX@vertivredpipeline.v87jnbc.mongodb.net/?appName=VertivRedPipeline
    DB_NAME=code_red_initiatives
    CORS_ORIGINS=*
    ```
+   
+   **Important:** Enter values WITHOUT quotes. Just the raw value.
 
 6. **Configure Ports**:
    - Port: `8000`
