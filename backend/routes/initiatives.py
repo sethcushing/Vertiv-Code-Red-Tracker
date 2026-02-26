@@ -206,6 +206,8 @@ async def update_strategic_initiative(initiative_id: str, update: StrategicIniti
     await db.strategic_initiatives.update_one({"id": initiative_id}, {"$set": update_data})
     
     updated = await db.strategic_initiatives.find_one({"id": initiative_id}, {"_id": 0})
+    # Remove any existing projects_count to avoid duplicate keyword argument
+    updated.pop("projects_count", None)
     projects_count = await db.projects.count_documents({"strategic_initiative_id": initiative_id})
     return StrategicInitiativeResponse(**updated, projects_count=projects_count)
 
