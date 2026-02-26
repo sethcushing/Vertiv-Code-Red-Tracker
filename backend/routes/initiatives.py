@@ -55,8 +55,32 @@ async def get_strategic_initiatives(status: Optional[str] = None):
     # Count projects for each initiative
     result = []
     for init in initiatives:
-        projects_count = await db.projects.count_documents({"strategic_initiative_id": init["id"]})
-        result.append(StrategicInitiativeResponse(**init, projects_count=projects_count))
+        try:
+            projects_count = await db.projects.count_documents({"strategic_initiative_id": init["id"]})
+            
+            # Ensure required fields have defaults if missing
+            init.setdefault("status_history", [])
+            init.setdefault("team_members", [])
+            init.setdefault("milestones", [])
+            init.setdefault("activities", [])
+            init.setdefault("documents", [])
+            init.setdefault("business_units", [])
+            init.setdefault("delivery_stages_impacted", [])
+            init.setdefault("business_outcome_ids", [])
+            init.setdefault("description", "")
+            init.setdefault("executive_sponsor", "")
+            init.setdefault("start_date", None)
+            init.setdefault("target_end_date", None)
+            init.setdefault("created_at", datetime.now(timezone.utc).isoformat())
+            init.setdefault("updated_at", datetime.now(timezone.utc).isoformat())
+            
+            result.append(StrategicInitiativeResponse(**init, projects_count=projects_count))
+        except Exception as e:
+            # Log the error with the problematic document
+            import logging
+            logging.error(f"Error processing initiative {init.get('id', 'unknown')}: {str(e)}")
+            logging.error(f"Initiative data: {init}")
+            raise HTTPException(status_code=500, detail=f"Error processing initiative {init.get('name', 'unknown')}: {str(e)}")
     
     return result
 
