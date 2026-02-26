@@ -230,6 +230,8 @@ async def get_kpis(sub_outcome_id: Optional[str] = None):
     
     result = []
     for kpi in kpis:
+        # Remove any existing progress_percent to avoid duplicate keyword argument
+        kpi.pop("progress_percent", None)
         progress = calculate_kpi_progress(kpi)
         result.append(KPIResponse(**kpi, progress_percent=progress))
     
