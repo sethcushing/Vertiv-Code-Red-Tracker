@@ -29,8 +29,14 @@ if not mongo_url:
     raise ValueError("MongoDB URL not configured. Set MONGO_URL or MONGODB_URI environment variable.")
 
 client = AsyncIOMotorClient(mongo_url)
-db_name = os.environ.get('DB_NAME', 'code_red_initiatives')
+
+# Get database name, strip whitespace and replace spaces with underscores
+db_name = os.environ.get('DB_NAME', 'code_red_initiatives').strip().replace(' ', '_')
+if not db_name:
+    db_name = 'code_red_initiatives'
+    
 db = client[db_name]
+logger.info(f"Connected to MongoDB database: {db_name}")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
