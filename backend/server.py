@@ -10,7 +10,8 @@ Architecture:
 """
 
 from fastapi import FastAPI, APIRouter, Request
-from fastapi.responses import Response
+from fastapi.responses import Response, FileResponse
+from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -22,10 +23,14 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+# MongoDB connection - support both MONGO_URL and MONGODB_URI (for Koyeb)
+mongo_url = os.environ.get('MONGO_URL') or os.environ.get('MONGODB_URI')
+if not mongo_url:
+    raise ValueError("MongoDB URL not configured. Set MONGO_URL or MONGODB_URI environment variable.")
+
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db_name = os.environ.get('DB_NAME', 'code_red_initiatives')
+db = client[db_name]
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -65,7 +70,7 @@ api_router.include_router(config.router)
 async def root():
     return {"message": "Code Red Initiatives API", "version": "4.0.0"}
 
-# Health check endpoint (for Kubernetes liveness/readiness probes)
+# Health check endpoint (for Kubernetes/Koyeb liveness/readiness probes)
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
@@ -91,6 +96,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static files (React frontend) in production
+static_dir = ROOT_DIR / "static"
+if static_dir.exists():
+    app.mount("/static", StaticFiles(directory=str(static_dir / "static")), name="static")
+    
+    # Serve React app for all non-API routes
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        # Don't serve React for API routes or health check
+        if full_path.startswith("api") or full_path == "health":
+            return {"error": "Not found"}
+        
+        # Try to serve the requested file
+        file_path = static_dir / full_path
+        if file_path.exists() and file_path.is_file():
+            return FileResponse(str(file_path))
+        
+        # Fallback to index.html for React Router
+        index_path = static_dir / "index.html"
+        if index_path.exists():
+            return FileResponse(str(index_path))
+        
+        return {"error": "Not found"}
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
