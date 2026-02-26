@@ -244,6 +244,8 @@ async def get_kpi(kpi_id: str):
     if not kpi:
         raise HTTPException(status_code=404, detail="KPI not found")
     
+    # Remove any existing progress_percent to avoid duplicate keyword argument
+    kpi.pop("progress_percent", None)
     progress = calculate_kpi_progress(kpi)
     return KPIResponse(**kpi, progress_percent=progress)
 
