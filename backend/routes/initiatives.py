@@ -128,6 +128,8 @@ async def get_strategic_initiatives(status: Optional[str] = None):
     result = []
     for init in initiatives:
         try:
+            # Calculate projects_count fresh (remove any existing value to avoid duplicates)
+            init.pop("projects_count", None)
             projects_count = await db.projects.count_documents({"strategic_initiative_id": init["id"]})
             
             # Ensure required fields have defaults if missing
