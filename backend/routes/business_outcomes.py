@@ -167,6 +167,8 @@ async def update_sub_outcome(sub_outcome_id: str, update: SubOutcomeUpdate):
     await db.sub_outcomes.update_one({"id": sub_outcome_id}, {"$set": update_data})
     
     updated = await db.sub_outcomes.find_one({"id": sub_outcome_id}, {"_id": 0})
+    # Remove any existing kpis_count to avoid duplicate keyword argument
+    updated.pop("kpis_count", None)
     kpis_count = await db.kpis.count_documents({"sub_outcome_id": sub_outcome_id})
     return SubOutcomeResponse(**updated, kpis_count=kpis_count)
 
