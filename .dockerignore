@@ -36,6 +36,7 @@ test_reports/
 # Documentation
 *.md
 !README.md
+!KOYEB_DEPLOY.md
 
 # OS files
 .DS_Store
