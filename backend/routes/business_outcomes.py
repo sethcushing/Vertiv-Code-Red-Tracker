@@ -79,6 +79,8 @@ async def update_business_outcome_category(category_id: str, update: BusinessOut
     await db.business_outcome_categories.update_one({"id": category_id}, {"$set": update_data})
     
     updated = await db.business_outcome_categories.find_one({"id": category_id}, {"_id": 0})
+    # Remove any existing sub_outcomes_count to avoid duplicate keyword argument
+    updated.pop("sub_outcomes_count", None)
     sub_count = await db.sub_outcomes.count_documents({"category_id": category_id})
     return BusinessOutcomeCategoryResponse(**updated, sub_outcomes_count=sub_count)
 
