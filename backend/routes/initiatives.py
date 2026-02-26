@@ -26,6 +26,21 @@ def set_database(database):
     db = database
 
 
+# ==================== DEBUG ENDPOINT ====================
+
+@router.get("/debug/initiatives-raw")
+async def get_initiatives_raw():
+    """Debug endpoint to see raw data from database without Pydantic validation"""
+    initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(10)
+    projects = await db.projects.find({}, {"_id": 0}).to_list(10)
+    return {
+        "initiatives_count": len(initiatives),
+        "initiatives": initiatives,
+        "projects_count": len(projects),
+        "projects": projects
+    }
+
+
 # ==================== STRATEGIC INITIATIVE ENDPOINTS ====================
 
 @router.post("/strategic-initiatives", response_model=StrategicInitiativeResponse)
