@@ -115,7 +115,14 @@ async def get_strategic_initiatives(status: Optional[str] = None):
     if status:
         query["status"] = status
     
+    # Try strategic_initiatives first, then initiatives
     initiatives = await db.strategic_initiatives.find(query, {"_id": 0}).to_list(100)
+    
+    # If no data in strategic_initiatives, check initiatives collection
+    if not initiatives:
+        collections = await db.list_collection_names()
+        if "initiatives" in collections:
+            initiatives = await db.initiatives.find(query, {"_id": 0}).to_list(100)
     
     # Count projects for each initiative
     result = []
@@ -138,13 +145,21 @@ async def get_strategic_initiatives(status: Optional[str] = None):
             init.setdefault("target_end_date", None)
             init.setdefault("created_at", datetime.now(timezone.utc).isoformat())
             init.setdefault("updated_at", datetime.now(timezone.utc).isoformat())
+            init.setdefault("rag_status", "Green")
+            init.setdefault("status", "Not Started")
+            
+            # Ensure name and id exist
+            if "id" not in init or "name" not in init:
+                import logging
+                logging.error(f"Initiative missing id or name: {init}")
+                continue
             
             result.append(StrategicInitiativeResponse(**init, projects_count=projects_count))
         except Exception as e:
             # Log the error with the problematic document
             import logging
             logging.error(f"Error processing initiative {init.get('id', 'unknown')}: {str(e)}")
-            logging.error(f"Initiative data: {init}")
+            logging.error(f"Initiative data keys: {init.keys()}")
             raise HTTPException(status_code=500, detail=f"Error processing initiative {init.get('name', 'unknown')}: {str(e)}")
     
     return result
