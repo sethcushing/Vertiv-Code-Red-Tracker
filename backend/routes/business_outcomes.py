@@ -135,6 +135,8 @@ async def get_sub_outcomes(category_id: Optional[str] = None):
     
     result = []
     for sub in sub_outcomes:
+        # Remove any existing kpis_count to avoid duplicate keyword argument
+        sub.pop("kpis_count", None)
         kpis_count = await db.kpis.count_documents({"sub_outcome_id": sub["id"]})
         result.append(SubOutcomeResponse(**sub, kpis_count=kpis_count))
     
