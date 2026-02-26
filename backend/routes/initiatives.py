@@ -63,22 +63,32 @@ async def get_initiatives_raw():
     # List all collections in the database
     collections = await db.list_collection_names()
     
-    # Try both possible collection names
-    initiatives = []
-    if "strategic_initiatives" in collections:
-        initiatives = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(10)
-    elif "initiatives" in collections:
-        initiatives = await db.initiatives.find({}, {"_id": 0}).to_list(10)
-    
-    projects = await db.projects.find({}, {"_id": 0}).to_list(10) if "projects" in collections else []
-    
-    return {
+    result = {
         "collections": collections,
-        "initiatives_count": len(initiatives),
-        "initiatives": initiatives,
-        "projects_count": len(projects),
-        "projects": projects
+        "strategic_initiatives_data": [],
+        "initiatives_data": [],
+        "projects_data": []
     }
+    
+    # Check strategic_initiatives collection
+    if "strategic_initiatives" in collections:
+        data = await db.strategic_initiatives.find({}, {"_id": 0}).to_list(10)
+        result["strategic_initiatives_count"] = len(data)
+        result["strategic_initiatives_data"] = data
+    
+    # Check initiatives collection (alternative name)
+    if "initiatives" in collections:
+        data = await db.initiatives.find({}, {"_id": 0}).to_list(10)
+        result["initiatives_count"] = len(data)
+        result["initiatives_data"] = data
+    
+    # Check projects collection
+    if "projects" in collections:
+        data = await db.projects.find({}, {"_id": 0}).to_list(10)
+        result["projects_count"] = len(data)
+        result["projects_data"] = data
+    
+    return result
 
 
 # ==================== STRATEGIC INITIATIVE ENDPOINTS ====================
