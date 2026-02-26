@@ -273,6 +273,8 @@ async def update_kpi(kpi_id: str, update: KPIUpdate):
     await db.kpis.update_one({"id": kpi_id}, {"$set": update_data})
     
     updated = await db.kpis.find_one({"id": kpi_id}, {"_id": 0})
+    # Remove any existing progress_percent to avoid duplicate keyword argument
+    updated.pop("progress_percent", None)
     progress = calculate_kpi_progress(updated)
     return KPIResponse(**updated, progress_percent=progress)
 
