@@ -61,6 +61,8 @@ async def get_business_outcome_category(category_id: str):
     if not category:
         raise HTTPException(status_code=404, detail="Business Outcome Category not found")
     
+    # Remove any existing sub_outcomes_count to avoid duplicate keyword argument
+    category.pop("sub_outcomes_count", None)
     sub_count = await db.sub_outcomes.count_documents({"category_id": category_id})
     return BusinessOutcomeCategoryResponse(**category, sub_outcomes_count=sub_count)
 
