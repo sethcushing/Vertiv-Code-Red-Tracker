@@ -18,9 +18,19 @@ def set_database(database):
 
 @router.post("/seed")
 async def seed_data():
-    """Seed database with sample data for the new data model"""
+    """Seed database with sample data for the new data model.
+    Only seeds if no data exists - protects existing data.
+    """
     
-    # Clear existing data
+    # Check if data already exists - DON'T overwrite!
+    existing_initiatives = await db.strategic_initiatives.count_documents({})
+    if existing_initiatives > 0:
+        return {
+            "message": "Database already contains data. Seed skipped to protect existing data.",
+            "existing_initiatives": existing_initiatives
+        }
+    
+    # Clear existing data (only runs if no initiatives exist)
     await db.strategic_initiatives.delete_many({})
     await db.projects.delete_many({})
     await db.business_outcome_categories.delete_many({})
