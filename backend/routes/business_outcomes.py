@@ -149,6 +149,8 @@ async def get_sub_outcome(sub_outcome_id: str):
     if not sub_outcome:
         raise HTTPException(status_code=404, detail="Sub-Outcome not found")
     
+    # Remove any existing kpis_count to avoid duplicate keyword argument
+    sub_outcome.pop("kpis_count", None)
     kpis_count = await db.kpis.count_documents({"sub_outcome_id": sub_outcome_id})
     return SubOutcomeResponse(**sub_outcome, kpis_count=kpis_count)
 
